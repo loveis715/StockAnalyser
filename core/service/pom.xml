@@ -10,11 +10,9 @@
       <relativePath>../</relativePath>
    </parent>
 
-   <groupId>com.ambergarden.jewelry</groupId>
    <artifactId>jewelry</artifactId>
    <name>service</name>
    <packaging>war</packaging>
-   <version>${project.version}</version>
 
    <dependencies>
       <!-- Spring -->
@@ -32,41 +30,41 @@
       </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-         </dependency>
+         <artifactId>spring-webmvc</artifactId>
+         <version>${spring.version}</version>
+      </dependency>
 
-         <!-- AspectJ -->
-         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
-         </dependency>	
+      <!-- AspectJ -->
+      <dependency>
+         <groupId>org.aspectj</groupId>
+         <artifactId>aspectjrt</artifactId>
+         <version>${aspectj.version}</version>
+      </dependency>	
 
-         <!-- Logging -->
-         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-         </dependency>
-         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>runtime</scope>
-         </dependency>
-         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>runtime</scope>
-         </dependency>
-         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
-            <exclusions>
-               <exclusion>
+      <!-- Logging -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>jcl-over-slf4j</artifactId>
+         <version>${slf4j.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-log4j12</artifactId>
+         <version>${slf4j.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+         <version>1.2.15</version>
+         <exclusions>
+            <exclusion>
                <groupId>javax.mail</groupId>
                <artifactId>mail</artifactId>
             </exclusion>
@@ -118,7 +116,14 @@
          <artifactId>junit</artifactId>
          <version>4.7</version>
          <scope>test</scope>
-      </dependency>        
+      </dependency>
+
+      <!-- Project dependencies -->
+      <dependency>
+         <groupId>com.ambergarden.jewelry</groupId>
+         <artifactId>jewelry-sina-provider</artifactId>
+         <version>${project.version}</version>
+      </dependency>
    </dependencies>
    <build>
       <plugins>

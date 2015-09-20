@@ -1,0 +1,24 @@
+<xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/stock"
+            targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/stock"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/base">
+
+   <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/base" schemaLocation="base.xsd" />
+
+   <xsd:simpleType name="stock-category">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="SHANGHAI"/>
+         <xsd:enumeration value="SHENZHEN"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="stock">
+      <xsd:complexContent>
+         <xsd:extension base="base:named-entity">
+            <xsd:sequence>
+               <xsd:element name="code" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+</xsd:schema>

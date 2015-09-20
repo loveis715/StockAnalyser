@@ -4,16 +4,16 @@
 
    <parent>
       <groupId>com.ambergarden.jewelry</groupId>
-      <artifactId>jewelry-parent</artifactId>
+      <artifactId>jewelry-core</artifactId>
       <version>${project.version}</version>
       <relativePath>../</relativePath>
    </parent>
 
-   <artifactId>jewelry-core</artifactId>
+   <artifactId>jewelry-data-providers</artifactId>
    <packaging>pom</packaging>
 
    <modules>
-      <module>data-providers</module>
-      <module>service</module>
+      <module>rest-stub</module>
+      <module>sina</module>
    </modules>
 </project>
