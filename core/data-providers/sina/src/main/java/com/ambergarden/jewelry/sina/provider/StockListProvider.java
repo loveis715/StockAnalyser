@@ -12,6 +12,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 /**
  * Class used to retrieve all stocks by category
  */
+@Component
 public class StockListProvider {
    /**
     * List all stocks under a specific category

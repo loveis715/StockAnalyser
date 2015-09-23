@@ -12,7 +12,7 @@
 
    <artifactId>jewelry-sina-provider</artifactId>
    <packaging>jar</packaging>
-   
+
    <dependencies>
       <dependency>
          <groupId>org.apache.httpcomponents</groupId>
@@ -20,6 +20,7 @@
          <version>4.5</version>
       </dependency>
 
+      <!-- Jackson mapping utility -->
       <dependency>
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-databind</artifactId>
@@ -32,6 +33,20 @@
          <version>2.6.2</version>
       </dependency>
 
+      <!-- Spring -->
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context</artifactId>
+         <version>${spring.version}</version>
+         <exclusions>
+            <!-- Exclude Commons Logging in favor of SLF4j -->
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+
       <!-- Project dependencies -->
       <dependency>
          <groupId>com.ambergarden.jewelry</groupId>
@@ -39,4 +54,18 @@
          <version>${project.version}</version>
       </dependency>
    </dependencies>
+
+   <build>
+      <pluginManagement>
+         <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e 
+               settings only. It has no influence on the Maven build itself. -->
+            <plugin>
+               <groupId>org.eclipse.m2e</groupId>
+               <artifactId>lifecycle-mapping</artifactId>
+               <version>1.0.0</version>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+   </build>
 </project>
