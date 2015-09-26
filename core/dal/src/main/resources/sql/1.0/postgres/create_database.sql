@@ -11,3 +11,4 @@ ALTER Role jewelry CREATEDB;
 
 --drop database jewelry;
 create database jewelry;
+create database test;

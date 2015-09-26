@@ -10,6 +10,7 @@
    <modules>
       <module>core</module>
       <module>test</module>
+      <module>tools</module>
    </modules>
 
    <properties>
@@ -25,6 +26,8 @@
       <hibernate.jpa.api.version>1.0.1.Final</hibernate.jpa.api.version>
       <apache.version>3.3.2</apache.version>
       <commons.dbcp.version>1.4</commons.dbcp.version>
+      <commons.io.version>2.4</commons.io.version>
       <postgresql.version>9.0-801.jdbc4</postgresql.version>
+      <dbunit.version>2.4.8</dbunit.version>
    </properties>
 </project>

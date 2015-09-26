@@ -1,5 +1,3 @@
-\c jewelry jewelry
-
 CREATE TABLE STOCK
 (
 ID SERIAL NOT NULL,

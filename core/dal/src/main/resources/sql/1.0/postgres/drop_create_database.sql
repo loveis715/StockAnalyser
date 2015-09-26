@@ -1,5 +1,6 @@
 -- The database has to be dropped first
 drop database jewelry;
+drop database test;
 
 -- The login can now be dropped and recreated
 drop user jewelry;
@@ -14,3 +15,4 @@ ALTER ROLE jewelry WITH ENCRYPTED PASSWORD 'jewelry' VALID UNTIL 'infinity';
 ALTER Role jewelry CREATEDB;
 
 create database jewelry;
+create database test;
