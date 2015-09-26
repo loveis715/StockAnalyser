@@ -33,6 +33,8 @@ then
 fi
 rm $temp_dir/jewelry.sql
 
+java -jar tools/db-init/target/jewelry-db-init.jar
+
 generate-sql.sh $temp_dir test
 $PSQL -U jewelry -f $temp_dir/test.sql
 result=$?

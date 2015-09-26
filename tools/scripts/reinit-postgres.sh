@@ -43,3 +43,5 @@ then
 fi
 rm $temp_dir/test.sql
 rmdir "$temp_dir"
+
+java -jar ../db-init/target/jewelry-db-init.jar
