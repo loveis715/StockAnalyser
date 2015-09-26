@@ -10,8 +10,7 @@
       <relativePath>../</relativePath>
    </parent>
 
-   <artifactId>jewelry</artifactId>
-   <name>service</name>
+   <artifactId>jewelry-service</artifactId>
    <packaging>war</packaging>
 
    <dependencies>

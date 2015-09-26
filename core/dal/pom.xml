@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>com.ambergarden.jewelry</groupId>
+      <artifactId>jewelry-core</artifactId>
+      <version>${project.version}</version>
+   </parent>
+
+   <artifactId>jewelry-dal</artifactId>
+   <packaging>jar</packaging>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-core</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-ehcache</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate.javax.persistence</groupId>
+         <artifactId>hibernate-jpa-2.0-api</artifactId>
+         <version>${hibernate.jpa.api.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+         <version>${apache.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.data</groupId>
+         <artifactId>spring-data-jpa</artifactId>
+         <version>${spring.data.jpa.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-dbcp</groupId>
+         <artifactId>commons-dbcp</artifactId>
+         <version>${commons.dbcp.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>${postgresql.version}</version>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <pluginManagement>
+         <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e 
+               settings only. It has no influence on the Maven build itself. -->
+            <plugin>
+               <groupId>org.eclipse.m2e</groupId>
+               <artifactId>lifecycle-mapping</artifactId>
+               <version>1.0.0</version>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+   </build>
+</project>
