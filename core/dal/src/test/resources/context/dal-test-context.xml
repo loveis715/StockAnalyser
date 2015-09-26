@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/data/jpa
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <import resource="classpath:/META-INF/spring/db/dal-jpa-context.xml"/>
+
+    <context:component-scan base-package="com.ambergarden.jewelry.orm"/>
+
+    <bean id="dataSource"
+          class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://localhost:5432/test" />
+        <property name="username" value="jewelry" />
+        <property name="password" value="jewelry" />
+        <property name="maxActive" value="100" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+    </bean>
+
+    <util:list id="databaseScriptsList" value-type="org.springframework.core.io.Resource" />
+
+    <bean class="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory" />
+
+    <bean id="stock_creation" class="com.ambergarden.jewelry.orm.DataInitializerBean"
+          p:operation="INSERT" p:resource="classpath:/oob/stock_data.xml"/>
+    <bean id="stock_removal" class="com.ambergarden.jewelry.orm.DataInitializerBean"
+          p:operation="DELETE_ALL" p:resource="classpath:/oob/stock_data.xml"/>
+</beans>

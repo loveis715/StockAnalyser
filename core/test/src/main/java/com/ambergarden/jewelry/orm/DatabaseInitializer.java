@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
@@ -54,12 +53,12 @@ public class DatabaseInitializer {
     */
    public void setDataInitializers(List<DataInitializerBean> dataInitializers) {
       this.dataInitializers = dataInitializers;
+      this.dataSets = null;
    }
 
    /**
     * Initialize test data.
     */
-   @PostConstruct
    public void init() throws DatabaseUnitException, SQLException {
       if (dataInitializers != null) {
          logger.info("Processing data configuration.");
@@ -172,6 +171,10 @@ public class DatabaseInitializer {
             DatabaseOperation.INSERT.execute(connection, dataSet);
          } else if (DatabaseOperation.REFRESH.equals(data.getOperation())) {
             DatabaseOperation.REFRESH.execute(connection, dataSet);
+         } else if (DatabaseOperation.DELETE.equals(data.getOperation())) {
+            DatabaseOperation.DELETE.execute(connection, dataSet);
+         } else if (DatabaseOperation.DELETE_ALL.equals(data.getOperation())) {
+            DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
          }
       }
 
