@@ -3,6 +3,6 @@ Ext.define('jewelry.Application', {
     
     name: 'jewelry',
     requires: [
-        'morpho.Messages'
+        'jewelry.Messages'
     ]
 });

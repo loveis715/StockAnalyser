@@ -1,4 +1,4 @@
-Ext.define('morpho.Messages', {
+Ext.define('jewelry.Messages', {
     singleton: true,
 
     labels: {
@@ -7,6 +7,8 @@ Ext.define('morpho.Messages', {
         myStock: '自选',
         stock: '个股',
         management: '管理',
-        knowledge: '知识'
+        knowledge: '知识',
+        shanghaiStockName: '上证综指',
+        shenzhenStockName: '深证成指'
     }
 });
