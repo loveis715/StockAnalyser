@@ -3,6 +3,7 @@ Ext.define('jewelry.Application', {
     
     name: 'jewelry',
     requires: [
-        'jewelry.Messages'
+        'jewelry.Messages',
+        'jewelry.Constants'
     ]
 });
