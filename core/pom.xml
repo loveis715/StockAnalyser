@@ -16,6 +16,7 @@
       <module>data-providers</module>
       <module>dal</module>
       <module>service</module>
+      <module>rest-stub</module>
       <module>test</module>
    </modules>
 </project>
