@@ -1,47 +1,77 @@
-/**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
- */
 Ext.define('jewelry.view.main.Main', {
     extend: 'Ext.container.Container',
-    requires: [
-        'jewelry.view.main.MainController',
-        'jewelry.view.main.MainModel'
-    ],
 
     xtype: 'app-main',
-    
-    controller: 'main',
-    viewModel: {
-        type: 'main'
-    },
 
     layout: {
         type: 'border'
     },
 
-    items: [{
-        xtype: 'panel',
-        bind: {
-            title: '{name}'
-        },
-        region: 'west',
-        html: '<ul><li>This area is commonly used for navigation, for example, using a "tree" component.</li></ul>',
-        width: 250,
-        split: true,
-        tbar: [{
-            text: 'Button',
-            handler: 'onClickButton'
-        }]
-    },{
-        region: 'center',
-        xtype: 'tabpanel',
-        items:[{
-            title: 'Tab 1',
-            html: '<h2>Content appropriate for the current navigation.</h2>'
-        }]
-    }]
+    initComponent: function() {
+        var me = this;
+        this.items = [{
+            xtype: 'toolbar',
+            cls: 'jewelry-header',
+            region: 'north',
+            width: '100%',
+            height: 50,
+            padding: '0 0 0 0',
+            items: [{
+                text: morpho.Messages.labels.frontPage,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 0
+            }, {
+                text: morpho.Messages.labels.unusual,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 1
+            }, {
+                text: morpho.Messages.labels.myStock,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 2
+            }, {
+                text: morpho.Messages.labels.stock,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 3
+            }, {
+                text: morpho.Messages.labels.management,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 4
+            }, {
+                text: morpho.Messages.labels.knowledge,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 8 0 6',
+                cardIndex: 5
+            }]
+        }, {
+            region: 'center',
+            xtype: 'panel',
+            reference: 'cardPanel',
+            layout: 'card'
+        }];
+
+        this.callParent(arguments);
+    }
 });

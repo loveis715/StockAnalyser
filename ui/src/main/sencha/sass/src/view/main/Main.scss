@@ -1,0 +1,34 @@
+.jewelry-header {
+    background-color: #76869B;
+    
+    .x-btn-over {
+        .x-btn-default-toolbar-small {
+            background-color: cadetblue;
+        }
+    }
+}
+
+.jewelry-header-button {
+    background-color: transparent;
+    border-radius: 0px;
+
+    span {
+        color: white;
+        font-weight: normal;
+        font-size: 18px;
+    }
+}
+
+.jewelry-header-button.x-btn-over {
+    background-color: #66768B;
+}
+
+.jewelry-header-button.x-btn-focus {
+    background-color: #5D6D82;
+    box-shadow: none;
+}
+
+.jewelry-header-button.x-btn-focus.x-btn-over {
+    background-color: #5D6D82;
+    box-shadow: none;
+}
