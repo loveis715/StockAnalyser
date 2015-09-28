@@ -14,8 +14,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
-import com.ambergarden.jewelry.schema.beans.stock.Stock;
-import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
+import com.ambergarden.jewelry.schema.beans.provider.stock.Stock;
+import com.ambergarden.jewelry.schema.beans.provider.stock.StockCategory;
 import com.ambergarden.jewelry.sina.Constants;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;

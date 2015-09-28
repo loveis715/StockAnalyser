@@ -1,9 +1,9 @@
-<xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/stock"
-            targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/stock"
+<xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/provider/stock"
+            targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/provider/stock"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/base">
+            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/provider/base">
 
-   <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/base" schemaLocation="base.xsd" />
+   <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/provider/base" schemaLocation="base.xsd" />
 
    <xsd:simpleType name="stock-category">
       <xsd:restriction base="xsd:string">
