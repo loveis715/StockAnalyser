@@ -19,14 +19,6 @@ public class StockRepositoryTest {
    @Autowired
    private StockRepository stockRepository;
 
-   public String getCreationBeanName() {
-      return "stock_creation";
-   }
-
-   public String getRemovalBeanName() {
-      return "stock_removal";
-   }
-
    @Test
    public void testCRUD() {
       long count = stockRepository.count();
