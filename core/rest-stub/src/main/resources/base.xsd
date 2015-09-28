@@ -1,0 +1,11 @@
+<xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/base"
+            targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/base"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <xsd:complexType name="abstract-versioned-entity">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="lock-version" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

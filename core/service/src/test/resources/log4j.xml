@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.ambergarden.stockanalyser">
+	<logger name="com.ambergarden.jewelry">
 		<level value="info" />
 	</logger>
 	

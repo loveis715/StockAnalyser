@@ -1,0 +1,46 @@
+<xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/task"
+            targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/task"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/base">
+
+   <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/base" schemaLocation="base.xsd" />
+
+   <xsd:simpleType name="task-state">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="SCHEDULED"/>
+         <xsd:enumeration value="IN_PROGRESS"/>
+         <xsd:enumeration value="SUCCESS"/>
+         <xsd:enumeration value="FAILED"/>
+         <xsd:enumeration value="CANCELED"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="abstract-task">
+      <xsd:complexContent>
+         <xsd:extension base="base:abstract-versioned-entity">
+            <xsd:sequence>
+               <xsd:element name="start-time" type="xsd:date"/>
+               <xsd:element name="end-time" type="xsd:date"/>
+               <xsd:element name="percentage" type="xsd:double"/>
+               <xsd:element name="task-state" type="task-state"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="stock-listing-task">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-task"/>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="stock-syncing-task">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-task">
+            <xsd:sequence>
+               <xsd:element name="listing-task" type="stock-listing-task"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+</xsd:schema>

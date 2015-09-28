@@ -120,7 +120,22 @@
       <!-- Project dependencies -->
       <dependency>
          <groupId>com.ambergarden.jewelry</groupId>
+         <artifactId>jewelry-provider-rest-stub</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.ambergarden.jewelry</groupId>
          <artifactId>jewelry-sina-provider</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.ambergarden.jewelry</groupId>
+         <artifactId>jewelry-rest-stub</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.ambergarden.jewelry</groupId>
+         <artifactId>jewelry-dal</artifactId>
          <version>${project.version}</version>
       </dependency>
    </dependencies>
