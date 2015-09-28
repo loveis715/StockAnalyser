@@ -7,4 +7,5 @@ import com.ambergarden.jewelry.orm.entity.task.StockSyncingTask;
 
 @Repository
 public interface StockSyncingTaskRepository extends CrudRepository<StockSyncingTask, Integer> {
+   StockSyncingTask findFirstByOrderByStartTimeDesc();
 }

@@ -21,6 +21,20 @@ public class StockSyncingTaskRepositoryTest {
    private StockSyncingTaskRepository syncingTaskRepository;
 
    @Test
+   public void testGetLastStockSyncingTask() {
+      syncingTaskRepository.deleteAll();
+
+      StockSyncingTask syncingTask = syncingTaskRepository.findFirstByOrderByStartTimeDesc();
+      Assert.assertNull(syncingTask);
+
+      syncingTask = createStockSyncingTask();
+      syncingTask = syncingTaskRepository.save(syncingTask);
+
+      syncingTask = syncingTaskRepository.findFirstByOrderByStartTimeDesc();
+      Assert.assertNotNull(syncingTask);
+   }
+
+   @Test
    public void testStockSyncingTaskExecution() {
       StockSyncingTask syncingTask = createStockSyncingTask();
       StockSyncingTask newSyncingTask = syncingTaskRepository.save(syncingTask);
