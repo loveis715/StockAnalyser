@@ -8,11 +8,10 @@ Ext.define('jewelry.Messages', {
         stock: '个股',
         management: '管理',
         knowledge: '知识',
-        shanghaiStockName: '上证综指',
-        shenzhenStockName: '深证成指',
-        stockCount: '股票数量',
+        stockSyncing: '股票同步',
+        stockCountShanghai: '股票数量（上证）',
+        stockCountShenzhen: '股票数量（深成）',
         lastSyncTime: '上次同步时间',
-        startSync: '开始同步',
-        endSync: '终止同步'
+        startSync: '开始同步'
     }
 });

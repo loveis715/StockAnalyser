@@ -6,9 +6,15 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
 
     xtype: 'jewelry.stockSyncingPanel',
     layout: 'vbox',
-
+    border: true,
+    bodyPadding: '9 9 9 9',
+    
     viewModel: {
         type: 'stockSynching'
+    },
+
+    defaults: {
+        labelWidth: 150
     },
 
     items: [{
@@ -19,38 +25,27 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
         // into layout calculation. So it does not participate in layout calculation
         // properly, and will always be 12px height. Use this padding to adjust layout
         padding: '10 0 0 0',
+        text: jewelry.Messages.labels.stockSyncing
+    }, {
+        xtype: 'displayfield',
+        fieldLabel: jewelry.Messages.labels.stockCountShanghai,
         bind: {
-            text: '{labelText}'
+            value: '{stockCountShanghai}'
         }
     }, {
         xtype: 'displayfield',
-        fieldLabel: jewelry.Messages.labels.stockCount,
+        fieldLabel: jewelry.Messages.labels.stockCountShenzhen,
         bind: {
-            value: '{stockCount}'
+            value: '{stockCountShenzhen}'
         }
     }, {
         xtype: 'displayfield',
         fieldLabel: jewelry.Messages.labels.lastSyncTime,
-        bind: {
-            value: '{lastSyncTime}'
-        }
     }, {
         xtype: 'button',
         text: jewelry.Messages.labels.startSync,
         bind: {
             visible: '{!isSyncing}'
-        }
-    }, {
-        xtype: 'label',
-        bind: {
-            text: '{syncingMsg}',
-            visible: '{isSyncing}'
-        }
-    }, {
-        xtype: 'button',
-        text: jewelry.Messages.labels.endSync,
-        bind: {
-            visible: '{isSyncing}'
         }
     }]
 });

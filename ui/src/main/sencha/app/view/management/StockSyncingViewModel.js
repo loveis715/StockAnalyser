@@ -4,21 +4,10 @@ Ext.define('jewelry.view.management.StockSyncingViewModel', {
     alias: 'viewmodel.stockSynching',
 
     data: {
-        stockCategory: '',
-        stockCount: 0,
+        stockCountShanghai: 0,
+        stockCountShenzhen: 0,
         lastSyncTime: '',
         isSyncing: false,
         syncingMsg: ''
-    },
-
-    formulas: {
-        labelText: function (get) {
-            var category = get('stockCategory');
-            if (category == jewelry.Constants.stockCategory.SHANGHAI) {
-                return jewelry.Messages.labels.shanghaiStockName;
-            } else if (category == jewelry.Constants.stockCategory.SHENZHEN) {
-                return jewelry.Messages.labels.shenzhenStockName;
-            }
-        }
     }
 });
