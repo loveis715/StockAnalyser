@@ -1,6 +1,8 @@
 package com.ambergarden.jewelry.orm.entity.stock;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import com.ambergarden.jewelry.orm.entity.AbstractVersionedEntity;
 
@@ -9,6 +11,9 @@ public class Stock extends AbstractVersionedEntity {
    private String name;
 
    private String code;
+
+   @Enumerated(EnumType.STRING)
+   private StockCategory stockCategory;
 
    public String getName() {
       return name;
@@ -24,5 +29,13 @@ public class Stock extends AbstractVersionedEntity {
 
    public void setCode(String code) {
       this.code = code;
+   }
+
+   public StockCategory getStockCategory() {
+      return stockCategory;
+   }
+
+   public void setStockCategory(StockCategory stockCategory) {
+      this.stockCategory = stockCategory;
    }
 }
