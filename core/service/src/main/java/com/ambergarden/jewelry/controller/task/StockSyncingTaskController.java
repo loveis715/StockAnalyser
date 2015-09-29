@@ -31,6 +31,6 @@ public class StockSyncingTaskController {
 
    @RequestMapping(method = RequestMethod.POST)
    public StockSyncingTask create(@RequestBody StockSyncingTask task) {
-      return syncingTaskService.create(task);
+      return syncingTaskService.save(task);
    }
 }

@@ -27,7 +27,7 @@ public class StockSyncingTaskService {
       return stockSyncingTaskConverter.convertFrom(syncingTask);
    }
 
-   public StockSyncingTask create(StockSyncingTask task) {
+   public StockSyncingTask save(StockSyncingTask task) {
       com.ambergarden.jewelry.orm.entity.task.StockSyncingTask syncingTask
          = stockSyncingTaskConverter.convertTo(task);
       syncingTask = stockSyncingTaskRepository.save(syncingTask);

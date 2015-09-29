@@ -8,4 +8,14 @@
          <xsd:element name="lock-version" type="xsd:int"/>
       </xsd:sequence>
    </xsd:complexType>
+
+   <xsd:complexType name="named-entity">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-versioned-entity">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
 </xsd:schema>
