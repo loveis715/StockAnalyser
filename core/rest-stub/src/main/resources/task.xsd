@@ -38,7 +38,8 @@
       <xsd:complexContent>
          <xsd:extension base="abstract-task">
             <xsd:sequence>
-               <xsd:element name="listing-task" type="stock-listing-task"/>
+               <xsd:element name="listing-task-for-shanghai" type="stock-listing-task"/>
+               <xsd:element name="listing-task-for-shenzhen" type="stock-listing-task"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>

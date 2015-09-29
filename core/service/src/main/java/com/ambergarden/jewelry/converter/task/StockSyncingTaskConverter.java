@@ -18,7 +18,8 @@ public class StockSyncingTaskConverter
          com.ambergarden.jewelry.orm.entity.task.StockSyncingTask mo) {
       StockSyncingTask syncingTask = new StockSyncingTask();
       super.convertFrom(mo, syncingTask);
-      syncingTask.setListingTask(listingConverter.convertFrom(mo.getListingTask()));
+      syncingTask.setListingTaskForShanghai(listingConverter.convertFrom(mo.getListingTaskForShanghai()));
+      syncingTask.setListingTaskForShenzhen(listingConverter.convertFrom(mo.getListingTaskForShenzhen()));
       return syncingTask;
    }
 
@@ -28,7 +29,8 @@ public class StockSyncingTaskConverter
       com.ambergarden.jewelry.orm.entity.task.StockSyncingTask syncingTask
          = new com.ambergarden.jewelry.orm.entity.task.StockSyncingTask();
       super.convertTo(dto, syncingTask);
-      syncingTask.setListingTask(listingConverter.convertTo(dto.getListingTask()));
+      syncingTask.setListingTaskForShanghai(listingConverter.convertTo(dto.getListingTaskForShanghai()));
+      syncingTask.setListingTaskForShenzhen(listingConverter.convertTo(dto.getListingTaskForShenzhen()));
       return syncingTask;
    }
 }

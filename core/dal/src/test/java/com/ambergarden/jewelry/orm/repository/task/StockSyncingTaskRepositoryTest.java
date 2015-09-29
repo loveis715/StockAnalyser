@@ -61,7 +61,7 @@ public class StockSyncingTaskRepositoryTest {
       syncingTask.setStartTime(new Date());
       syncingTask.setPercentage(0);
       syncingTask.setTaskState(TaskState.SCHEDULED);
-      syncingTask.setListingTask(listingTask);
+      syncingTask.setListingTaskForShenzhen(listingTask);
 
       return syncingTask;
    }
@@ -69,11 +69,11 @@ public class StockSyncingTaskRepositoryTest {
    private void verifyPendingSyncingTask(StockSyncingTask syncingTask, StockSyncingTask newSyncingTask) {
       Assert.assertEquals(syncingTask.getTaskState(), newSyncingTask.getTaskState());
       Assert.assertEquals(syncingTask.getPercentage(), newSyncingTask.getPercentage());
-      Assert.assertNotNull(newSyncingTask.getListingTask());
+      Assert.assertNotNull(newSyncingTask.getListingTaskForShenzhen());
       Assert.assertNotNull(newSyncingTask.getStartTime());
 
-      StockListingTask newListingTask = newSyncingTask.getListingTask();
-      StockListingTask listingTask = syncingTask.getListingTask();
+      StockListingTask newListingTask = newSyncingTask.getListingTaskForShenzhen();
+      StockListingTask listingTask = syncingTask.getListingTaskForShenzhen();
       Assert.assertEquals(listingTask.getTaskState(), newListingTask.getTaskState());
       Assert.assertEquals(listingTask.getPercentage(), newListingTask.getPercentage());
       Assert.assertNotNull(newListingTask.getStartTime());
@@ -82,12 +82,12 @@ public class StockSyncingTaskRepositoryTest {
    private void verifyCompletedSyncingTask(StockSyncingTask syncingTask, StockSyncingTask newSyncingTask) {
       Assert.assertEquals(syncingTask.getTaskState(), newSyncingTask.getTaskState());
       Assert.assertEquals(syncingTask.getPercentage(), newSyncingTask.getPercentage());
-      Assert.assertNotNull(newSyncingTask.getListingTask());
+      Assert.assertNotNull(newSyncingTask.getListingTaskForShenzhen());
       Assert.assertNotNull(newSyncingTask.getStartTime());
       Assert.assertNotNull(newSyncingTask.getEndTime());
 
-      StockListingTask newListingTask = newSyncingTask.getListingTask();
-      StockListingTask listingTask = syncingTask.getListingTask();
+      StockListingTask newListingTask = newSyncingTask.getListingTaskForShenzhen();
+      StockListingTask listingTask = syncingTask.getListingTaskForShenzhen();
       Assert.assertEquals(listingTask.getTaskState(), newListingTask.getTaskState());
       Assert.assertEquals(listingTask.getPercentage(), newListingTask.getPercentage());
       Assert.assertNotNull(newListingTask.getStartTime());
@@ -98,7 +98,7 @@ public class StockSyncingTaskRepositoryTest {
       syncingTask.setPercentage(0.5);
       syncingTask.setTaskState(TaskState.IN_PROGRESS);
 
-      StockListingTask listingTask = syncingTask.getListingTask();
+      StockListingTask listingTask = syncingTask.getListingTaskForShenzhen();
       listingTask.setPercentage(0.5);
       listingTask.setTaskState(TaskState.IN_PROGRESS);
    }
@@ -108,7 +108,7 @@ public class StockSyncingTaskRepositoryTest {
       syncingTask.setTaskState(TaskState.SUCCESS);
       syncingTask.setEndTime(new Date());
 
-      StockListingTask listingTask = syncingTask.getListingTask();
+      StockListingTask listingTask = syncingTask.getListingTaskForShenzhen();
       listingTask.setPercentage(1);
       listingTask.setTaskState(TaskState.SUCCESS);
       listingTask.setEndTime(new Date());

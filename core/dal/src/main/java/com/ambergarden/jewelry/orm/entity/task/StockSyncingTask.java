@@ -10,13 +10,25 @@ import javax.persistence.OneToOne;
 public class StockSyncingTask extends AbstractTask {
    @OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
    @JoinColumn(name="LISTING_TASK_ID")
-   private StockListingTask listingTask;
+   private StockListingTask listingTaskForShanghai;
 
-   public StockListingTask getListingTask() {
-      return this.listingTask;
+   @OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+   @JoinColumn(name="LISTING_TASK_ID")
+   private StockListingTask listingTaskForShenzhen;
+
+   public StockListingTask getListingTaskForShanghai() {
+      return this.listingTaskForShanghai;
    }
 
-   public void setListingTask(StockListingTask listingTask) {
-      this.listingTask = listingTask;
+   public void setListingTaskForShanghai(StockListingTask listingTaskForShanghai) {
+      this.listingTaskForShanghai = listingTaskForShanghai;
+   }
+
+   public StockListingTask getListingTaskForShenzhen() {
+      return this.listingTaskForShenzhen;
+   }
+
+   public void setListingTaskForShenzhen(StockListingTask listingTaskForShenzhen) {
+      this.listingTaskForShenzhen = listingTaskForShenzhen;
    }
 }
