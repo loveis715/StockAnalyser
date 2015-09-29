@@ -33,11 +33,12 @@ public class StockListProvider {
     */
    public List<Stock> listAllStocks(StockCategory category) {
       List<Stock> result = new ArrayList<Stock>();
+      HttpClient client = HttpClientBuilder.create().build();
 
       int pageNum = 1;
       boolean complete = false;
       while (!complete) {
-         String stockListString = retrieveStocks(pageNum, category);
+         String stockListString = retrieveStocks(client, pageNum, category);
          List<Stock> stockList = parseToDTO(stockListString);
          if (stockList != null && stockList.size() > 0) {
             result.addAll(stockList);
@@ -49,12 +50,13 @@ public class StockListProvider {
       return result;
    }
 
-   private String retrieveStocks(int pageNum, StockCategory category) {
-      HttpClient client = HttpClientBuilder.create().build();
+   private String retrieveStocks(HttpClient client, int pageNum, StockCategory category) {
       String url = constructRequestURL(pageNum, category);
       HttpResponse response = null;
+      HttpGet httpGet = null;
       try {
-         response = client.execute(new HttpGet(url));
+         httpGet = new HttpGet(url);
+         response = client.execute(httpGet);
       } catch (IOException e) {
          // TODO: Throw an exception when we have built the exception system
       }
@@ -76,6 +78,9 @@ public class StockListProvider {
       } catch (IOException e) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }
+
+      httpGet.releaseConnection();
+
       return result.toString();
    }
 
