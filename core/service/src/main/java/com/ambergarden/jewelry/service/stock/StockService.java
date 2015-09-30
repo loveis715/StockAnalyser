@@ -47,7 +47,9 @@ public class StockService {
       statistics.setStockCountSZ(stockRepository.countByStockCategory(StockCategory.SHENZHEN));
 
       StockSyncingTask lastSyncingTask = stockSyncingTaskRepository.findFirstByOrderByStartTimeDesc();
-      statistics.setLastSyncTime(lastSyncingTask.getEndTime());
+      if (lastSyncingTask != null) {
+         statistics.setLastSyncTime(lastSyncingTask.getEndTime());
+      }
       return statistics;
    }
 }
