@@ -16,6 +16,15 @@ Ext.define('jewelry.view.main.Main', {
         type: 'border'
     },
 
+    pageMapper: {
+        0: 'jewelry.view.front.FrontPage',
+        1: 'jewelry.view.unusual.UnusualPage',
+        2: 'jewelry.view.mystock.MyStockPage',
+        3: 'jewelry.view.stock.StockPage',
+        4: 'jewelry.view.management.ManagementPage',
+        5: 'jewelry.view.knowledge.KnowledgePage'
+    },
+
     initComponent: function() {
         var me = this;
         this.items = [{
@@ -32,7 +41,7 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 0,
+                cardIndex: '0',
                 scope: me,
                 handler: me.switchToCard
             }, {
@@ -42,7 +51,7 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 1,
+                cardIndex: '1',
                 scope: me,
                 handler: me.switchToCard
             }, {
@@ -52,7 +61,7 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 2,
+                cardIndex: '2',
                 scope: me,
                 handler: me.switchToCard
             }, {
@@ -62,7 +71,7 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 3,
+                cardIndex: '3',
                 scope: me,
                 handler: me.switchToCard
             }, {
@@ -72,7 +81,7 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 4,
+                cardIndex: '4',
                 scope: me,
                 handler: me.switchToCard
             }, {
@@ -82,39 +91,32 @@ Ext.define('jewelry.view.main.Main', {
                 height: 50,
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
-                cardIndex: 5,
+                cardIndex: '5',
                 scope: me,
                 handler: me.switchToCard
             }]
         }, {
             region: 'center',
             xtype: 'panel',
-            reference: 'cardPanel',
-            layout: 'card',
-            items: [{
-                xtype: 'jewelry.frontPage'
-            }, {
-                xtype: 'jewelry.unusualPage'
-            }, {
-                xtype: 'jewelry.myStockPage'
-            }, {
-                xtype: 'jewelry.stockPage'
-            }, {
-                xtype: 'jewelry.managementPage'
-            }, {
-                xtype: 'jewelry.knowledgePage'
-            }]
+            reference: 'borderPanel',
+            layout: 'border',
+            bodyStyle: 'background-color: white',
         }];
 
         this.callParent(arguments);
     },
 
     switchToCard: function(button) {
-        var cardPanel = this.lookupReference('cardPanel'),
-            layout = cardPanel.getLayout(),
-            activeItem = layout.getActiveItem();
-        if (activeItem.cardIndex != button.cardIndex) {
-            layout.setActiveItem(button.cardIndex);
-        }
+        var borderPanel = this.lookupReference('borderPanel');
+        borderPanel.removeAll();
+
+        var pageName = this.pageMapper[button.cardIndex];
+            page = Ext.create(pageName, {
+                width: '100%',
+                height: '100%',
+                region: 'center',
+                margin: '0 0 0 0'
+            });
+        borderPanel.add(page);
     }
 });

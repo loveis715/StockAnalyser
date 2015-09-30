@@ -1,8 +1,11 @@
 Ext.define('jewelry.view.management.StockSyncingPanel', {
     extend: 'Ext.panel.Panel',
     requires: [
-        'jewelry.view.management.StockSyncingViewModel'
+        'jewelry.view.management.StockSyncingViewModel',
+        'jewelry.view.management.StockSyncingPanelController'
     ],
+
+    controller: 'stockSyncingPanel',
 
     xtype: 'jewelry.stockSyncingPanel',
     layout: 'vbox',

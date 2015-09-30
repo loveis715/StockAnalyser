@@ -1,12 +1,10 @@
 Ext.define('jewelry.view.management.ManagementPage', {
     extend: 'Ext.panel.Panel',
     requires: [
-        'jewelry.view.management.StockSyncingPanel',
-        'morpho.view.management.ManagementPageController'
+        'jewelry.view.management.StockSyncingPanel'
     ],
 
     xtype: 'jewelry.managementPage',
-    controller: 'management',
     referenceHolder: true,
 
     layout: 'border',
