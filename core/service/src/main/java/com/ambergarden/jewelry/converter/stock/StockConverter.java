@@ -1,8 +1,11 @@
 package com.ambergarden.jewelry.converter.stock;
 
+import org.springframework.stereotype.Component;
+
 import com.ambergarden.jewelry.converter.base.AbstractEntityListConverter;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 
+@Component
 public class StockConverter
    extends AbstractEntityListConverter<com.ambergarden.jewelry.orm.entity.stock.Stock, Stock> {
 

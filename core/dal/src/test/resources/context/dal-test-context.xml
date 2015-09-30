@@ -31,8 +31,6 @@
 
     <util:list id="databaseScriptsList" value-type="org.springframework.core.io.Resource" />
 
-    <bean class="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory" />
-
     <bean id="stock_creation" class="com.ambergarden.jewelry.orm.DataInitializerBean"
           p:operation="INSERT" p:resource="classpath:/oob/stock_data.xml"/>
     <bean id="stock_removal" class="com.ambergarden.jewelry.orm.DataInitializerBean"

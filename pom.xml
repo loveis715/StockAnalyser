@@ -23,7 +23,7 @@
       <httpclient.version>4.5</httpclient.version>
       <junit.version>4.9</junit.version>
       <hibernate.version>4.3.7.Final</hibernate.version>
-      <hibernate.jpa.api.version>1.0.1.Final</hibernate.jpa.api.version>
+      <hibernate.jpa.api.version>1.0.0.Final</hibernate.jpa.api.version>
       <apache.version>3.3.2</apache.version>
       <commons.dbcp.version>1.4</commons.dbcp.version>
       <commons.io.version>2.4</commons.io.version>

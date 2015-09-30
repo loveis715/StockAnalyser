@@ -49,4 +49,7 @@
                   p:scripts-ref="databaseScriptsList" />
         </property>
     </bean>
+
+    <!-- TODO: This is improper bean which should not be included in -->
+    <bean class="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory" />
 </beans>
