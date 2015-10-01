@@ -44,6 +44,9 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
     }, {
         xtype: 'displayfield',
         fieldLabel: jewelry.Messages.labels.lastSyncTime,
+        bind: {
+            value: '{lastSyncTime}'
+        }
     }, {
         xtype: 'button',
         text: jewelry.Messages.labels.startSync,

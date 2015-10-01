@@ -14,6 +14,6 @@ Ext.define('jewelry.model.StockStatisticsModel', {
         type: 'number'
     }, {
         name: 'lastSyncTime',
-        type: 'string'
+        type: 'number'
     }]
 });

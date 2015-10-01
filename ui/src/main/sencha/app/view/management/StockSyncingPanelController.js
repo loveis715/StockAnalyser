@@ -22,7 +22,10 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
         var viewModel = this.getView().getViewModel();
         viewModel.set('stockCountShanghai', record.get('stockCountSH'));
         viewModel.set('stockCountShenzhen', record.get('stockCountSZ'));
-        viewModel.set('lastSyncTime', record.get('lastSyncTime'));
+        
+        var milliseconds = record.get('lastSyncTime'),
+            date = new Date(milliseconds);
+        viewModel.set('lastSyncTime', Ext.util.Format.date(date, 'm/d/Y h:iA'));
     },
 
     startSyncStocks: function() {
