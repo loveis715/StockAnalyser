@@ -47,6 +47,7 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
     }, {
         xtype: 'button',
         text: jewelry.Messages.labels.startSync,
+        handler: 'startSyncStocks',
         bind: {
             visible: '{!isSyncing}'
         }
