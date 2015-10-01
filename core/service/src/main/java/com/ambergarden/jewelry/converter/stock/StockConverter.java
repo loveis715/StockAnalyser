@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.converter.stock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.converter.base.AbstractEntityListConverter;
@@ -8,6 +9,8 @@ import com.ambergarden.jewelry.schema.beans.stock.Stock;
 @Component
 public class StockConverter
    extends AbstractEntityListConverter<com.ambergarden.jewelry.orm.entity.stock.Stock, Stock> {
+   @Autowired
+   private StockCategoryConverter categoryConverter;
 
    @Override
    public Stock convertFrom(com.ambergarden.jewelry.orm.entity.stock.Stock mo) {
@@ -16,6 +19,7 @@ public class StockConverter
       stock.setLockVersion(mo.getLockVersion());
       stock.setName(mo.getName());
       stock.setCode(mo.getCode());
+      stock.setStockCategory(categoryConverter.convertFrom(mo.getStockCategory()));
       return stock;
    }
 
@@ -27,6 +31,7 @@ public class StockConverter
       stock.setLockVersion(dto.getLockVersion());
       stock.setName(dto.getName());
       stock.setCode(dto.getCode());
+      stock.setStockCategory(categoryConverter.convertTo(dto.getStockCategory()));
       return stock;
    }
 }

@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.executor;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,54 +55,97 @@ public class StockSyncingTaskExecutor implements Runnable {
          return;
       }
 
-      // 1. Construct map for all existing stocks
+      try {
+         syncingTask.setTaskState(TaskState.IN_PROGRESS);
+         syncingTask = syncingTaskService.update(syncingTask);
+
+         Map<String, Stock> stockMap = getAllExistingStocks();
+         syncingTask = refreshStocksForShanghai(syncingTask, stockMap);
+         syncingTask = refreshStocksForShenzhen(syncingTask, stockMap);
+      } catch (RuntimeException ex) {
+         syncingTask = syncingTaskService.findLast();
+         syncingTask.setTaskState(TaskState.FAILED);
+         syncingTask.setEndTime(new Date());
+         syncingTaskService.update(syncingTask);
+         throw ex;
+      } finally {
+         state = State.IDLE;
+      }
+   }
+
+   private Map<String, Stock> getAllExistingStocks() {
       List<Stock> stocks = stockService.findAll();
       Map<String, Stock> stockMap = new HashMap<String, Stock>();
       for (Stock stock : stocks) {
-         String code = stock.getCode();
+         String code = stock.getName();
          stockMap.put(code, stock);
       }
+      return stockMap;
+   }
 
-      // 2. Retrieve all stocks for Shanghai and update stock information if required
+   private StockSyncingTask refreshStocksForShanghai(StockSyncingTask syncingTask, Map<String, Stock> stockMap) {
+      StockListingTask listingTask = syncingTask.getListingTaskForShanghai();
+      listingTask.setStartTime(new Date());
+
       List<com.ambergarden.jewelry.schema.beans.provider.stock.Stock> providerStocks
          = stockListProvider.listAllStocks(StockCategory.SHANGHAI);
       for (com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock : providerStocks) {
          Stock stock = stockMap.get(providerStock.getName());
-         if (needUpdate(stock, providerStock)) {
-            fillStock(stock, providerStock);
+         if (stock == null) {
+            createStock(providerStock, com.ambergarden.jewelry.schema.beans.stock.StockCategory.SHANGHAI);
+         } else if (stock != null && needUpdate(stock, providerStock)) {
+            updateStock(stock, providerStock);
          }
       }
 
-      // 3. Set sub task "Shanghai stock listing" to success and mark total
-      // progress to 50%
       syncingTask.setPercentage(0.5);
-      StockListingTask listingTask = syncingTask.getListingTaskForShanghai();
+      listingTask.setPercentage(1);
+      listingTask.setEndTime(new Date());
       listingTask.setTaskState(TaskState.SUCCESS);
-      syncingTaskService.save(syncingTask);
+      return syncingTaskService.update(syncingTask);
+   }
 
-      // 4. Retrieve all stocks for Shenzhen and update stock information if required
-      providerStocks = stockListProvider.listAllStocks(StockCategory.SHENZHEN);
+   private StockSyncingTask refreshStocksForShenzhen(StockSyncingTask syncingTask, Map<String, Stock> stockMap) {
+      StockListingTask listingTask = syncingTask.getListingTaskForShenzhen();
+      listingTask.setStartTime(new Date());
+
+      List<com.ambergarden.jewelry.schema.beans.provider.stock.Stock> providerStocks
+         = stockListProvider.listAllStocks(StockCategory.SHENZHEN);
       for (com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock : providerStocks) {
          Stock stock = stockMap.get(providerStock.getName());
-         if (needUpdate(stock, providerStock)) {
-            fillStock(stock, providerStock);
+         if (stock == null) {
+            createStock(providerStock, com.ambergarden.jewelry.schema.beans.stock.StockCategory.SHENZHEN);
+         } else if (stock != null && needUpdate(stock, providerStock)) {
+            updateStock(stock, providerStock);
          }
       }
 
-      // 5. Set sub task "Shenzhen stock listing" to success and mark the syncing
-      // task as complete
+      listingTask.setPercentage(1);
+      listingTask.setTaskState(TaskState.SUCCESS);
+      listingTask.setEndTime(new Date());
       syncingTask.setPercentage(1);
       syncingTask.setTaskState(TaskState.SUCCESS);
-      listingTask = syncingTask.getListingTaskForShenzhen();
-      listingTask.setTaskState(TaskState.SUCCESS);
-      syncingTaskService.save(syncingTask);
+      syncingTask.setEndTime(new Date());
+      return syncingTaskService.update(syncingTask);
    }
 
    private boolean needUpdate(Stock stock, com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock) {
       return !stock.getName().equals(providerStock.getName());
    }
 
-   private void fillStock(Stock stock, com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock) {
+   private void createStock(com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock,
+         com.ambergarden.jewelry.schema.beans.stock.StockCategory category) {
+      com.ambergarden.jewelry.schema.beans.stock.Stock stockBean
+         = new com.ambergarden.jewelry.schema.beans.stock.Stock();
+      stockBean.setId(-1);
+      stockBean.setCode(providerStock.getCode());
+      stockBean.setName(providerStock.getName());
+      stockBean.setStockCategory(category);
+      stockService.create(stockBean);
+   }
+
+   private void updateStock(Stock stock, com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock) {
       stock.setName(providerStock.getName());
+      stockService.update(stock.getId(), stock);
    }
 }

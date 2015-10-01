@@ -34,7 +34,14 @@ public class StockService {
       return stockConverter.convertFrom(stockMO);
    }
 
-   public Stock save(Stock stock) {
+   public Stock create(Stock stock) {
+      com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
+         = stockConverter.convertTo(stock);
+      stockMO = stockRepository.save(stockMO);
+      return stockConverter.convertFrom(stockMO);
+   }
+
+   public Stock update(int stockId, Stock stock) {
       com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
          = stockConverter.convertTo(stock);
       stockMO = stockRepository.save(stockMO);
