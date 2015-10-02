@@ -21,4 +21,14 @@
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
+
+   <xsd:complexType name="trading-info">
+      <xsd:sequence>
+         <xsd:element name="open" type="xsd:double"/>
+         <xsd:element name="close" type="xsd:double"/>
+         <xsd:element name="high" type="xsd:double"/>
+         <xsd:element name="low" type="xsd:double"/>
+         <xsd:element name="volume" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
 </xsd:schema>
