@@ -1,11 +1,12 @@
-Ext.define('jewelry.model.StockSyncingTaskModel', {
+Ext.define('jewelry.model.LastStockSyncingTaskModel', {
     extend: 'Ext.data.Model',
     requires: [
-        'jewelry.proxy.StockSyncingTaskProxy'
+        'jewelry.proxy.LastStockSyncingTaskProxy'
     ],
 
-    proxy: Ext.create('jewelry.proxy.StockSyncingTaskProxy'),
+    proxy: Ext.create('jewelry.proxy.LastStockSyncingTaskProxy'),
 
+    idProperty: 'fakeId',
     fields: [{
         name: 'taskState',
         type: 'string'

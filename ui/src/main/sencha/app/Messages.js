@@ -13,5 +13,9 @@ Ext.define('jewelry.Messages', {
         stockCountShenzhen: '股票数量（深成）',
         lastSyncTime: '上次同步时间',
         startSync: '开始同步'
+    },
+    messages: {
+        sycingTaskForShanghai: '正在同步上证股票列表...',
+        sycingTaskForShenzhen: '正在同步深成股票列表...'
     }
 });

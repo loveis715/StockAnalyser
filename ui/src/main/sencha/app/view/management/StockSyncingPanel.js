@@ -11,7 +11,8 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
     layout: 'vbox',
     border: true,
     bodyPadding: '9 9 9 9',
-    
+    referenceHolder: true,
+
     viewModel: {
         type: 'stockSynching'
     },
@@ -52,7 +53,13 @@ Ext.define('jewelry.view.management.StockSyncingPanel', {
         text: jewelry.Messages.labels.startSync,
         handler: 'startSyncStocks',
         bind: {
-            visible: '{!isSyncing}'
+            disabled: '{isSyncing}'
+        }
+    }, {
+        xtype: 'label',
+        margin: '6 0 0 0',
+        bind: {
+            text: '{syncingMsg}'
         }
     }]
 });
