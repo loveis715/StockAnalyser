@@ -12,4 +12,8 @@ public class Constants {
    public final static String FIND_BY_ID_URL = ID_URL;
    public final static String FIND_LAST_URL = "last";
    public final static String STATISTICS = "/statistics";
+
+   // Special stock codes
+   public final static String CODE_SH = "sh000001";
+   public final static String CODE_SZ = "sz399001";
 }
