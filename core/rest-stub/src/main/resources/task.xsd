@@ -44,4 +44,14 @@
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
+
+   <xsd:complexType name="full-day-scan-task">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-task">
+            <xsd:sequence>
+               <xsd:element name="scanning-stock-name" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
 </xsd:schema>
