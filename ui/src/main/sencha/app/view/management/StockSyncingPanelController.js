@@ -29,7 +29,9 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
 
                     var runner = new Ext.util.TaskRunner();
                     runner.start({
-                        run: me.populateStockStatistics,
+                        run: me.populateSyncingTaskState,
+                        scope: me,
+                        args: [record.get('id')],
                         interval: '1000',
                         repeat: false
                     });
@@ -42,10 +44,12 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
         var viewModel = this.getView().getViewModel();
         viewModel.set('stockCountShanghai', record.get('stockCountSH'));
         viewModel.set('stockCountShenzhen', record.get('stockCountSZ'));
-        
-        var milliseconds = record.get('lastSyncTime'),
-            date = new Date(milliseconds);
-        viewModel.set('lastSyncTime', Ext.util.Format.date(date, 'm/d/Y h:iA'));
+
+        var milliseconds = record.get('lastSyncTime');
+        if (milliseconds > 0) {
+            var date = new Date(milliseconds);
+            viewModel.set('lastSyncTime', Ext.util.Format.date(date, 'm/d/Y h:iA'));
+        }
     },
 
     startSyncStocks: function() {
@@ -98,7 +102,14 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
                 viewModel.set('syncingMsg', jewelry.Messages.messages.sycingTaskForShenzhen);
             }
         } else {
+            var me = this;
             viewModel.set('syncingMsg', '');
+            jewelry.model.StockStatisticsModel.load(1, {
+                scope: me,
+                success: function(record, operation) {
+                    me.populateStockStatistics(record);
+                }
+            });
         }
     }
 });
