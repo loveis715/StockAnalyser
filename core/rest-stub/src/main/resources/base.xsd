@@ -2,11 +2,20 @@
             targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/base"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-   <xsd:complexType name="abstract-versioned-entity">
+   <xsd:complexType name="abstract-entity">
       <xsd:sequence>
          <xsd:element name="id" type="xsd:int"/>
-         <xsd:element name="lock-version" type="xsd:int"/>
       </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name="abstract-versioned-entity">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-entity">
+            <xsd:sequence>
+               <xsd:element name="lock-version" type="xsd:int"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
    </xsd:complexType>
 
    <xsd:complexType name="named-entity">

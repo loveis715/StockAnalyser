@@ -10,8 +10,12 @@ import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
 import com.ambergarden.jewelry.executor.analysis.MarketTradingInfoHolder;
 import com.ambergarden.jewelry.executor.analysis.StockAnalyser;
+import com.ambergarden.jewelry.executor.tag.Tag;
+import com.ambergarden.jewelry.executor.tag.TagConverter;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
+import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
+import com.ambergarden.jewelry.schema.beans.task.FullDayScanResult;
 import com.ambergarden.jewelry.schema.beans.task.FullDayScanTask;
 import com.ambergarden.jewelry.schema.beans.task.TaskState;
 import com.ambergarden.jewelry.service.stock.StockService;
@@ -32,6 +36,9 @@ public class FullDayScanTaskExecutor implements Runnable {
 
    @Autowired
    private StockAnalyser stockAnalyser;
+
+   @Autowired
+   private TagConverter tagConverter;
 
    private State state;
 
@@ -55,14 +62,39 @@ public class FullDayScanTaskExecutor implements Runnable {
          return;
       }
 
-      MarketTradingInfoHolder marketInfoHolder = prepareFullDayScanInfoHolder();
-      for (Stock pendingStock : marketInfoHolder.getPendingStocks()) {
-         stockAnalyser.analysis(pendingStock);
-      }
+      try {
+         MarketTradingInfoHolder marketInfoHolder = prepareFullDayScanInfoHolder();
+         for (Stock pendingStock : marketInfoHolder.getPendingStocks()) {
+            // TODO: During each analysis, use a try catch to add a log, and then
+            // we can continue with other stocks
+            List<Tag> tags = null;
+            if (pendingStock.getStockCategory() == StockCategory.SHANGHAI) {
+               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingInfoSH());
+            } else {
+               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingInfoSZ());
+            }
 
-      fullDayScanTask.setTaskState(TaskState.SUCCESS);
-      fullDayScanTask.setEndTime(new Date());
-      fullDayScanTaskService.update(fullDayScanTask);
+            if (tags.size() != 0) {
+               FullDayScanResult result = new FullDayScanResult();
+               result.setStock(pendingStock);
+               result.setTags(tagConverter.convertFrom(tags));
+               fullDayScanTask.getResults().add(result);
+            }
+         }
+
+         fullDayScanTask.setTaskState(TaskState.SUCCESS);
+         fullDayScanTask.setEndTime(new Date());
+         fullDayScanTaskService.update(fullDayScanTask);
+      } catch (RuntimeException ex) {
+         fullDayScanTask = fullDayScanTaskService.findLast();
+         fullDayScanTask.setTaskState(TaskState.FAILED);
+         fullDayScanTask.setEndTime(new Date());
+         fullDayScanTaskService.update(fullDayScanTask);
+
+         throw ex;
+      } finally {
+         state = State.IDLE;
+      }
    }
 
    private MarketTradingInfoHolder prepareFullDayScanInfoHolder() {

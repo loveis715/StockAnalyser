@@ -24,6 +24,7 @@
 
    <xsd:complexType name="trading-info">
       <xsd:sequence>
+         <xsd:element name="day" type="xsd:string"/>
          <xsd:element name="open" type="xsd:double"/>
          <xsd:element name="close" type="xsd:double"/>
          <xsd:element name="high" type="xsd:double"/>

@@ -1,9 +1,11 @@
 <xsd:schema xmlns="http://www.ambergarden.com/jewelry/schema/beans/task"
             targetNamespace="http://www.ambergarden.com/jewelry/schema/beans/task"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/base">
+            xmlns:base="http://www.ambergarden.com/jewelry/schema/beans/base"
+            xmlns:stock="http://www.ambergarden.com/jewelry/schema/beans/stock">
 
    <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/base" schemaLocation="base.xsd" />
+   <xsd:import namespace="http://www.ambergarden.com/jewelry/schema/beans/stock" schemaLocation="stock.xsd" />
 
    <xsd:simpleType name="task-state">
       <xsd:restriction base="xsd:string">
@@ -45,11 +47,23 @@
       </xsd:complexContent>
    </xsd:complexType>
 
+   <xsd:complexType name="full-day-scan-result">
+      <xsd:complexContent>
+         <xsd:extension base="base:abstract-entity">
+            <xsd:sequence>
+               <xsd:element name="stock" type="stock:stock"/>
+               <xsd:element name="tags" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
    <xsd:complexType name="full-day-scan-task">
       <xsd:complexContent>
          <xsd:extension base="abstract-task">
             <xsd:sequence>
                <xsd:element name="scanning-stock-name" type="xsd:string"/>
+               <xsd:element name="results" type="full-day-scan-result" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>

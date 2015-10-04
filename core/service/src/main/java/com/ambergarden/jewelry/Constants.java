@@ -13,6 +13,10 @@ public class Constants {
    public final static String FIND_LAST_URL = "last";
    public final static String STATISTICS = "/statistics";
 
+   // Stock code prefix
+   public final static String PREFIX_SH = "sh";
+   public final static String PREFIX_SZ = "sz";
+
    // Special stock codes
    public final static String CODE_SH = "sh000001";
    public final static String CODE_SZ = "sz399001";
