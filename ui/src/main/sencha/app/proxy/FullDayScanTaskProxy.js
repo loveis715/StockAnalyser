@@ -5,8 +5,7 @@ Ext.define('jewelry.proxy.FullDayScanTaskProxy', {
     url: 'http://localhost:8080/jewelry-service/api/full_day_scan_tasks',
     format: 'json',
     reader: {
-        type: 'json',
-        rootProperty: 'fullDayScanTask'
+        type: 'json'
     },
     writer: {
         type: 'json',

@@ -9,8 +9,7 @@ Ext.define('jewelry.proxy.LastFullDayScanTaskProxy', {
     appendId: false,
     format: 'json',
     reader: {
-        type: 'json',
-        rootProperty: 'fullDayScanTask'
+        type: 'json'
     },
     writer: {
         type: 'json',

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ambergarden.jewelry.schema.beans.task.FullDayScanTask;
 import com.ambergarden.jewelry.service.task.FullDayScanTaskService;
@@ -23,21 +24,25 @@ public class FullDayScanTaskController {
    private FullDayScanTaskService fullDayScanTaskService;
 
    @RequestMapping(method = RequestMethod.GET)
+   @ResponseBody
    public List<FullDayScanTask> list() {
       return fullDayScanTaskService.list();
    }
 
    @RequestMapping(value = FIND_BY_ID_URL, method = RequestMethod.GET)
+   @ResponseBody
    public FullDayScanTask findById(@PathVariable(ID_PATH_VARIABLE) int id) {
       return fullDayScanTaskService.findById(id);
    }
 
    @RequestMapping(method = RequestMethod.POST)
+   @ResponseBody
    public FullDayScanTask create() {
       return fullDayScanTaskService.create();
    }
 
    @RequestMapping(value = FIND_LAST_URL, method = RequestMethod.GET)
+   @ResponseBody
    public FullDayScanTask getLast() {
       return fullDayScanTaskService.findLast();
    }

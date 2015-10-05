@@ -6,8 +6,7 @@ Ext.define('jewelry.proxy.StockStatisticsProxy', {
     appendId: false,
     format: 'json',
     reader: {
-        type: 'json',
-        rootProperty: 'stockStatistics'
+        type: 'json'
     },
     writer: {
         type: 'json',

@@ -9,8 +9,7 @@ Ext.define('jewelry.proxy.LastStockSyncingTaskProxy', {
     appendId: false,
     format: 'json',
     reader: {
-        type: 'json',
-        rootProperty: 'stockSyncingTask'
+        type: 'json'
     },
     writer: {
         type: 'json',

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ambergarden.jewelry.schema.beans.task.StockSyncingTask;
 import com.ambergarden.jewelry.service.task.StockSyncingTaskService;
@@ -21,16 +22,19 @@ public class StockSyncingTaskController {
    private StockSyncingTaskService syncingTaskService;
 
    @RequestMapping(value = FIND_BY_ID_URL, method = RequestMethod.GET)
+   @ResponseBody
    public StockSyncingTask findById(@PathVariable(ID_PATH_VARIABLE) int id) {
       return syncingTaskService.findById(id);
    }
 
    @RequestMapping(value = FIND_LAST_URL, method = RequestMethod.GET)
+   @ResponseBody
    public StockSyncingTask findLast() {
       return syncingTaskService.findLast();
    }
 
    @RequestMapping(method = RequestMethod.POST)
+   @ResponseBody
    public StockSyncingTask create() {
       return syncingTaskService.create();
    }
