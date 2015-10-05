@@ -14,10 +14,10 @@ Ext.define('jewelry.model.StockSyncingTaskModel', {
         type: 'number'
     }, {
         name: 'startTime',
-        type: 'date'
+        type: 'number'
     }, {
         name: 'endTime',
-        type: 'date'
+        type: 'number'
     }, {
         name: 'listingTaskForShanghai'
     }, {

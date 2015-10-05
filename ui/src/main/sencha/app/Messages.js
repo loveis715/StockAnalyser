@@ -16,7 +16,13 @@ Ext.define('jewelry.Messages', {
         startSync: '开始同步',
         fullDayScan: '整日交易扫描',
         lastScanTime: '上次扫描时间',
-        startScan: '开始扫描'
+        startScan: '开始扫描',
+        selectDate: '选择日期'
+    },
+    headers: {
+        stockName: '股票名称',
+        stockCode: '股票代码',
+        unusualCases: '异常'
     },
     messages: {
         sycingTaskForShanghai: '正在同步上证股票列表...',
