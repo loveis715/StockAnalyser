@@ -1,6 +1,7 @@
 package com.ambergarden.jewelry.service.task;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -25,6 +26,12 @@ public class FullDayScanTaskService {
 
    @Autowired
    private FullDayScanTaskConverter fullDayScanTaskConverter;
+
+   public List<FullDayScanTask> list() {
+      Iterable<com.ambergarden.jewelry.orm.entity.task.FullDayScanTask> fullDayScanTasks
+         = fullDayScanTaskRepository.findAll();
+      return fullDayScanTaskConverter.convertListFrom(fullDayScanTasks);
+   }
 
    public FullDayScanTask findById(int id) {
       com.ambergarden.jewelry.orm.entity.task.FullDayScanTask fullDayScanTask

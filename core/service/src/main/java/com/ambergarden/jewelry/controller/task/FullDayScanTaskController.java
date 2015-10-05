@@ -5,6 +5,8 @@ import static com.ambergarden.jewelry.Constants.FIND_LAST_URL;
 import static com.ambergarden.jewelry.Constants.FULL_DAY_SCAN_TASKS_URL;
 import static com.ambergarden.jewelry.Constants.ID_PATH_VARIABLE;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,11 @@ import com.ambergarden.jewelry.service.task.FullDayScanTaskService;
 public class FullDayScanTaskController {
    @Autowired
    private FullDayScanTaskService fullDayScanTaskService;
+
+   @RequestMapping(method = RequestMethod.GET)
+   public List<FullDayScanTask> list() {
+      return fullDayScanTaskService.list();
+   }
 
    @RequestMapping(value = FIND_BY_ID_URL, method = RequestMethod.GET)
    public FullDayScanTask findById(@PathVariable(ID_PATH_VARIABLE) int id) {
