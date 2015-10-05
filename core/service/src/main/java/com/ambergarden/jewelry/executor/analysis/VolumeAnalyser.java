@@ -37,8 +37,7 @@ public class VolumeAnalyser {
          return new ArrayList<Tag>();
       }
 
-      double baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo);
-      return analyzeVolume(baseVolume, tradingInfoList);
+      return analyzeVolumeForThreeDays(tradingInfoList, marketTradingInfo);
    }
 
    private List<TradingInfo> retrieveTradingInfo(Stock stock) {
@@ -50,8 +49,8 @@ public class VolumeAnalyser {
    private boolean isValidForAnalysing(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
       Map<String, TradingInfo> tradingInfoMap = constructTradingInfoMap(marketTradingInfo);
       List<TradingInfo> validTradingInfoList = getValidTradingInfoList(tradingInfoList, tradingInfoMap);
-      if (validTradingInfoList.size() <= 3) {
-         // Has not start trading yet
+      if (validTradingInfoList.size() <= 5) {
+         // Too little trading info
          return false;
       }
 
@@ -64,24 +63,107 @@ public class VolumeAnalyser {
       return true;
    }
 
-   private List<Tag> analyzeVolume(double baseVolume, List<TradingInfo> tradingInfoList) {
-      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+   private List<Tag> analyzeVolumeForThreeDays(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
+      double continousValue = 0;
+      int continousStreak = 0;
+
+      // Day 1
+      double baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 2);
+      TradingInfo targetTrading = tradingInfoList.get(tradingInfoList.size() - 3);
+      double relativeVolume = targetTrading.getVolume() / baseVolume;
+      if (relativeVolume > 1.3) {
+         boolean found = false;
+         List<Tag> tags = analyzeVolume(baseVolume, tradingInfoList, 2);
+         for (Tag tag : tags) {
+            if (Tags.VolumeIncrementTag.instanceOf(tag)) {
+               continousValue = ((Tags.VolumeIncrementTag)tag).getValue();
+               continousStreak++;
+               found = true;
+               break;
+            }
+
+            if (!found) {
+               baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 1);
+            }
+         }
+      } else {
+         baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 1);
+      }
+
+      // Day 2
+      targetTrading = tradingInfoList.get(tradingInfoList.size() - 2);
+      relativeVolume = targetTrading.getVolume() / baseVolume;
+      if (relativeVolume > 1.3) {
+         boolean found = false;
+         List<Tag> tags = analyzeVolume(baseVolume, tradingInfoList, 1);
+         for (Tag tag : tags) {
+            if (Tags.VolumeIncrementTag.instanceOf(tag)) {
+               continousValue += ((Tags.VolumeIncrementTag)tag).getValue();
+               found = true;
+               continousStreak++;
+               break;
+            }
+
+            if (!found) {
+               continousStreak = 0;
+               continousValue = 0;
+               baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 0);
+            }
+         }
+      } else {
+         continousStreak = 0;
+         continousValue = 0;
+         baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 0);
+      }
+
+      // Day 3
+      targetTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      relativeVolume = targetTrading.getVolume() / baseVolume;
+      if (relativeVolume > 1.3) {
+         boolean found = false;
+         List<Tag> tags = analyzeVolume(baseVolume, tradingInfoList, 0);
+         for (Tag tag : tags) {
+            if (Tags.VolumeIncrementTag.instanceOf(tag)) {
+               continousValue += ((Tags.VolumeIncrementTag)tag).getValue();
+               found = true;
+               break;
+            }
+
+            if (!found) {
+               return new ArrayList<Tag>();
+            }
+         }
+      } else {
+         return new ArrayList<Tag>();
+      }
+
+      List<Tag> result = new ArrayList<Tag>();
+      if (continousStreak > 0) {
+         result.add(new Tags.ContinousVolumeIncrementTag(continousValue));
+      } else {
+         result.add(new Tags.VolumeIncrementTag(continousValue));
+      }
+      return result;
+   }
+
+   private List<Tag> analyzeVolume(double baseVolume, List<TradingInfo> tradingInfoList, int offset) {
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1 - offset);
       double relativeVolume = lastTrading.getVolume() / baseVolume;
       if (relativeVolume > 1.3) {
-         return analyzeIncrementalVolume(relativeVolume, tradingInfoList);
+         return analyzeIncrementalVolume(relativeVolume, tradingInfoList, offset);
       } else if (relativeVolume < 0.7) {
-         return analyzeDecrementalVolume(relativeVolume, tradingInfoList);
+         return analyzeDecrementalVolume(relativeVolume, tradingInfoList, offset);
       } else {
          // The stock is in normal trading state
          return new ArrayList<Tag>();
       }
    }
 
-   private List<Tag> analyzeIncrementalVolume(double relativeVolume, List<TradingInfo> tradingInfoList) {
+   private List<Tag> analyzeIncrementalVolume(double relativeVolume, List<TradingInfo> tradingInfoList, int offset) {
       List<Tag> result = new ArrayList<Tag>();
       List<EnhancedTradingInfo> tradingInfos = convertToEnhancedTradingInfo(tradingInfoList);
-      EnhancedTradingInfo prevTradingInfo = tradingInfos.get(tradingInfoList.size() - 2);
-      EnhancedTradingInfo lastTradingInfo = tradingInfos.get(tradingInfoList.size() - 1);
+      EnhancedTradingInfo prevTradingInfo = tradingInfos.get(tradingInfoList.size() - 2 - offset);
+      EnhancedTradingInfo lastTradingInfo = tradingInfos.get(tradingInfoList.size() - 1 - offset);
       if (prevTradingInfo.getPriceChange() > 0.095) {
          // Nearly no trade and reaches upper limit in previous day
       } else if (prevTradingInfo.getPriceChange() < -0.095) {
@@ -90,14 +172,13 @@ public class VolumeAnalyser {
          // Decrement with increased volume. Avoid from it
          result.add(new Tags.DownWithVolumeIncrementTag());
       } else {
-         // TODO: Deal with continous incremental
          // Volume increase with normal price. Need evaluate it
          result.add(calculateVolumeIncrementalTag(relativeVolume));
       }
       return result;
    }
 
-   private List<Tag> analyzeDecrementalVolume(double relativeVolume, List<TradingInfo> tradingInfoList) {
+   private List<Tag> analyzeDecrementalVolume(double relativeVolume, List<TradingInfo> tradingInfoList, int offset) {
       // TODO: Complete this logic
       return new ArrayList<Tag>();
    }
@@ -115,12 +196,13 @@ public class VolumeAnalyser {
       return new Tags.VolumeIncrementTag(value);
    }
 
-   private double getBaseVolume(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
+   private double getBaseVolume(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo, int offset) {
       // Get corresponding tradings for each valid trading date
       Map<String, TradingInfo> tradingInfoMap = constructTradingInfoMap(marketTradingInfo);
       List<TradingInfo> marketTradings = new ArrayList<TradingInfo>();
       List<TradingInfo> validTradingInfoList = new ArrayList<TradingInfo>();
-      for (TradingInfo tradingInfo : tradingInfoList) {
+      for (int index = 0; index < tradingInfoList.size() - offset; index++) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
          TradingInfo marketInfo = tradingInfoMap.get(tradingInfo.getDay());
          if (marketInfo != null) {
             marketTradings.add(marketInfo);
