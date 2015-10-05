@@ -12,6 +12,8 @@ public class Stock extends AbstractVersionedEntity {
 
    private String code;
 
+   private long totalVolume;
+
    @Enumerated(EnumType.STRING)
    private StockCategory stockCategory;
 
@@ -29,6 +31,14 @@ public class Stock extends AbstractVersionedEntity {
 
    public void setCode(String code) {
       this.code = code;
+   }
+
+   public long getTotalVolume() {
+      return totalVolume;
+   }
+
+   public void setTotalVolume(long totalVolume) {
+      this.totalVolume = totalVolume;
    }
 
    public StockCategory getStockCategory() {

@@ -93,7 +93,7 @@ public class StockSyncingTaskExecutor implements Runnable {
          Stock stock = stockMap.get(providerStock.getName());
          if (stock == null) {
             createStock(providerStock, com.ambergarden.jewelry.schema.beans.stock.StockCategory.SHANGHAI);
-         } else if (stock != null && needUpdate(stock, providerStock)) {
+         } else if (stock != null) {
             updateStock(stock, providerStock);
          }
       }
@@ -115,7 +115,7 @@ public class StockSyncingTaskExecutor implements Runnable {
          Stock stock = stockMap.get(providerStock.getName());
          if (stock == null) {
             createStock(providerStock, com.ambergarden.jewelry.schema.beans.stock.StockCategory.SHENZHEN);
-         } else if (stock != null && needUpdate(stock, providerStock)) {
+         } else if (stock != null) {
             updateStock(stock, providerStock);
          }
       }
@@ -129,10 +129,6 @@ public class StockSyncingTaskExecutor implements Runnable {
       return syncingTaskService.update(syncingTask);
    }
 
-   private boolean needUpdate(Stock stock, com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock) {
-      return !stock.getName().equals(providerStock.getName());
-   }
-
    private void createStock(com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock,
          com.ambergarden.jewelry.schema.beans.stock.StockCategory category) {
       com.ambergarden.jewelry.schema.beans.stock.Stock stockBean
@@ -141,11 +137,15 @@ public class StockSyncingTaskExecutor implements Runnable {
       stockBean.setCode(providerStock.getCode());
       stockBean.setName(providerStock.getName());
       stockBean.setStockCategory(category);
+      long totalVolume = (long)(providerStock.getVolume() / providerStock.getTurnoverratio() * 100);
+      stockBean.setTotalVolume(totalVolume);
       stockService.create(stockBean);
    }
 
    private void updateStock(Stock stock, com.ambergarden.jewelry.schema.beans.provider.stock.Stock providerStock) {
+      long totalVolume = (long)(providerStock.getVolume() / providerStock.getTurnoverratio() * 100);
       stock.setName(providerStock.getName());
+      stock.setTotalVolume(totalVolume);
       stockService.update(stock.getId(), stock);
    }
 }

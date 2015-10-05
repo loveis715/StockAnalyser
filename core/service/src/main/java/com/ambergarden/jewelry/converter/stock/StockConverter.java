@@ -19,6 +19,7 @@ public class StockConverter
       stock.setLockVersion(mo.getLockVersion());
       stock.setName(mo.getName());
       stock.setCode(mo.getCode());
+      stock.setTotalVolume(mo.getTotalVolume());
       stock.setStockCategory(categoryConverter.convertFrom(mo.getStockCategory()));
       return stock;
    }
@@ -31,6 +32,7 @@ public class StockConverter
       stock.setLockVersion(dto.getLockVersion());
       stock.setName(dto.getName());
       stock.setCode(dto.getCode());
+      stock.setTotalVolume(dto.getTotalVolume());
       stock.setStockCategory(categoryConverter.convertTo(dto.getStockCategory()));
       return stock;
    }
