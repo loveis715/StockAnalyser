@@ -1,41 +1,25 @@
 Ext.define('jewelry.view.unusual.UnusualPage', {
     extend: 'Ext.panel.Panel',
+    requires: [
+        'jewelry.view.unusual.UnusualList',
+        'jewelry.view.unusual.UnusualPageController'
+    ],
 
     xtype: 'jewelry.unusualPage',
+    controller: 'unusualPage',
 
-    layout: 'border',
+    layout: 'card',
     padding: '9 9 9 9',
     bodyStyle: 'background-color: transparent',
 
-    items: [{
-        xtype: 'panel',
-        region: 'north',
-        margin: '3 3 3 3',
-        items: [{
-            xtype: 'datefield',
-            width: 500,
-            labelWidth: 80,
-            fieldLabel: jewelry.Messages.labels.selectDate,
-            value: new Date()
-        }]
-    }, {
-        xtype: 'grid',
-        width: '100%',
-        region: 'center',
-        margin: '3 3 3 3',
-        frame: true,
-        columns: [{
-            text: jewelry.Messages.headers.stockName,
-            dataIndex: 'stockName',
-            flex: 1
-        }, {
-            text: jewelry.Messages.headers.stockCode,
-            dataIndex: 'stockCode',
-            flex: 1
-        }, {
-            text: jewelry.Messages.headers.unusualCases,
-            dataIndex: 'usualCases',
-            flex: 4
-        }]
-    }]
+    switchToList: function() {
+        this.removeAll();
+
+        var list = Ext.create('jewelry.view.unusual.UnusualList', {
+            width: '100%',
+            height: '100%',
+            margin: '3 3 3 3'
+        });
+        this.add(list);
+    }
 });

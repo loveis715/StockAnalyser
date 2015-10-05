@@ -100,7 +100,7 @@ Ext.define('jewelry.view.main.Main', {
             xtype: 'panel',
             reference: 'borderPanel',
             layout: 'border',
-            bodyStyle: 'background-color: white',
+            bodyStyle: 'background-color: white'
         }];
 
         this.callParent(arguments);

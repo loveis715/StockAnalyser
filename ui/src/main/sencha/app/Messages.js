@@ -20,13 +20,15 @@ Ext.define('jewelry.Messages', {
         selectDate: '选择日期'
     },
     headers: {
-        stockName: '股票名称',
-        stockCode: '股票代码',
-        unusualCases: '异常'
+        startTime: '开始时间',
+        endTime: '结束时间',
+        taskStatus: '任务状态',
+        unusualCount: '异常数量'
     },
     messages: {
         sycingTaskForShanghai: '正在同步上证股票列表...',
         sycingTaskForShenzhen: '正在同步深成股票列表...',
-        currentProgress: '{0}%: 正在扫描股票{1}'
+        currentProgress: '{0}%: 正在扫描股票{1}',
+        notScanYet: '该日未执行扫描，请先执行股票异动扫描'
     }
 });

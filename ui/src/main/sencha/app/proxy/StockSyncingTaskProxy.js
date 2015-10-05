@@ -5,8 +5,7 @@ Ext.define('jewelry.proxy.StockSyncingTaskProxy', {
     url: 'http://localhost:8080/jewelry-service/api/stock_syncing_tasks',
     format: 'json',
     reader: {
-        type: 'json',
-        rootProperty: 'stockSyncingTask'
+        type: 'json'
     },
     writer: {
         type: 'json',
