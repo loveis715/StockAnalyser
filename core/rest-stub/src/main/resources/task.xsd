@@ -17,6 +17,15 @@
       </xsd:restriction>
    </xsd:simpleType>
 
+   <xsd:simpleType name="scan-type">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="FULL_DAY"/>
+         <xsd:enumeration value="HALF_DAY"/>
+         <xsd:enumeration value="SINGLE_STOCK"/>
+         <xsd:enumeration value="TRADING_ANALYSIS"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
    <xsd:complexType name="abstract-task">
       <xsd:complexContent>
          <xsd:extension base="base:abstract-versioned-entity">
@@ -62,6 +71,7 @@
       <xsd:complexContent>
          <xsd:extension base="abstract-task">
             <xsd:sequence>
+               <xsd:element name="scan-type" type="scan-type"/>
                <xsd:element name="scanning-stock-name" type="xsd:string"/>
                <xsd:element name="results" type="scan-result" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>

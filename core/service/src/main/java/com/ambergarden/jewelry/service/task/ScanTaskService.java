@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ambergarden.jewelry.converter.task.ScanTaskConverter;
 import com.ambergarden.jewelry.executor.ScanTaskExecutor;
+import com.ambergarden.jewelry.orm.entity.task.ScanType;
 import com.ambergarden.jewelry.orm.entity.task.TaskState;
 import com.ambergarden.jewelry.orm.repository.task.ScanTaskRepository;
 import com.ambergarden.jewelry.schema.beans.task.ScanTask;
@@ -56,6 +57,7 @@ public class ScanTaskService {
       scanTask.setStartTime(new Date());
       scanTask.setPercentage(0);
       scanTask.setTaskState(TaskState.SCHEDULED);
+      scanTask.setScanType(ScanType.FULL_DAY);
 
       scanTask = scanTaskRepository.save(scanTask);
       taskExecutor.execute(scanTaskExecutor);

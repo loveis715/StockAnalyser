@@ -22,6 +22,7 @@ Ext.define('jewelry.Messages', {
     headers: {
         startTime: '开始时间',
         endTime: '结束时间',
+        scanType: '任务类型',
         taskStatus: '任务状态',
         unusualCount: '异常数量'
     },

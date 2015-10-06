@@ -22,6 +22,10 @@ Ext.define('jewelry.view.unusual.UnusualList', {
         dataIndex: 'formattedEndTime',
         flex: 1
     }, {
+        text: jewelry.Messages.headers.scanType,
+        dataIndex: 'scanType',
+        flex: 1
+    }, {
         text: jewelry.Messages.headers.taskStatus,
         dataIndex: 'taskState',
         flex: 1
