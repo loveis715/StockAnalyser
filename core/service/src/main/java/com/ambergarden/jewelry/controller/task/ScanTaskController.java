@@ -2,8 +2,8 @@ package com.ambergarden.jewelry.controller.task;
 
 import static com.ambergarden.jewelry.Constants.FIND_BY_ID_URL;
 import static com.ambergarden.jewelry.Constants.FIND_LAST_URL;
-import static com.ambergarden.jewelry.Constants.FULL_DAY_SCAN_TASKS_URL;
 import static com.ambergarden.jewelry.Constants.ID_PATH_VARIABLE;
+import static com.ambergarden.jewelry.Constants.SCAN_TASKS_URL;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.ambergarden.jewelry.schema.beans.task.ScanTask;
 import com.ambergarden.jewelry.service.task.ScanTaskService;
 
 @Controller
-@RequestMapping(value = FULL_DAY_SCAN_TASKS_URL)
+@RequestMapping(value = SCAN_TASKS_URL)
 public class ScanTaskController {
    @Autowired
    private ScanTaskService scanTaskService;

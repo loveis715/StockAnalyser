@@ -63,7 +63,7 @@ public class ScanTaskExecutor implements Runnable {
       }
 
       try {
-         MarketTradingInfoHolder marketInfoHolder = prepareFullDayScanInfoHolder();
+         MarketTradingInfoHolder marketInfoHolder = prepareScanInfoHolder();
          for (Stock pendingStock : marketInfoHolder.getPendingStocks()) {
             // TODO: During each analysis, use a try catch to add a log, and then
             // we can continue with other stocks
@@ -97,7 +97,7 @@ public class ScanTaskExecutor implements Runnable {
       }
    }
 
-   private MarketTradingInfoHolder prepareFullDayScanInfoHolder() {
+   private MarketTradingInfoHolder prepareScanInfoHolder() {
       List<Stock> pendingStocks = stockService.findAll();
       List<TradingInfo> tradingInfoSH = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SH);
       List<TradingInfo> tradingInfoSZ = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SZ);

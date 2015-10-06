@@ -28,9 +28,9 @@ public class ScanTaskService {
    private ScanTaskConverter scanTaskConverter;
 
    public List<ScanTask> list() {
-      Iterable<com.ambergarden.jewelry.orm.entity.task.ScanTask> fullDayScanTasks
+      Iterable<com.ambergarden.jewelry.orm.entity.task.ScanTask> scanTasks
          = scanTaskRepository.findAll();
-      return scanTaskConverter.convertListFrom(fullDayScanTasks);
+      return scanTaskConverter.convertListFrom(scanTasks);
    }
 
    public ScanTask findById(int id) {
