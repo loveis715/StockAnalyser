@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.executor.tag;
 
+
 public class TagConstants {
    public static final String TAG_SEPARATOR = ";";
    public static final String TAG_SEGMENT_SEPARATOR = ":";
@@ -7,6 +8,14 @@ public class TagConstants {
    // Tag types
    public static final String TAG_NAME_VOLUME_INCREMENT = "VOL_INC";
    public static final String TAG_NAME_CONTINUOUS_VOLUME_INCREMENT = "VOL_CON_INC";
-   public static final String TAG_NAME_DOWN_WITH_VOLUME_INCREMENT = "DOWN_VOL_INC";
-   public static final double TAG_VALUE_DOWN_WITH_VOLUME_INCREMENT = -10;
+   public static final String TAG_NAME_VOLUME_INCREMENT_WITH_PRICE_DOWN = "VOL_INC_DOWN";
+   public static final double TAG_VALUE_VOLUME_INCREMENT_WITH_PRICE_DOWN = -5;
+   public static final String TAG_NAME_VOLUME_INCREMENT_LOW_PRICE = "VOL_INC_LOW";
+   public static final double TAG_VALUE_VOLUME_INCREMENT_LOW_PRICE = 5;
+   public static final String TAG_NAME_VOLUME_INCREMENT_HIGH_PRICE = "VOL_INC_HIGH";
+   public static final double TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE = -2.5;
+   public static final String TAG_NAME_VOLUME_DECREMENT_LOW_PRICE = "VOL_DEC_LOW";
+   public static final double TAG_VALUE_VOLUME_DECREMENT_LOW_PRICE = -2.5;
+   public static final String TAG_NAME_LOW_PRICE = "PRI_LOW";
+   public static final String TAG_NAME_HIGH_PRICE = "PRI_HIGH";
 }

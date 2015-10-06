@@ -1,25 +1,18 @@
 package com.ambergarden.jewelry.executor.analysis;
 
-import static com.ambergarden.jewelry.Constants.PREFIX_SH;
-import static com.ambergarden.jewelry.Constants.PREFIX_SZ;
 import static com.ambergarden.jewelry.executor.tag.TagValueMappings.VOLUME_TAG_LEVELS;
 import static com.ambergarden.jewelry.executor.tag.TagValueMappings.VOLUME_TAG_MAX_SCORE;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.executor.analysis.bean.EnhancedTradingInfo;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.Tags;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
-import com.ambergarden.jewelry.schema.beans.stock.Stock;
-import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
-import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
 
 @Component
 public class VolumeAnalyser {
@@ -28,11 +21,7 @@ public class VolumeAnalyser {
    // Weight array for calculating the normal volume for stock. Use 0 to filter out today
    public static final int[] WEIGHT_ARRAY = new int[] {8, 9, 10, 11, 12, 13, 15, 17, 20, 0};
 
-   @Autowired
-   private StockTradingInfoProvider tradingInfoProvider;
-
-   public List<Tag> analyse(Stock stock, List<TradingInfo> marketTradingInfo) {
-      List<TradingInfo> tradingInfoList = retrieveTradingInfo(stock);
+   public List<Tag> analyse(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
       if (!isValidForAnalysing(tradingInfoList, marketTradingInfo)) {
          return new ArrayList<Tag>();
       }
@@ -40,14 +29,8 @@ public class VolumeAnalyser {
       return analyzeVolumeForThreeDays(tradingInfoList, marketTradingInfo);
    }
 
-   private List<TradingInfo> retrieveTradingInfo(Stock stock) {
-      String prefix = stock.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
-      String code = prefix + stock.getCode();
-      return tradingInfoProvider.getDailyTraidingInfo(code);
-   }
-
    private boolean isValidForAnalysing(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
-      Map<String, TradingInfo> tradingInfoMap = constructTradingInfoMap(marketTradingInfo);
+      Map<String, TradingInfo> tradingInfoMap = AnalyserHelper.constructTradingInfoMap(marketTradingInfo);
       List<TradingInfo> validTradingInfoList = getValidTradingInfoList(tradingInfoList, tradingInfoMap);
       if (validTradingInfoList.size() <= 5) {
          // Too little trading info
@@ -67,7 +50,7 @@ public class VolumeAnalyser {
       double continousValue = 0;
       int continousStreak = 0;
 
-      // Day 1
+      // Day 1: We will only include continuous incremental volume
       double baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 2);
       TradingInfo targetTrading = tradingInfoList.get(tradingInfoList.size() - 3);
       double relativeVolume = targetTrading.getVolume() / baseVolume;
@@ -81,16 +64,16 @@ public class VolumeAnalyser {
                found = true;
                break;
             }
+         }
 
-            if (!found) {
-               baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 1);
-            }
+         if (!found) {
+            baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 1);
          }
       } else {
          baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 1);
       }
 
-      // Day 2
+      // Day 2: We will only include continuous incremental volume
       targetTrading = tradingInfoList.get(tradingInfoList.size() - 2);
       relativeVolume = targetTrading.getVolume() / baseVolume;
       if (relativeVolume > 1.3) {
@@ -103,12 +86,12 @@ public class VolumeAnalyser {
                continousStreak++;
                break;
             }
+         }
 
-            if (!found) {
-               continousStreak = 0;
-               continousValue = 0;
-               baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 0);
-            }
+         if (!found) {
+            continousStreak = 0;
+            continousValue = 0;
+            baseVolume = getBaseVolume(tradingInfoList, marketTradingInfo, 0);
          }
       } else {
          continousStreak = 0;
@@ -117,32 +100,25 @@ public class VolumeAnalyser {
       }
 
       // Day 3
+      List<Tag> result = new ArrayList<Tag>();
       targetTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       relativeVolume = targetTrading.getVolume() / baseVolume;
       if (relativeVolume > 1.3) {
          boolean found = false;
-         List<Tag> tags = analyzeVolume(baseVolume, tradingInfoList, 0);
-         for (Tag tag : tags) {
+         result = analyzeVolume(baseVolume, tradingInfoList, 0);
+         for (Tag tag : result) {
             if (Tags.VolumeIncrementTag.instanceOf(tag)) {
                continousValue += ((Tags.VolumeIncrementTag)tag).getValue();
                found = true;
                break;
             }
-
-            if (!found) {
-               return new ArrayList<Tag>();
-            }
          }
-      } else {
-         return new ArrayList<Tag>();
+
+         if (found && continousStreak > 0) {
+            result.add(new Tags.ContinousVolumeIncrementTag(continousValue / 2));
+         }
       }
 
-      List<Tag> result = new ArrayList<Tag>();
-      if (continousStreak > 0) {
-         result.add(new Tags.ContinousVolumeIncrementTag(continousValue));
-      } else {
-         result.add(new Tags.VolumeIncrementTag(continousValue));
-      }
       return result;
    }
 
@@ -166,11 +142,13 @@ public class VolumeAnalyser {
       EnhancedTradingInfo lastTradingInfo = tradingInfos.get(tradingInfoList.size() - 1 - offset);
       if (prevTradingInfo.getPriceChange() > 0.095) {
          // Nearly no trade and reaches upper limit in previous day
+         result.add(new Tags.VolumeIncrementWithHighPrice());
       } else if (prevTradingInfo.getPriceChange() < -0.095) {
          // Nearly no trade and reaches lower limit in previous day
+         result.add(new Tags.VolumeIncrementWithLowPrice());
       } else if (lastTradingInfo.getPriceChange() < -0.04) {
          // Decrement with increased volume. Avoid from it
-         result.add(new Tags.DownWithVolumeIncrementTag());
+         result.add(new Tags.VolumeIncrementWithPriceDownTag());
       } else {
          // Volume increase with normal price. Need evaluate it
          result.add(calculateVolumeIncrementalTag(relativeVolume));
@@ -179,8 +157,14 @@ public class VolumeAnalyser {
    }
 
    private List<Tag> analyzeDecrementalVolume(double relativeVolume, List<TradingInfo> tradingInfoList, int offset) {
-      // TODO: Complete this logic
-      return new ArrayList<Tag>();
+      List<Tag> result = new ArrayList<Tag>();
+      List<EnhancedTradingInfo> tradingInfos = convertToEnhancedTradingInfo(tradingInfoList);
+      EnhancedTradingInfo lastTradingInfo = tradingInfos.get(tradingInfoList.size() - 1 - offset);
+      if (lastTradingInfo.getPriceChange() < -0.095) {
+         // Nearly no trade and reaches lower limit in previous day
+         result.add(new Tags.VolumeDecrementWithLowPrice());
+      }
+      return result;
    }
 
    private Tag calculateVolumeIncrementalTag(double relativeVolume) {
@@ -198,7 +182,7 @@ public class VolumeAnalyser {
 
    private double getBaseVolume(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo, int offset) {
       // Get corresponding tradings for each valid trading date
-      Map<String, TradingInfo> tradingInfoMap = constructTradingInfoMap(marketTradingInfo);
+      Map<String, TradingInfo> tradingInfoMap = AnalyserHelper.constructTradingInfoMap(marketTradingInfo);
       List<TradingInfo> marketTradings = new ArrayList<TradingInfo>();
       List<TradingInfo> validTradingInfoList = new ArrayList<TradingInfo>();
       for (int index = 0; index < tradingInfoList.size() - offset; index++) {
@@ -291,14 +275,5 @@ public class VolumeAnalyser {
          enhancedTradingInfos.add(enhancedTradingInfo);
       }
       return enhancedTradingInfos;
-   }
-
-   private Map<String, TradingInfo> constructTradingInfoMap(List<TradingInfo> marketTradingInfo) {
-      Map<String, TradingInfo> tradingInfoMap = new HashMap<String, TradingInfo>();
-      for (TradingInfo tradingInfo : marketTradingInfo) {
-         String dayString = tradingInfo.getDay();
-         tradingInfoMap.put(dayString, tradingInfo);
-      }
-      return tradingInfoMap;
    }
 }
