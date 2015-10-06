@@ -2,6 +2,7 @@ Ext.define('jewelry.view.unusual.UnusualPage', {
     extend: 'Ext.panel.Panel',
     requires: [
         'jewelry.view.unusual.UnusualList',
+        'jewelry.view.unusual.UnusualView',
         'jewelry.view.unusual.UnusualPageController'
     ],
 
@@ -18,8 +19,26 @@ Ext.define('jewelry.view.unusual.UnusualPage', {
         var list = Ext.create('jewelry.view.unusual.UnusualList', {
             width: '100%',
             height: '100%',
-            margin: '3 3 3 3'
+            margin: '3 3 3 3',
+            listeners: {
+                editRecord: 'onViewRecord'
+            }
         });
         this.add(list);
+    },
+    
+    switchToViewer: function(recordId) {
+        this.removeAll();
+
+        var viewer = Ext.create('jewelry.view.unusual.UnusualView', {
+            width: '100%',
+            height: '100%',
+            margin: '3 3 3 3',
+            recordId: recordId,
+            listeners: {
+                viewComplete: 'onViewComplete'
+            }
+        });
+        this.add(viewer);
     }
 });
