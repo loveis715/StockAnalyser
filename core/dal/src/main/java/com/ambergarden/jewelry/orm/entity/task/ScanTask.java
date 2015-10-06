@@ -8,12 +8,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
-public class FullDayScanTask extends AbstractTask {
+public class ScanTask extends AbstractTask {
    private String scanningStockName;
 
    @OneToMany(fetch=FetchType.EAGER, orphanRemoval=true)
-   @JoinColumn(name="FULL_DAY_SCAN_TASK_ID")
-   private List<FullDayScanResult> results;
+   @JoinColumn(name="SCAN_TASK_ID")
+   private List<ScanResult> results;
 
    public String getScanningStockName() {
       return scanningStockName;
@@ -23,11 +23,11 @@ public class FullDayScanTask extends AbstractTask {
       this.scanningStockName = scanningStockName;
    }
 
-   public List<FullDayScanResult> getResults() {
+   public List<ScanResult> getResults() {
       return results;
    }
 
-   public void setResults(List<FullDayScanResult> results) {
+   public void setResults(List<ScanResult> results) {
       this.results = results;
    }
 }

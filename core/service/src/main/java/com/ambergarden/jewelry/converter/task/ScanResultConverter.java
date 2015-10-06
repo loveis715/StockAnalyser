@@ -5,20 +5,20 @@ import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.converter.base.AbstractEntityListConverter;
 import com.ambergarden.jewelry.converter.stock.StockConverter;
-import com.ambergarden.jewelry.schema.beans.task.FullDayScanResult;
+import com.ambergarden.jewelry.schema.beans.task.ScanResult;
 
 @Component
-public class FullDayScanResultConverter
+public class ScanResultConverter
    extends AbstractEntityListConverter<
-      com.ambergarden.jewelry.orm.entity.task.FullDayScanResult, FullDayScanResult> {
+      com.ambergarden.jewelry.orm.entity.task.ScanResult, ScanResult> {
 
    @Autowired
    private StockConverter stockConverter;
 
    @Override
-   public FullDayScanResult convertFrom(
-         com.ambergarden.jewelry.orm.entity.task.FullDayScanResult mo) {
-      FullDayScanResult scanResult = new FullDayScanResult();
+   public ScanResult convertFrom(
+         com.ambergarden.jewelry.orm.entity.task.ScanResult mo) {
+      ScanResult scanResult = new ScanResult();
       scanResult.setId(mo.getId());
       scanResult.setTags(mo.getTags());
       scanResult.setStock(stockConverter.convertFrom(mo.getStock()));
@@ -26,10 +26,10 @@ public class FullDayScanResultConverter
    }
 
    @Override
-   public com.ambergarden.jewelry.orm.entity.task.FullDayScanResult convertTo(
-         FullDayScanResult dto) {
-      com.ambergarden.jewelry.orm.entity.task.FullDayScanResult scanResult
-         = new com.ambergarden.jewelry.orm.entity.task.FullDayScanResult();
+   public com.ambergarden.jewelry.orm.entity.task.ScanResult convertTo(
+         ScanResult dto) {
+      com.ambergarden.jewelry.orm.entity.task.ScanResult scanResult
+         = new com.ambergarden.jewelry.orm.entity.task.ScanResult();
       scanResult.setId(dto.getId());
       scanResult.setTags(dto.getTags());
       scanResult.setStock(stockConverter.convertTo(dto.getStock()));

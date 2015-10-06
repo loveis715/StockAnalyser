@@ -47,7 +47,7 @@
       </xsd:complexContent>
    </xsd:complexType>
 
-   <xsd:complexType name="full-day-scan-result">
+   <xsd:complexType name="scan-result">
       <xsd:complexContent>
          <xsd:extension base="base:abstract-entity">
             <xsd:sequence>
@@ -58,12 +58,12 @@
       </xsd:complexContent>
    </xsd:complexType>
 
-   <xsd:complexType name="full-day-scan-task">
+   <xsd:complexType name="scan-task">
       <xsd:complexContent>
          <xsd:extension base="abstract-task">
             <xsd:sequence>
                <xsd:element name="scanning-stock-name" type="xsd:string"/>
-               <xsd:element name="results" type="full-day-scan-result" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="results" type="scan-result" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>

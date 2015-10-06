@@ -15,18 +15,18 @@ import com.ambergarden.jewelry.executor.tag.TagConverter;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
-import com.ambergarden.jewelry.schema.beans.task.FullDayScanResult;
-import com.ambergarden.jewelry.schema.beans.task.FullDayScanTask;
+import com.ambergarden.jewelry.schema.beans.task.ScanResult;
+import com.ambergarden.jewelry.schema.beans.task.ScanTask;
 import com.ambergarden.jewelry.schema.beans.task.TaskState;
 import com.ambergarden.jewelry.service.stock.StockService;
-import com.ambergarden.jewelry.service.task.FullDayScanTaskService;
+import com.ambergarden.jewelry.service.task.ScanTaskService;
 import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
 
 @Component
-public class FullDayScanTaskExecutor implements Runnable {
+public class ScanTaskExecutor implements Runnable {
 
    @Autowired
-   private FullDayScanTaskService fullDayScanTaskService;
+   private ScanTaskService scanTaskService;
 
    @Autowired
    private StockTradingInfoProvider tradingInfoProvider;
@@ -57,8 +57,8 @@ public class FullDayScanTaskExecutor implements Runnable {
          return;
       }
 
-      FullDayScanTask fullDayScanTask = fullDayScanTaskService.findLast();
-      if (fullDayScanTask == null) {
+      ScanTask scanTask = scanTaskService.findLast();
+      if (scanTask == null) {
          return;
       }
 
@@ -75,21 +75,21 @@ public class FullDayScanTaskExecutor implements Runnable {
             }
 
             if (tags.size() != 0) {
-               FullDayScanResult result = new FullDayScanResult();
+               ScanResult result = new ScanResult();
                result.setStock(pendingStock);
                result.setTags(tagConverter.convertFrom(tags));
-               fullDayScanTask.getResults().add(result);
+               scanTask.getResults().add(result);
             }
          }
 
-         fullDayScanTask.setTaskState(TaskState.SUCCESS);
-         fullDayScanTask.setEndTime(new Date());
-         fullDayScanTaskService.update(fullDayScanTask);
+         scanTask.setTaskState(TaskState.SUCCESS);
+         scanTask.setEndTime(new Date());
+         scanTaskService.update(scanTask);
       } catch (RuntimeException ex) {
-         fullDayScanTask = fullDayScanTaskService.findLast();
-         fullDayScanTask.setTaskState(TaskState.FAILED);
-         fullDayScanTask.setEndTime(new Date());
-         fullDayScanTaskService.update(fullDayScanTask);
+         scanTask = scanTaskService.findLast();
+         scanTask.setTaskState(TaskState.FAILED);
+         scanTask.setEndTime(new Date());
+         scanTaskService.update(scanTask);
 
          throw ex;
       } finally {

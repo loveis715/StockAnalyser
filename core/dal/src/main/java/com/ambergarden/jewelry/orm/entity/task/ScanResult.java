@@ -9,7 +9,7 @@ import com.ambergarden.jewelry.orm.entity.AbstractEntity;
 import com.ambergarden.jewelry.orm.entity.stock.Stock;
 
 @Entity
-public class FullDayScanResult extends AbstractEntity {
+public class ScanResult extends AbstractEntity {
    @OneToOne(fetch=FetchType.EAGER)
    @JoinColumn(name="STOCK_ID")
    private Stock stock;
