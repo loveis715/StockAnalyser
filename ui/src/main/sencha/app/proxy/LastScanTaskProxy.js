@@ -1,6 +1,6 @@
-Ext.define('jewelry.proxy.LastFullDayScanTaskProxy', {
+Ext.define('jewelry.proxy.LastScanTaskProxy', {
     extend: 'Ext.data.proxy.Rest',
-    alias: 'proxy.lastFullDayScanTaskProxy',
+    alias: 'proxy.lastScanTaskProxy',
 
     // TODO: From ExtJS document, seems proxy is a static config instead of a per instance one.
     // That is, each model is bound to a proxy. That's why we've create another proxy/model pair.

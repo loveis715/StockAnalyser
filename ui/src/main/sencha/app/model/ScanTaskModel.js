@@ -1,10 +1,10 @@
-Ext.define('jewelry.model.FullDayScanTaskModel', {
+Ext.define('jewelry.model.ScanTaskModel', {
     extend: 'Ext.data.Model',
     requires: [
-        'jewelry.proxy.FullDayScanTaskProxy'
+        'jewelry.proxy.ScanTaskProxy'
     ],
 
-    proxy: Ext.create('jewelry.proxy.FullDayScanTaskProxy'),
+    proxy: Ext.create('jewelry.proxy.ScanTaskProxy'),
 
     fields: [{
         name: 'taskState',

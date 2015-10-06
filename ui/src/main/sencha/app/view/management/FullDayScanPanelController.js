@@ -1,17 +1,17 @@
 Ext.define('jewelry.view.management.FullDayScanPanelController', {
     extend: 'Ext.app.ViewController',
     requires: [
-        'jewelry.proxy.FullDayScanTaskProxy',
-        'jewelry.model.FullDayScanTaskModel',
-        'jewelry.proxy.LastFullDayScanTaskProxy',
-        'jewelry.model.LastFullDayScanTaskModel'
+        'jewelry.proxy.ScanTaskProxy',
+        'jewelry.model.ScanTaskModel',
+        'jewelry.proxy.LastScanTaskProxy',
+        'jewelry.model.LastScanTaskModel'
     ],
 
     alias: 'controller.fullDayScanPanel',
 
     init: function() {
         var me = this;
-        jewelry.model.LastFullDayScanTaskModel.load(0, {
+        jewelry.model.LastScanTaskModel.load(0, {
             scope: me,
             success: function(record, operation) {
                 var taskState = record.get('taskState'),
@@ -44,7 +44,7 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
 
     startFullDayScan: function() {
         var me = this,
-            model = Ext.create('jewelry.model.FullDayScanTaskModel');
+            model = Ext.create('jewelry.model.ScanTaskModel');
         model.set('id', -1);
         model.save({
             scope: me,
@@ -56,7 +56,7 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
 
     populateFullDayScanTaskState: function(taskId) {
         var me = this;
-        jewelry.model.FullDayScanTaskModel.load(taskId, {
+        jewelry.model.ScanTaskModel.load(taskId, {
             scope: me,
             success: function(record, operation) {
                 me.fillTaskInfoToViewModel(record);

@@ -1,10 +1,10 @@
-Ext.define('jewelry.model.LastFullDayScanTaskModel', {
+Ext.define('jewelry.model.LastScanTaskModel', {
     extend: 'Ext.data.Model',
     requires: [
-        'jewelry.proxy.LastFullDayScanTaskProxy'
+        'jewelry.proxy.LastScanTaskProxy'
     ],
 
-    proxy: Ext.create('jewelry.proxy.LastFullDayScanTaskProxy'),
+    proxy: Ext.create('jewelry.proxy.LastScanTaskProxy'),
 
     idProperty: 'fakeId',
     fields: [{

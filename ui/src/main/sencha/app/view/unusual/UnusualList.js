@@ -1,8 +1,8 @@
 Ext.define('jewelry.view.unusual.UnusualList', {
     extend: 'Ext.grid.Panel',
     requires: [
-        'jewelry.proxy.FullDayScanTaskProxy',
-        'jewelry.store.FullDayScanTaskStore'
+        'jewelry.proxy.ScanTaskProxy',
+        'jewelry.store.ScanTaskStore'
     ],
 
     xtype: 'jewelry.unusualList',
@@ -11,7 +11,7 @@ Ext.define('jewelry.view.unusual.UnusualList', {
     autoLoad: true,
 
     // TODO: Deal with this warning
-    store: Ext.create('jewelry.store.FullDayScanTaskStore'),
+    store: Ext.create('jewelry.store.ScanTaskStore'),
 
     columns: [{
         text: jewelry.Messages.headers.startTime,
