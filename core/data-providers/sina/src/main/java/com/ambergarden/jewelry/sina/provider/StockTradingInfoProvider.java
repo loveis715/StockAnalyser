@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.sina.Constants;
 import com.fasterxml.jackson.core.JsonParser.Feature;
@@ -23,10 +24,32 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 @Component
 public class StockTradingInfoProvider {
+   public List<MinuteData> getPerMinuteTradingInfo(String code) {
+      String url = String.format(Constants.PER_MINUTE_TRADING_INFO_URL_FORMAT, code);
+      String data = retrieveData(url);
+      return PerMinuteTradingAnalyser.listMinuteData(data);
+   }
+
    public List<TradingInfo> getDailyTraidingInfo(String code) {
       String url = String.format(Constants.DAILY_TRADING_INFO_URL_FORMAT, code);
-      HttpClient client = HttpClientBuilder.create().build();
+      String data = retrieveData(url);
 
+      List<TradingInfo> result = new ArrayList<TradingInfo>();
+      try {
+         ObjectMapper mapper = new ObjectMapper();
+         CollectionType arrayType = mapper.getTypeFactory().constructCollectionType(
+               List.class, TradingInfo.class);
+         mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+         result = mapper.readValue(data, arrayType);
+      } catch (Exception ex) {
+         // TODO: Throw an exception to indicate that we've failed to read the content
+      }
+      return result;
+   }
+
+   private String retrieveData(String url) {
+      HttpClient client = HttpClientBuilder.create().build();
       HttpResponse response = null;
       HttpGet httpGet = null;
       try {
@@ -56,17 +79,6 @@ public class StockTradingInfoProvider {
 
       httpGet.releaseConnection();
 
-      List<TradingInfo> result = new ArrayList<TradingInfo>();
-      try {
-         ObjectMapper mapper = new ObjectMapper();
-         CollectionType arrayType = mapper.getTypeFactory().constructCollectionType(
-               List.class, TradingInfo.class);
-         mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-         result = mapper.readValue(responseText.toString(), arrayType);
-      } catch (Exception ex) {
-         // TODO: Throw an exception to indicate that we've failed to read the content
-      }
-      return result;
+      return responseText.toString();
    }
 }
