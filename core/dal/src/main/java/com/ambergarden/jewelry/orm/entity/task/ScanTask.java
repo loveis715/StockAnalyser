@@ -17,7 +17,7 @@ public class ScanTask extends AbstractTask {
    @Enumerated(EnumType.STRING)
    private ScanType scanType;
 
-   @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST, orphanRemoval=true)
+   @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
    @JoinColumn(name="SCAN_TASK_ID")
    private List<ScanResult> results;
 
