@@ -11,12 +11,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.schema.beans.provider.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.provider.stock.StockCategory;
 import com.ambergarden.jewelry.sina.Constants;
+import com.ambergarden.jewelry.sina.Utils;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ public class StockListProvider {
     */
    public List<Stock> listAllStocks(StockCategory category) {
       List<Stock> result = new ArrayList<Stock>();
-      HttpClient client = HttpClientBuilder.create().build();
+      HttpClient client = Utils.getHttpClient();
 
       int pageNum = 1;
       boolean complete = false;
@@ -54,11 +54,16 @@ public class StockListProvider {
       String url = constructRequestURL(pageNum, category);
       HttpResponse response = null;
       HttpGet httpGet = null;
-      try {
-         httpGet = new HttpGet(url);
-         response = client.execute(httpGet);
-      } catch (IOException e) {
-         // TODO: Throw an exception when we have built the exception system
+      int retryCount = 0;
+      while (response == null && retryCount < 3) {
+         try {
+            httpGet = new HttpGet(url);
+            response = client.execute(httpGet);
+         } catch (IOException e) {
+            retryCount++;
+         } finally {
+            httpGet.releaseConnection();
+         }
       }
 
       if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
@@ -78,8 +83,6 @@ public class StockListProvider {
       } catch (IOException e) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }
-
-      httpGet.releaseConnection();
 
       return result.toString();
    }

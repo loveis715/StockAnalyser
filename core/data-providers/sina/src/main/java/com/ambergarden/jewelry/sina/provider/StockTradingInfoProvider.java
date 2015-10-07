@@ -11,12 +11,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.sina.Constants;
+import com.ambergarden.jewelry.sina.Utils;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,12 +27,19 @@ public class StockTradingInfoProvider {
    public List<MinuteData> getPerMinuteTradingInfo(String code) {
       String url = String.format(Constants.PER_MINUTE_TRADING_INFO_URL_FORMAT, code);
       String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<MinuteData>();
+      }
+
       return PerMinuteTradingAnalyser.listMinuteData(data);
    }
 
    public List<TradingInfo> getDailyTraidingInfo(String code) {
       String url = String.format(Constants.DAILY_TRADING_INFO_URL_FORMAT, code);
       String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<TradingInfo>();
+      }
 
       List<TradingInfo> result = new ArrayList<TradingInfo>();
       try {
@@ -49,18 +56,24 @@ public class StockTradingInfoProvider {
    }
 
    private String retrieveData(String url) {
-      HttpClient client = HttpClientBuilder.create().build();
+      HttpClient client = Utils.getHttpClient();
       HttpResponse response = null;
       HttpGet httpGet = null;
-      try {
-         httpGet = new HttpGet(url);
-         response = client.execute(httpGet);
-      } catch (IOException e) {
-         // TODO: Throw an exception when we have built the exception system
+      int retryCount = 0;
+      while (response == null && retryCount < 3) {
+         try {
+            httpGet = new HttpGet(url);
+            response = client.execute(httpGet);
+         } catch (IOException e) {
+            retryCount++;
+         } finally {
+            httpGet.releaseConnection();
+         }
       }
 
-      if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-         // TODO: Throw an exception to indicate that we've failed to retrieve stocks
+      if (response == null || response.getStatusLine() == null
+            || response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+         return "";
       }
 
       StringBuffer responseText = new StringBuffer();
@@ -76,8 +89,6 @@ public class StockTradingInfoProvider {
       } catch (IOException e) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }
-
-      httpGet.releaseConnection();
 
       return responseText.toString();
    }
