@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.executor.tag.Tag;
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
@@ -25,11 +26,16 @@ public class StockAnalyser {
    @Autowired
    private PriceAnalyser priceAnalyser;
 
-   public List<Tag> analysis(Stock stock, List<TradingInfo> marketTradingInfo) {
-      List<TradingInfo> tradingInfoList = retrieveTradingInfo(stock);
+   @Autowired
+   private MinuteTradingAnalyser minuteTradingAnalyser;
 
-      List<Tag> result = volumeAnalyser.analyse(tradingInfoList, marketTradingInfo);
-      result.addAll(priceAnalyser.analyse(tradingInfoList, marketTradingInfo));
+   public List<Tag> analysis(Stock stock, MarketTradingData marketTradingData) {
+      List<TradingInfo> tradingInfoList = retrieveTradingInfo(stock);
+      List<MinuteData> minuteDataList = retrieveMinuteDataList(stock);
+
+      List<Tag> result = volumeAnalyser.analyse(tradingInfoList, marketTradingData.getTradingInfo());
+      result.addAll(priceAnalyser.analyse(tradingInfoList, marketTradingData.getTradingInfo()));
+      result.addAll(minuteTradingAnalyser.analyse(minuteDataList, marketTradingData.getMinuteData()));
       return result;
    }
 
@@ -37,5 +43,11 @@ public class StockAnalyser {
       String prefix = stock.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
       String code = prefix + stock.getCode();
       return tradingInfoProvider.getDailyTraidingInfo(code);
+   }
+
+   private List<MinuteData> retrieveMinuteDataList(Stock stock) {
+      String prefix = stock.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
+      String code = prefix + stock.getCode();
+      return tradingInfoProvider.getPerMinuteTradingInfo(code);
    }
 }

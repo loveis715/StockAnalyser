@@ -2,6 +2,7 @@ package com.ambergarden.jewelry.orm.entity.task;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,7 +17,7 @@ public class ScanTask extends AbstractTask {
    @Enumerated(EnumType.STRING)
    private ScanType scanType;
 
-   @OneToMany(fetch=FetchType.EAGER, orphanRemoval=true)
+   @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST, orphanRemoval=true)
    @JoinColumn(name="SCAN_TASK_ID")
    private List<ScanResult> results;
 

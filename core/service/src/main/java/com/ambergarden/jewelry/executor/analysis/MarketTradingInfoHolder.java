@@ -3,27 +3,26 @@ package com.ambergarden.jewelry.executor.analysis;
 import java.util.Collections;
 import java.util.List;
 
-import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 
 public class MarketTradingInfoHolder {
-   private final List<TradingInfo> marketTradingDataSH;
-   private final List<TradingInfo> marketTradingDataSZ;
+   private final MarketTradingData tradingSH;
+   private final MarketTradingData tradingSZ;
    private final List<Stock> pendingStocks;
 
-   public MarketTradingInfoHolder(List<TradingInfo> tradingInfoSH,
-         List<TradingInfo> tradingInfoSZ, List<Stock> pendingStock) {
-      this.marketTradingDataSH = tradingInfoSH;
-      this.marketTradingDataSZ = tradingInfoSZ;
+   public MarketTradingInfoHolder(MarketTradingData tradingSH,
+         MarketTradingData tradingSZ, List<Stock> pendingStock) {
+      this.tradingSH = tradingSH;
+      this.tradingSZ = tradingSZ;
       this.pendingStocks = Collections.synchronizedList(pendingStock);
    }
 
-   public List<TradingInfo> getTradingInfoSH() {
-      return marketTradingDataSH;
+   public MarketTradingData getTradingSH() {
+      return tradingSH;
    }
 
-   public List<TradingInfo> getTradingInfoSZ() {
-      return marketTradingDataSZ;
+   public MarketTradingData getTradingSZ() {
+      return tradingSZ;
    }
 
    public List<Stock> getPendingStocks() {

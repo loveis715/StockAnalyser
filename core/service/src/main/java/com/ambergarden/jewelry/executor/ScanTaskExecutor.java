@@ -1,5 +1,7 @@
 package com.ambergarden.jewelry.executor;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -8,10 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
+import com.ambergarden.jewelry.executor.analysis.MarketTradingData;
 import com.ambergarden.jewelry.executor.analysis.MarketTradingInfoHolder;
 import com.ambergarden.jewelry.executor.analysis.StockAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.TagConverter;
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
@@ -69,13 +73,14 @@ public class ScanTaskExecutor implements Runnable {
             // we can continue with other stocks
             List<Tag> tags = null;
             if (pendingStock.getStockCategory() == StockCategory.SHANGHAI) {
-               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingInfoSH());
+               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingSH());
             } else {
-               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingInfoSZ());
+               tags = stockAnalyser.analysis(pendingStock, marketInfoHolder.getTradingSZ());
             }
 
             if (tags.size() != 0) {
                ScanResult result = new ScanResult();
+               result.setId(-1);
                result.setStock(pendingStock);
                result.setTags(tagConverter.convertFrom(tags));
                scanTask.getResults().add(result);
@@ -98,9 +103,21 @@ public class ScanTaskExecutor implements Runnable {
    }
 
    private MarketTradingInfoHolder prepareScanInfoHolder() {
-      List<Stock> pendingStocks = stockService.findAll();
       List<TradingInfo> tradingInfoSH = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SH);
+      List<MinuteData> minuteDataSH = tradingInfoProvider.getPerMinuteTradingInfo(Constants.CODE_SH);
+      MarketTradingData tradingDataSH = new MarketTradingData(tradingInfoSH, minuteDataSH);
+
       List<TradingInfo> tradingInfoSZ = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SZ);
-      return new MarketTradingInfoHolder(tradingInfoSH, tradingInfoSZ, pendingStocks);
+      List<MinuteData> minuteDataSZ = tradingInfoProvider.getPerMinuteTradingInfo(Constants.CODE_SZ);
+      MarketTradingData tradingDataSZ = new MarketTradingData(tradingInfoSZ, minuteDataSZ);
+
+      List<Stock> pendingStocks = stockService.findAll();
+      Collections.sort(pendingStocks, new Comparator<Stock>() {
+         @Override
+         public int compare(Stock stock1, Stock stock2) {
+            return stock1.getCode().compareTo(stock2.getCode());
+         }
+      });
+      return new MarketTradingInfoHolder(tradingDataSH, tradingDataSZ, pendingStocks);
    }
 }
