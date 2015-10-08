@@ -42,4 +42,19 @@
          <xsd:element name="volume" type="xsd:long"/>
       </xsd:sequence>
    </xsd:complexType>
+
+   <xsd:simpleType name="trading-type">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="BUY"/>
+         <xsd:enumeration value="SELL"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="realtime-trading">
+      <xsd:sequence>
+         <xsd:element name="trading-type" type="trading-type"/>
+         <xsd:element name="price" type="xsd:double"/>
+         <xsd:element name="volume" type="xsd:long"/>
+      </xsd:sequence>
+   </xsd:complexType>
 </xsd:schema>

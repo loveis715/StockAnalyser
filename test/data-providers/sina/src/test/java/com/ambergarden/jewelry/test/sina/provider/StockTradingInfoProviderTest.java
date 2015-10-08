@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
+import com.ambergarden.jewelry.schema.beans.provider.stock.RealtimeTrading;
 import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,5 +29,11 @@ public class StockTradingInfoProviderTest {
    public void testRetrieveMinuteData() {
       List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo("sz300104");
       Assert.assertEquals(240, minuteDataList.size());
+   }
+
+   @Test
+   public void testRetrieveRealtimeTrading() {
+      List<RealtimeTrading> realtimeTradingList = tradingInfoProvider.getRealtimeTradingInfo("sz300104");
+      Assert.assertEquals(10, realtimeTradingList.size());
    }
 }

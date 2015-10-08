@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
+import com.ambergarden.jewelry.schema.beans.provider.stock.RealtimeTrading;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.sina.Constants;
 import com.ambergarden.jewelry.sina.Utils;
@@ -24,6 +25,16 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 @Component
 public class StockTradingInfoProvider {
+   public List<RealtimeTrading> getRealtimeTradingInfo(String code) {
+      String url = String.format(Constants.REALTIME_TRADING_URL_FORMAT, code);
+      String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<RealtimeTrading>();
+      }
+
+      return RealtimeTradingAnalyser.parse(data);
+   }
+
    public List<MinuteData> getPerMinuteTradingInfo(String code) {
       String url = String.format(Constants.PER_MINUTE_TRADING_INFO_URL_FORMAT, code);
       String data = retrieveData(url);
