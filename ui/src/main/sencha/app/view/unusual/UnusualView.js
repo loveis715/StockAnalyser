@@ -96,7 +96,10 @@ Ext.define('jewelry.view.unusual.UnusualView', {
             }, {
                 text: jewelry.Messages.headers.unusualCases,
                 dataIndex: 'unusualCases',
-                flex: 6
+                flex: 6,
+                renderer: function(tagString) {
+                    return me.getTagHtml(tagString);
+                }
             }]
         }];
 
@@ -109,5 +112,24 @@ Ext.define('jewelry.view.unusual.UnusualView', {
         }];
 
         this.callParent(arguments);
+    },
+    
+    getTagHtml: function(tagString) {
+        var tags = tagString.split(';'),
+            html = '<ul class="tag-cell" style="margin: -2px 0 -2px 0; padding: 0 3px 0 3px; cursor: text;">';
+        Ext.Array.each(tags, function(tag) {
+            var color = '',
+                segments = tag.split(':'),
+                text = segments[0] + ':' + segments[2];
+            if (segments[1] == '-1') {
+                color = 'lightgreen';
+            } else if (segments[1] == '1') {
+                color = 'pink';
+            } else {
+                color = 'beige';
+            }
+            html = html + '<li class="tag-item" style="border-radius: 3px; border: 1px solid #dcdcdc; margin: 0 4px 0 0; padding: 0 5px 0 5px; display: inline-block; background-color: ' + color + ';">' + text + '</li>';
+        });
+        return html + '</ul>';
     }
 });

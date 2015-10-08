@@ -38,7 +38,7 @@ Ext.define('jewelry.model.ScanResultModel', {
         name: 'unusualCases',
         calculate: function(data) {
             if (data.tags != null) {
-                return data.stock.tags;
+                return data.tags;
             } else {
                 return '';
             }
