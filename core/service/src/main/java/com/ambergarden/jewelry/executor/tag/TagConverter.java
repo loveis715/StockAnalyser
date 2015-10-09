@@ -24,7 +24,7 @@ public class TagConverter {
       List<Tag> result = new ArrayList<Tag>();
       String[] tags = tagExpression.split(TAG_SEPARATOR);
       for (String tagString : tags) {
-         Tag tag = ValuableTag.valueOf(tagString);
+         Tag tag = Tag.valueOf(tagString);
          if (tag == null) {
             result.add(tag);
          }

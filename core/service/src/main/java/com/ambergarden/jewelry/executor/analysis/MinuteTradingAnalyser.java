@@ -1,5 +1,7 @@
 package com.ambergarden.jewelry.executor.analysis;
 
+import static com.ambergarden.jewelry.executor.tag.TagValueMappings.MASS_VOLUME_LEVELS;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +15,6 @@ import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 
 @Component
 public class MinuteTradingAnalyser {
-   private static final int[] MASS_VOLUME_LEVELS = new int[] {15, 20, 25, 30, 35, 40, 45, 50, 60, 70};
-
    public List<Tag> analyse(List<MinuteData> tradingMinuteData, List<MinuteData> marketMinuteData) {
       if (tradingMinuteData.size() <= 10) {
          // In case that we've nearly no trading

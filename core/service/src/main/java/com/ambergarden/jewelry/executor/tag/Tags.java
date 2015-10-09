@@ -19,7 +19,7 @@ public class Tags {
    /**
     * Volume increases with normal price change.
     */
-   public static class VolumeIncrementTag extends ValuableTag {
+   public static class VolumeIncrementTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_VOLUME_INCREMENT) == 0;
       }
@@ -32,7 +32,7 @@ public class Tags {
    /**
     * Volume increases and we have reached the bottom price
     */
-   public static class VolumeIncrementWithLowPrice extends ValuableTag {
+   public static class VolumeIncrementWithLowPrice extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_VOLUME_INCREMENT_LOW_PRICE) == 0;
       }
@@ -45,7 +45,7 @@ public class Tags {
    /**
     * Volume decreases and the price has dropped down rapidly
     */
-   public static class VolumeDecrementWithLowPrice extends ValuableTag {
+   public static class VolumeDecrementWithLowPrice extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_VOLUME_DECREMENT_LOW_PRICE) == 0;
       }
@@ -58,7 +58,7 @@ public class Tags {
    /**
     * Volume increases and we have reached the top price
     */
-   public static class VolumeIncrementWithHighPrice extends ValuableTag {
+   public static class VolumeIncrementWithHighPrice extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_VOLUME_INCREMENT_HIGH_PRICE) == 0;
       }
@@ -71,7 +71,7 @@ public class Tags {
    /**
     * Volume increases and the price has gone down.
     */
-   public static class VolumeIncrementWithPriceDownTag extends ValuableTag {
+   public static class VolumeIncrementWithPriceDownTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_VOLUME_INCREMENT_WITH_PRICE_DOWN) == 0;
       }
@@ -84,7 +84,7 @@ public class Tags {
    /**
     * Volume continuously increases
     */
-   public static class ContinousVolumeIncrementTag extends ValuableTag {
+   public static class ContinousVolumeIncrementTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_CONTINUOUS_VOLUME_INCREMENT) == 0;
       }
@@ -97,7 +97,7 @@ public class Tags {
    /**
     * The stock is in a relatively low price today
     */
-   public static class LowPriceTag extends ValuableTag {
+   public static class LowPriceTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_LOW_PRICE) == 0;
       }
@@ -110,7 +110,7 @@ public class Tags {
    /**
     * The stock is in a relatively high price today
     */
-   public static class HighPriceTag extends ValuableTag {
+   public static class HighPriceTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_HIGH_PRICE) == 0;
       }
@@ -123,7 +123,7 @@ public class Tags {
    /**
     * The stock has massive buy in in several minutes
     */
-   public static class MassPositiveTradingTag extends ValuableTag {
+   public static class MassPositiveTradingTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_MASS_POS_TRADING) == 0;
       }
@@ -136,7 +136,7 @@ public class Tags {
    /**
     * The stock has massive sell out in several minutes
     */
-   public static class MassNegativeTradingTag extends ValuableTag {
+   public static class MassNegativeTradingTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_MASS_NEG_TRADING) == 0;
       }
