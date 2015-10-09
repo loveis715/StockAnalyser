@@ -197,7 +197,9 @@ public class VolumeAnalyser {
       TradingInfo lastMarketTrading = marketTradingInfo.get(marketTradingInfo.size() - 1);
       double marketAverageVolume = getAverageVolume(marketTradings);
       double stockAverageVolume = getAverageVolume(validTradingInfoList);
-      return stockAverageVolume * lastMarketTrading.getVolume() / marketAverageVolume;
+      double ratio = lastMarketTrading.getVolume() / marketAverageVolume;
+      ratio = ratio * 2 - 1;
+      return stockAverageVolume * ratio;
    }
 
    private double getAverageVolume(List<TradingInfo> tradingInfoList) {
