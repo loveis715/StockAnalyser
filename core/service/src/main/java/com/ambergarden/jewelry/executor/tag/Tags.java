@@ -133,6 +133,9 @@ public class Tags {
       }
    }
 
+   /**
+    * The stock has massive sell out in several minutes
+    */
    public static class MassNegativeTradingTag extends ValuableTag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_MASS_NEG_TRADING) == 0;

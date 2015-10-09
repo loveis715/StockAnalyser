@@ -13,9 +13,9 @@ public class TagConstants {
    public static final String TAG_NAME_VOLUME_INCREMENT_LOW_PRICE = "VOL_INC_LOW";
    public static final double TAG_VALUE_VOLUME_INCREMENT_LOW_PRICE = 5;
    public static final String TAG_NAME_VOLUME_INCREMENT_HIGH_PRICE = "VOL_INC_HIGH";
-   public static final double TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE = -2.5;
+   public static final double TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE = 2.5;
    public static final String TAG_NAME_VOLUME_DECREMENT_LOW_PRICE = "VOL_DEC_LOW";
-   public static final double TAG_VALUE_VOLUME_DECREMENT_LOW_PRICE = -2.5;
+   public static final double TAG_VALUE_VOLUME_DECREMENT_LOW_PRICE = 2.5;
    public static final String TAG_NAME_LOW_PRICE = "PRI_LOW";
    public static final String TAG_NAME_HIGH_PRICE = "PRI_HIGH";
    public static final String TAG_NAME_MASS_POS_TRADING = "MASS_POS_TRAD";
