@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.orm.entity.task;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,6 +15,9 @@ public class ScanResult extends AbstractEntity {
    @JoinColumn(name="STOCK_ID")
    private Stock stock;
 
+   @Column(name="score", columnDefinition="numeric(7, 4)")
+   private double score;
+
    private String tags;
 
    public Stock getStock() {
@@ -22,6 +26,14 @@ public class ScanResult extends AbstractEntity {
 
    public void setStock(Stock stock) {
       this.stock = stock;
+   }
+
+   public double getScore() {
+      return score;
+   }
+
+   public void setScore(double score) {
+      this.score = score;
    }
 
    public String getTags() {

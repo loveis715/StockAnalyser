@@ -20,6 +20,7 @@ public class ScanResultConverter
          com.ambergarden.jewelry.orm.entity.task.ScanResult mo) {
       ScanResult scanResult = new ScanResult();
       scanResult.setId(mo.getId());
+      scanResult.setScore(mo.getScore());
       scanResult.setTags(mo.getTags());
       scanResult.setStock(stockConverter.convertFrom(mo.getStock()));
       return scanResult;
@@ -31,6 +32,7 @@ public class ScanResultConverter
       com.ambergarden.jewelry.orm.entity.task.ScanResult scanResult
          = new com.ambergarden.jewelry.orm.entity.task.ScanResult();
       scanResult.setId(dto.getId());
+      scanResult.setScore(dto.getScore());
       scanResult.setTags(dto.getTags());
       scanResult.setStock(stockConverter.convertTo(dto.getStock()));
       return scanResult;

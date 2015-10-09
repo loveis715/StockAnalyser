@@ -14,6 +14,7 @@ import com.ambergarden.jewelry.executor.analysis.MarketTradingData;
 import com.ambergarden.jewelry.executor.analysis.MarketTradingInfoHolder;
 import com.ambergarden.jewelry.executor.analysis.StockAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
+import com.ambergarden.jewelry.executor.tag.TagCategory;
 import com.ambergarden.jewelry.executor.tag.TagConverter;
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
@@ -28,6 +29,7 @@ import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
 
 @Component
 public class ScanTaskExecutor implements Runnable {
+   public static final double FILTER_SCORE = 3;
 
    @Autowired
    private ScanTaskService scanTaskService;
@@ -79,14 +81,25 @@ public class ScanTaskExecutor implements Runnable {
             }
 
             if (tags.size() != 0) {
-               ScanResult result = new ScanResult();
-               result.setId(-1);
-               result.setStock(pendingStock);
-               result.setTags(tagConverter.convertFrom(tags));
-               scanTask.getResults().add(result);
+               double score = calculateStockScore(tags);
+               if (score > FILTER_SCORE) {
+                  ScanResult result = new ScanResult();
+                  result.setId(-1);
+                  result.setStock(pendingStock);
+                  result.setTags(tagConverter.convertFrom(tags));
+                  result.setScore(score);
+                  scanTask.getResults().add(result);
+               }
             }
          }
 
+         List<ScanResult> results = scanTask.getResults();
+         Collections.sort(results, new Comparator<ScanResult>() {
+            @Override
+            public int compare(ScanResult result1, ScanResult result2) {
+               return result1.getScore() > result2.getScore() ? -1 : 1;
+            }
+         });
          scanTask.setTaskState(TaskState.SUCCESS);
          scanTask.setEndTime(new Date());
          scanTaskService.update(scanTask);
@@ -119,5 +132,17 @@ public class ScanTaskExecutor implements Runnable {
          }
       });
       return new MarketTradingInfoHolder(tradingDataSH, tradingDataSZ, pendingStocks);
+   }
+
+   private double calculateStockScore(List<Tag> tags) {
+      double score = 0;
+      for (Tag tag : tags) {
+         if (tag.getTagCategory() == TagCategory.POSITIVE) {
+            score += tag.getValue();
+         } else if (tag.getTagCategory() == TagCategory.NEGATIVE) {
+            score -= tag.getValue();
+         }
+      }
+      return score;
    }
 }

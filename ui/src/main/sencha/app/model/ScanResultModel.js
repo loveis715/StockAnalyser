@@ -17,6 +17,9 @@ Ext.define('jewelry.model.ScanResultModel', {
             }
         }
     }, {
+        name: 'score',
+        type: 'number'
+    }, {
         name: 'stockCode',
         calculate: function(data) {
             if (data.stock != null) {

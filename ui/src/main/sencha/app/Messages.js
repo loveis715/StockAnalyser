@@ -29,6 +29,7 @@ Ext.define('jewelry.Messages', {
         stockName: '股票名称',
         stockCode: '股票代码',
         stockCategory: '交易所',
+        score: '评分',
         unusualCases: '异常'
     },
     messages: {

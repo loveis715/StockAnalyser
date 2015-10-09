@@ -24,7 +24,11 @@ Ext.define('jewelry.view.unusual.UnusualViewController', {
                     resultStore = resultGrid.getStore();
                 resultStore.removeAll();
 
-                resultStore.setData(record.get('results'));
+                var results = record.get('results');
+                results = Ext.Array.sort(results, function(result1, result2) {
+                    return result1.score > result2.score ? -1 : 1;
+                });
+                resultStore.setData(results);
             }
         });
     }

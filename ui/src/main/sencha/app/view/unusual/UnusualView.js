@@ -94,6 +94,10 @@ Ext.define('jewelry.view.unusual.UnusualView', {
                 dataIndex: 'stockCategory',
                 flex: 1
             }, {
+                text: jewelry.Messages.headers.score,
+                dataIndex: 'score',
+                flex: 1
+            }, {
                 text: jewelry.Messages.headers.unusualCases,
                 dataIndex: 'unusualCases',
                 flex: 6,
