@@ -2,6 +2,9 @@ package com.ambergarden.jewelry.executor.tag;
 
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_SEGMENT_SEPARATOR;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class ValuableTag extends Tag {
    private final double value;
 
@@ -17,7 +20,9 @@ public class ValuableTag extends Tag {
 
    @Override
    public String toString() {
-      return super.toString() + TAG_SEGMENT_SEPARATOR + String.valueOf(value);
+      DecimalFormat format = new DecimalFormat("##.##");
+      format.setRoundingMode(RoundingMode.HALF_UP);
+      return super.toString() + TAG_SEGMENT_SEPARATOR + format.format(value);
    }
 
    public static Tag valueOf(String tagExpression) {
