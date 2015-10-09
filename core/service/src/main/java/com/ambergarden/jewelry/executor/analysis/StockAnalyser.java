@@ -33,7 +33,7 @@ public class StockAnalyser {
       List<TradingInfo> tradingInfoList = retrieveTradingInfo(stock);
       List<MinuteData> minuteDataList = retrieveMinuteDataList(stock);
 
-      List<Tag> result = volumeAnalyser.analyse(tradingInfoList, marketTradingData.getTradingInfo());
+      List<Tag> result = volumeAnalyser.analyse(stock, tradingInfoList, marketTradingData.getTradingInfo());
       result.addAll(priceAnalyser.analyse(tradingInfoList, marketTradingData.getTradingInfo()));
       result.addAll(minuteTradingAnalyser.analyse(minuteDataList, marketTradingData.getMinuteData()));
       return result;

@@ -5,11 +5,13 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_HIGH_PR
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_NEG_TRADING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_POS_TRADING;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_TRADING_RATIO_LOW;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_VOLUME_DECREMENT_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_VOLUME_INCREMENT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_VOLUME_INCREMENT_HIGH_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_VOLUME_INCREMENT_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_VOLUME_INCREMENT_WITH_PRICE_DOWN;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_TRADING_RATIO_LOW;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_DECREMENT_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_LOW_PRICE;
@@ -143,6 +145,19 @@ public class Tags {
 
       public MassNegativeTradingTag(double value) {
          super(TAG_NAME_MASS_NEG_TRADING, TagCategory.NEGATIVE, value);
+      }
+   }
+
+   /**
+    * Trade ratio is a little small
+    */
+   public static class TradingRatioLowTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_TRADING_RATIO_LOW) == 0;
+      }
+
+      public TradingRatioLowTag() {
+         super(TAG_NAME_TRADING_RATIO_LOW, TagCategory.NEGATIVE, TAG_VALUE_TRADING_RATIO_LOW);
       }
    }
 }

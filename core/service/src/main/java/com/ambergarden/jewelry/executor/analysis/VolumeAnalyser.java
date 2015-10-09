@@ -13,6 +13,7 @@ import com.ambergarden.jewelry.executor.analysis.bean.EnhancedTradingInfo;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.Tags;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
+import com.ambergarden.jewelry.schema.beans.stock.Stock;
 
 @Component
 public class VolumeAnalyser {
@@ -21,12 +22,12 @@ public class VolumeAnalyser {
    // Weight array for calculating the normal volume for stock. Use 0 to filter out today
    public static final int[] WEIGHT_ARRAY = new int[] {8, 9, 10, 11, 12, 13, 15, 17, 20, 0};
 
-   public List<Tag> analyse(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
+   public List<Tag> analyse(Stock stock, List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
       if (!isValidForAnalysing(tradingInfoList, marketTradingInfo)) {
          return new ArrayList<Tag>();
       }
 
-      return analyzeVolumeForThreeDays(tradingInfoList, marketTradingInfo);
+      return analyzeVolumeForThreeDays(stock, tradingInfoList, marketTradingInfo);
    }
 
    private boolean isValidForAnalysing(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
@@ -46,7 +47,8 @@ public class VolumeAnalyser {
       return true;
    }
 
-   private List<Tag> analyzeVolumeForThreeDays(List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
+   private List<Tag> analyzeVolumeForThreeDays(Stock stock,
+         List<TradingInfo> tradingInfoList, List<TradingInfo> marketTradingInfo) {
       double continousValue = 0;
       int continousStreak = 0;
 
@@ -108,6 +110,7 @@ public class VolumeAnalyser {
          result = analyzeVolume(baseVolume, tradingInfoList, 0);
          for (Tag tag : result) {
             if (Tags.VolumeIncrementTag.instanceOf(tag)) {
+               result.addAll(analyzeTradingRatio(stock, tradingInfoList.get(tradingInfoList.size() - 1)));
                continousValue += ((Tags.VolumeIncrementTag)tag).getValue();
                found = true;
                break;
@@ -115,7 +118,7 @@ public class VolumeAnalyser {
          }
 
          if (found && continousStreak > 0) {
-            result.add(new Tags.ContinousVolumeIncrementTag(continousValue / 2));
+            result.add(new Tags.ContinousVolumeIncrementTag(continousValue / 3));
          }
       }
 
@@ -152,6 +155,15 @@ public class VolumeAnalyser {
       } else {
          // Volume increase with normal price. Need evaluate it
          result.add(calculateVolumeIncrementalTag(relativeVolume));
+      }
+      return result;
+   }
+
+   private List<Tag> analyzeTradingRatio(Stock stock, TradingInfo tradingInfo) {
+      List<Tag> result = new ArrayList<Tag>();
+      double ratio = (double)tradingInfo.getVolume() / stock.getTotalVolume();
+      if (ratio < 0.05) {
+         result.add(new Tags.TradingRatioLowTag());
       }
       return result;
    }
