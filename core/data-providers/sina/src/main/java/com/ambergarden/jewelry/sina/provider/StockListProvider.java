@@ -11,12 +11,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.schema.beans.provider.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.provider.stock.StockCategory;
 import com.ambergarden.jewelry.sina.Constants;
-import com.ambergarden.jewelry.sina.Utils;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ public class StockListProvider {
     */
    public List<Stock> listAllStocks(StockCategory category) {
       List<Stock> result = new ArrayList<Stock>();
-      HttpClient client = Utils.getHttpClient();
+      HttpClient client = HttpClientBuilder.create().build();
 
       int pageNum = 1;
       boolean complete = false;
@@ -52,13 +52,13 @@ public class StockListProvider {
 
    private String retrieveStocks(HttpClient client, int pageNum, StockCategory category) {
       String url = constructRequestURL(pageNum, category);
-      HttpResponse response = null;
       HttpGet httpGet = null;
       int retryCount = 0;
-      while (response == null && retryCount < 3) {
+      while (retryCount < 3) {
          try {
             httpGet = new HttpGet(url);
-            response = client.execute(httpGet);
+            HttpResponse response = client.execute(httpGet);
+            return readContent(response);
          } catch (IOException e) {
             retryCount++;
          } finally {
@@ -66,24 +66,24 @@ public class StockListProvider {
          }
       }
 
+      return "";
+   }
+
+   private String readContent(HttpResponse response) throws IOException {
       if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
          // TODO: Throw an exception to indicate that we've failed to retrieve stocks
+         return "";
       }
 
       StringBuffer result = new StringBuffer();
-      try {
-         InputStream contentStream = response.getEntity().getContent();
-         BufferedReader rd = new BufferedReader(
-               new InputStreamReader(contentStream, "GBK"));
+      InputStream contentStream = response.getEntity().getContent();
+      BufferedReader rd = new BufferedReader(
+            new InputStreamReader(contentStream, "GBK"));
 
-         String line = "";
-         while ((line = rd.readLine()) != null) {
-            result.append(line);
-         }
-      } catch (IOException e) {
-         // TODO: Throw an exception to indicate that we've failed to read the content
+      String line = "";
+      while ((line = rd.readLine()) != null) {
+         result.append(line);
       }
-
       return result.toString();
    }
 

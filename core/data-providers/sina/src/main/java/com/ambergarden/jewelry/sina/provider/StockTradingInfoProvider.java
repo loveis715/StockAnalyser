@@ -68,13 +68,13 @@ public class StockTradingInfoProvider {
 
    private String retrieveData(String url) {
       HttpClient client = Utils.getHttpClient();
-      HttpResponse response = null;
       HttpGet httpGet = null;
       int retryCount = 0;
-      while (response == null && retryCount < 3) {
+      while (retryCount < 3) {
          try {
             httpGet = new HttpGet(url);
-            response = client.execute(httpGet);
+            HttpResponse response = client.execute(httpGet);
+            return readResponseBody(response);
          } catch (IOException e) {
             retryCount++;
          } finally {
@@ -82,25 +82,24 @@ public class StockTradingInfoProvider {
          }
       }
 
+      return "";
+   }
+
+   private String readResponseBody(HttpResponse response) throws IOException {
       if (response == null || response.getStatusLine() == null
             || response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
          return "";
       }
 
       StringBuffer responseText = new StringBuffer();
-      try {
-         InputStream contentStream = response.getEntity().getContent();
-         BufferedReader rd = new BufferedReader(
-               new InputStreamReader(contentStream, "GBK"));
+      InputStream contentStream = response.getEntity().getContent();
+      BufferedReader rd = new BufferedReader(
+            new InputStreamReader(contentStream, "GBK"));
 
-         String line = "";
-         while ((line = rd.readLine()) != null) {
-            responseText.append(line);
-         }
-      } catch (IOException e) {
-         // TODO: Throw an exception to indicate that we've failed to read the content
+      String line = "";
+      while ((line = rd.readLine()) != null) {
+         responseText.append(line);
       }
-
       return responseText.toString();
    }
 }
