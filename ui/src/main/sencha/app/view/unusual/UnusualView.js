@@ -124,7 +124,8 @@ Ext.define('jewelry.view.unusual.UnusualView', {
         Ext.Array.each(tags, function(tag) {
             var color = '',
                 segments = tag.split(':'),
-                text = segments[0] + ':' + segments[2];
+                tagName = jewelry.Messages.tagNames[segments[0]],
+                text = tagName + ':' + segments[2];
             if (segments[1] == '-1') {
                 color = 'lightgreen';
             } else if (segments[1] == '1') {

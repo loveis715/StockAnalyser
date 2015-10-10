@@ -38,5 +38,18 @@ Ext.define('jewelry.Messages', {
         currentProgress: '{0}%: 正在扫描股票{1}',
         notScanYet: '该日未执行扫描，请先执行股票异动扫描',
         view: '查看'
+    },
+    tagNames: {
+        VOL_INC: '增量',
+        VOL_CON_INC: '连续增量',
+        VOL_INC_DOWN: '放量下跌',
+        VOL_INC_LOW: '跌停打开',
+        VOL_INC_HIGH: '涨停打开',
+        VOL_DEC_LOW: '跌停',
+        PRI_LOW: '价格低位',
+        PRI_HIGH: '价格高位',
+        MASS_POS_TRAD: '堆量',
+        MASS_NEG_TRAD: '杀跌',
+        TRAD_RATIO_LOW: '换手率低'
     }
 });
