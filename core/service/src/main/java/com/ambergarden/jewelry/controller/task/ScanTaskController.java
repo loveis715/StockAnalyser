@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.controller.task;
 
+import static com.ambergarden.jewelry.Constants.CATEGORY_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.FIND_BY_ID_URL;
 import static com.ambergarden.jewelry.Constants.FIND_LAST_URL;
 import static com.ambergarden.jewelry.Constants.ID_PATH_VARIABLE;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ambergarden.jewelry.schema.beans.task.ScanTask;
+import com.ambergarden.jewelry.schema.beans.task.ScanType;
 import com.ambergarden.jewelry.service.task.ScanTaskService;
 
 @Controller
@@ -43,7 +45,7 @@ public class ScanTaskController {
 
    @RequestMapping(value = FIND_LAST_URL, method = RequestMethod.GET)
    @ResponseBody
-   public ScanTask getLast() {
-      return scanTaskService.findLast();
+   public ScanTask getLast(@PathVariable(CATEGORY_PATH_VARIABLE) ScanType scanType) {
+      return scanTaskService.findLast(scanType);
    }
 }

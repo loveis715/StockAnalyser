@@ -22,6 +22,7 @@ import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockCategory;
 import com.ambergarden.jewelry.schema.beans.task.ScanResult;
 import com.ambergarden.jewelry.schema.beans.task.ScanTask;
+import com.ambergarden.jewelry.schema.beans.task.ScanType;
 import com.ambergarden.jewelry.schema.beans.task.TaskState;
 import com.ambergarden.jewelry.service.stock.StockService;
 import com.ambergarden.jewelry.service.task.ScanTaskService;
@@ -63,7 +64,7 @@ public class ScanTaskExecutor implements Runnable {
          return;
       }
 
-      ScanTask scanTask = scanTaskService.findLast();
+      ScanTask scanTask = scanTaskService.findLast(ScanType.FULL_DAY);
       if (scanTask == null) {
          return;
       }
@@ -104,7 +105,7 @@ public class ScanTaskExecutor implements Runnable {
          scanTask.setEndTime(new Date());
          scanTaskService.update(scanTask);
       } catch (RuntimeException ex) {
-         scanTask = scanTaskService.findLast();
+         scanTask = scanTaskService.findLast(ScanType.FULL_DAY);
          scanTask.setTaskState(TaskState.FAILED);
          scanTask.setEndTime(new Date());
          scanTaskService.update(scanTask);

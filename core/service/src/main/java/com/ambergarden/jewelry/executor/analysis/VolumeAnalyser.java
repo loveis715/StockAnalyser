@@ -173,7 +173,7 @@ public class VolumeAnalyser {
       List<EnhancedTradingInfo> tradingInfos = convertToEnhancedTradingInfo(tradingInfoList);
       EnhancedTradingInfo lastTradingInfo = tradingInfos.get(tradingInfoList.size() - 1 - offset);
       if (lastTradingInfo.getPriceChange() < -0.095) {
-         // Nearly no trade and reaches lower limit in previous day
+         // Nearly no trade and reaches lower limit
          result.add(new Tags.VolumeDecrementWithLowPrice());
       }
       return result;

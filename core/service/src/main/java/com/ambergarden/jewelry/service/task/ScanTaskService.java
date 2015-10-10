@@ -8,6 +8,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.ambergarden.jewelry.converter.task.ScanTaskConverter;
+import com.ambergarden.jewelry.converter.task.ScanTypeConverter;
 import com.ambergarden.jewelry.executor.ScanTaskExecutor;
 import com.ambergarden.jewelry.orm.entity.task.ScanType;
 import com.ambergarden.jewelry.orm.entity.task.TaskState;
@@ -26,6 +27,9 @@ public class ScanTaskService {
    private ScanTaskRepository scanTaskRepository;
 
    @Autowired
+   private ScanTypeConverter scanTypeConverter;
+
+   @Autowired
    private ScanTaskConverter scanTaskConverter;
 
    public List<ScanTask> list() {
@@ -41,9 +45,10 @@ public class ScanTaskService {
       return scanTaskConverter.convertFrom(scanTask);
    }
 
-   public ScanTask findLast() {
+   public ScanTask findLast(com.ambergarden.jewelry.schema.beans.task.ScanType scanType) {
+      ScanType type = scanTypeConverter.convertTo(scanType);
       com.ambergarden.jewelry.orm.entity.task.ScanTask scanTask
-         = scanTaskRepository.findFirstByOrderByStartTimeDesc();
+         = scanTaskRepository.findLastByScanType(type);
       if (scanTask != null) {
          return scanTaskConverter.convertFrom(scanTask);
       } else {
