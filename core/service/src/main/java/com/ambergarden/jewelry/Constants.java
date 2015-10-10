@@ -8,10 +8,11 @@ public class Constants {
 
    // URL constants
    public final static String ID_PATH_VARIABLE = "id";
-   public final static String CATEGORY_PATH_VARIABLE = "category";
+   public final static String TYPE_VARIABLE = "type";
    public final static String ID_URL = "/{id}";
    public final static String FIND_BY_ID_URL = ID_URL;
-   public final static String FIND_LAST_URL = "/last/{" + CATEGORY_PATH_VARIABLE + "}";
+   public final static String FIND_LAST_URL = "/last";
+   public final static String FIND_LAST_BY_TYPE_URL = "/last/{" + TYPE_VARIABLE + "}";
    public final static String STATISTICS = "/statistics";
 
    // Stock code prefix

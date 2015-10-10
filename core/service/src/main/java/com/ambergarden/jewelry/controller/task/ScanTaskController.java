@@ -1,10 +1,10 @@
 package com.ambergarden.jewelry.controller.task;
 
-import static com.ambergarden.jewelry.Constants.CATEGORY_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.FIND_BY_ID_URL;
-import static com.ambergarden.jewelry.Constants.FIND_LAST_URL;
+import static com.ambergarden.jewelry.Constants.FIND_LAST_BY_TYPE_URL;
 import static com.ambergarden.jewelry.Constants.ID_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.SCAN_TASKS_URL;
+import static com.ambergarden.jewelry.Constants.TYPE_VARIABLE;
 
 import java.util.List;
 
@@ -43,9 +43,9 @@ public class ScanTaskController {
       return scanTaskService.create();
    }
 
-   @RequestMapping(value = FIND_LAST_URL, method = RequestMethod.GET)
+   @RequestMapping(value = FIND_LAST_BY_TYPE_URL, method = RequestMethod.GET)
    @ResponseBody
-   public ScanTask getLast(@PathVariable(CATEGORY_PATH_VARIABLE) ScanType scanType) {
+   public ScanTask getLast(@PathVariable(TYPE_VARIABLE) ScanType scanType) {
       return scanTaskService.findLast(scanType);
    }
 }
