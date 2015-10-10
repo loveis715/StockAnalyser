@@ -18,7 +18,11 @@ Ext.define('jewelry.Messages', {
         lastScanTime: '上次扫描时间',
         startScan: '开始扫描',
         selectDate: '选择日期',
-        ok: '完成'
+        ok: '完成',
+        search: '搜索',
+        stockAnalysis: '个股分析',
+        addToMyStock: '加入自选',
+        removeFromMyStock: '移出自选'
     },
     headers: {
         startTime: '开始时间',
@@ -37,7 +41,8 @@ Ext.define('jewelry.Messages', {
         sycingTaskForShenzhen: '正在同步深成股票列表...',
         currentProgress: '{0}%: 正在扫描股票{1}',
         notScanYet: '该日未执行扫描，请先执行股票异动扫描',
-        view: '查看'
+        view: '查看',
+        inputStockName: '输入股票名称...'
     },
     tagNames: {
         VOL_INC: '增量',
