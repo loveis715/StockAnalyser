@@ -1,20 +1,32 @@
 package com.ambergarden.jewelry.service.stock;
 
+import static com.ambergarden.jewelry.Constants.PREFIX_SH;
+import static com.ambergarden.jewelry.Constants.PREFIX_SZ;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ambergarden.jewelry.converter.stock.MinuteDataConverter;
 import com.ambergarden.jewelry.converter.stock.StockConverter;
+import com.ambergarden.jewelry.converter.stock.TradingInfoConverter;
 import com.ambergarden.jewelry.orm.entity.stock.StockCategory;
 import com.ambergarden.jewelry.orm.entity.task.StockSyncingTask;
 import com.ambergarden.jewelry.orm.repository.stock.StockRepository;
 import com.ambergarden.jewelry.orm.repository.task.StockSyncingTaskRepository;
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
+import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockStatistics;
+import com.ambergarden.jewelry.schema.beans.stock.StockTradings;
+import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
 
 @Service
 public class StockService {
+   @Autowired
+   private StockTradingInfoProvider tradingInfoProvider;
+
    @Autowired
    private StockRepository stockRepository;
 
@@ -23,6 +35,12 @@ public class StockService {
 
    @Autowired
    private StockConverter stockConverter;
+
+   @Autowired
+   private TradingInfoConverter tradingInfoConverter;
+
+   @Autowired
+   private MinuteDataConverter minuteDataConverter;
 
    public List<Stock> findAll() {
       return stockConverter.convertListFrom(stockRepository.findAll());
@@ -58,5 +76,30 @@ public class StockService {
          statistics.setLastSyncTime(lastSyncingTask.getEndTime());
       }
       return statistics;
+   }
+
+   public StockTradings getTradings(String name) {
+      String code = "";
+      com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
+         = stockRepository.findByName(name);
+      if (stockMO != null) {
+         String prefix = stockMO.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
+         code = prefix + stockMO.getCode();
+      } else {
+         // TODO: We need to support searching from code
+         code = name;
+      }
+
+      List<TradingInfo> tradingInfos = tradingInfoProvider.getDailyTraidingInfo(code);
+      List<MinuteData> minuteDatas = tradingInfoProvider.getPerMinuteTradingInfo(code);
+
+      StockTradings stockTradings = new StockTradings();
+      if (stockMO != null) {
+         // For some specific types of stock, like sh000001, will not have a corresponding stock
+         stockTradings.setStock(stockConverter.convertFrom(stockMO));
+      }
+      stockTradings.getTradingInfos().addAll(tradingInfoConverter.convertListFrom(tradingInfos));
+      stockTradings.getMinuteDatas().addAll(minuteDataConverter.convertListFrom(minuteDatas));
+      return stockTradings;
    }
 }

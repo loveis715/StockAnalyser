@@ -9,4 +9,6 @@ import com.ambergarden.jewelry.orm.entity.stock.StockCategory;
 @Repository
 public interface StockRepository extends CrudRepository<Stock, Integer> {
    int countByStockCategory(StockCategory stockCategory);
+
+   Stock findByName(String name);
 }

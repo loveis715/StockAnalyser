@@ -1,15 +1,19 @@
 package com.ambergarden.jewelry.controller.stock;
 
+import static com.ambergarden.jewelry.Constants.NAME_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.STATISTICS;
 import static com.ambergarden.jewelry.Constants.STOCK_URL;
+import static com.ambergarden.jewelry.Constants.TRADINGS;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ambergarden.jewelry.schema.beans.stock.StockStatistics;
+import com.ambergarden.jewelry.schema.beans.stock.StockTradings;
 import com.ambergarden.jewelry.service.stock.StockService;
 
 @Controller
@@ -22,5 +26,11 @@ public class StockController {
    @ResponseBody
    public StockStatistics getStatistics() {
       return stockService.getStatistics();
+   }
+
+   @RequestMapping(value = TRADINGS, method = RequestMethod.GET)
+   @ResponseBody
+   public StockTradings getTradings(@PathVariable(NAME_PATH_VARIABLE) String name) {
+      return stockService.getTradings(name);
    }
 }
