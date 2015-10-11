@@ -1,7 +1,11 @@
 Ext.define('jewelry.view.stock.StockPage', {
     extend: 'Ext.panel.Panel',
+    requires: [
+        'jewelry.view.stock.StockPageController'
+    ],
 
     xtype: 'jewelry.stockPage',
+    controller: 'stockPage',
 
     padding: '9 9 9 9',
 
