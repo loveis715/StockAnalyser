@@ -19,6 +19,7 @@ Ext.define('jewelry.Messages', {
         startScan: '开始扫描',
         selectDate: '选择日期',
         ok: '完成',
+        showAsText: '文本表示',
         search: '搜索',
         stockAnalysis: '个股分析',
         addToMyStock: '加入自选',
@@ -35,6 +36,16 @@ Ext.define('jewelry.Messages', {
         stockCategory: '交易所',
         score: '评分',
         unusualCases: '异常'
+    },
+    formatters: {
+        separator: '\t\t',
+        return: '\n',
+        startTime: '开始时间：',
+        endTime: '结束时间：',
+        scanType: '扫描类型：',
+        fullScan: '全盘扫描',
+        taskState: '任务状态：',
+        unusualCount: '异常数目：'
     },
     messages: {
         sycingTaskForShanghai: '正在同步上证股票列表...',
@@ -56,5 +67,11 @@ Ext.define('jewelry.Messages', {
         MASS_POS_TRAD: '堆量',
         MASS_NEG_TRAD: '杀跌',
         TRAD_RATIO_LOW: '换手率低'
+    },
+    scanTypes: {
+        FULL_SCAN: '全盘扫描'
+    },
+    taskStates: {
+        SUCCESS: '成功'
     }
 });

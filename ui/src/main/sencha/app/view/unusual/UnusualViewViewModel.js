@@ -8,6 +8,7 @@ Ext.define('jewelry.view.unusual.UnusualViewViewModel', {
         endTime: '',
         scanType: '',
         taskState: '',
-        unusualCount: ''
+        unusualCount: '',
+        results: []
     }
 });

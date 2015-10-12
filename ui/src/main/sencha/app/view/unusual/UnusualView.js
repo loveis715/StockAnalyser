@@ -109,6 +109,12 @@ Ext.define('jewelry.view.unusual.UnusualView', {
 
         this.bbar = ['->', {
             xtype: 'button',
+            text: jewelry.Messages.labels.showAsText,
+            handler: function() {
+                me.showAsText();
+            }
+        }, {
+            xtype: 'button',
             text: jewelry.Messages.labels.ok,
             handler: function() {
                 me.fireEvent('viewComplete');
@@ -116,6 +122,73 @@ Ext.define('jewelry.view.unusual.UnusualView', {
         }];
 
         this.callParent(arguments);
+    },
+
+    showAsText: function() {
+        var text = this.getTextRepresentation(),
+            dialog = Ext.create('Ext.window.Window', {
+                title: jewelry.Messages.labels.showAsText,
+                width: 800,
+                height: 500,
+                modal: true,
+                layout: 'border',
+                bbar: ['->', {
+                    xtype: 'button',
+                    text: jewelry.Messages.labels.ok,
+                    handler: function() {
+                        dialog.hide();
+                    }
+                }],
+                items: [{
+                    xtype: 'textarea',
+                    value: text,
+                    editable: false,
+                    hideLabel: true,
+                    region: 'center'
+                }]
+            });
+        dialog.show();
+    },
+
+    getTextRepresentation: function() {
+        var text = '',
+            viewModel = this.getViewModel(),
+            startTime = viewModel.get('startTime'),
+            endTime = viewModel.get('endTime'),
+            scanType = viewModel.get('scanType'),
+            taskState = viewModel.get('taskState'),
+            unusualCount = viewModel.get('unusualCount'),
+            results = viewModel.get('results');
+        text += jewelry.Messages.formatters.startTime + startTime + jewelry.Messages.formatters.separator;
+        text += jewelry.Messages.formatters.endTime + endTime + jewelry.Messages.formatters.separator;
+        text += jewelry.Messages.formatters.scanType + jewelry.Messages.scanTypes.FULL_SCAN + jewelry.Messages.formatters.return;
+        text += jewelry.Messages.formatters.taskState + jewelry.Messages.taskStates[taskState] + jewelry.Messages.formatters.separator;
+        text += jewelry.Messages.formatters.unusualCount + unusualCount + jewelry.Messages.formatters.return;
+
+        Ext.Array.each(results, function(result) {
+            var stockName = result.stockName;
+            text += stockName + jewelry.Messages.formatters.separator;
+
+            var stockCode = (result.stockCategory == 'SHANGHAI' ? 'sh' : 'sz') + result.stockCode;
+            text += stockCode + jewelry.Messages.formatters.separator;
+
+            var score = result.score;
+            text += score + jewelry.Messages.formatters.separator;
+
+            var tagString = '',
+                tags = result.unusualCases.split(';');
+            Ext.Array.each(tags, function(tag) {
+                var segments = tag.split(':'),
+                    tagName = jewelry.Messages.tagNames[segments[0]],
+                    text = tagName + ':' + segments[2];
+                if (tagString.length > 0) {
+                    tagString += ';';
+                }
+                tagString += text;
+            });
+            text += tagString + jewelry.Messages.formatters.return;
+        });
+        return text;
     },
     
     getTagHtml: function(tagString) {

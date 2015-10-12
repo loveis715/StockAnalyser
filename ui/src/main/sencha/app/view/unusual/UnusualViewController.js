@@ -19,6 +19,7 @@ Ext.define('jewelry.view.unusual.UnusualViewController', {
                 viewModel.set('scanType', record.get('scanType'));
                 viewModel.set('taskState', record.get('taskState'));
                 viewModel.set('unusualCount', record.get('unusualCount'));
+                viewModel.set('results', record.get('results'));
 
                 var resultGrid = view.lookupReference('resultGrid'),
                     resultStore = resultGrid.getStore();
