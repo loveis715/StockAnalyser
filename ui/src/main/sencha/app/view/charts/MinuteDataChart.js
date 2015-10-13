@@ -2,7 +2,10 @@ Ext.define('jewelry.view.charts.MinuteDataChart', {
     extend: 'jewelry.view.charts.ChartBase',
     requires: [
         'Ext.draw.Color',
-        'Ext.draw.Container'
+        'Ext.draw.Container',
+        'Ext.chart.series.Line',
+        'Ext.chart.axis.Numeric',
+        'Ext.chart.CartesianChart'
     ],
 
     xtype: 'jewelry.minuteDataChart',
