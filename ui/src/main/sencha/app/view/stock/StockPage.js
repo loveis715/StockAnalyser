@@ -1,12 +1,14 @@
 Ext.define('jewelry.view.stock.StockPage', {
     extend: 'Ext.panel.Panel',
     requires: [
-        'jewelry.view.stock.StockPageController'
+        'jewelry.view.stock.StockPageController',
+        'jewelry.view.charts.MinuteDataChart'
     ],
 
     xtype: 'jewelry.stockPage',
     controller: 'stockPage',
 
+    layout: 'border',
     padding: '9 9 9 9',
 
     tbar: [{
@@ -37,5 +39,18 @@ Ext.define('jewelry.view.stock.StockPage', {
         style: {
             backgroundColor: 'white'
         }
+    }],
+
+    items: [{
+        xtype: 'panel',
+        region: 'east',
+        layout: 'border',
+        width: 488,
+        height: '100%',
+        items: [{
+            xtype: 'jewelry.minuteDataChart',
+            reference: 'minuteDataChart',
+            region: 'north'
+        }]
     }]
 });

@@ -4,6 +4,7 @@ Ext.define('jewelry.Application', {
     name: 'jewelry',
     requires: [
         'jewelry.Messages',
-        'jewelry.Constants'
+        'jewelry.Constants',
+        'jewelry.view.stock.StockPage'// Force load the page to eagerly load its huge amont of dependencies
     ]
 });
