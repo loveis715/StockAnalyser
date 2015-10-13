@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ambergarden.jewelry.converter.task.ScanTaskConverter;
 import com.ambergarden.jewelry.converter.task.ScanTypeConverter;
 import com.ambergarden.jewelry.executor.ScanTaskExecutor;
+import com.ambergarden.jewelry.executor.StockAnalysisExecutor;
 import com.ambergarden.jewelry.orm.entity.task.ScanType;
 import com.ambergarden.jewelry.orm.entity.task.TaskState;
 import com.ambergarden.jewelry.orm.repository.task.ScanTaskRepository;
@@ -23,6 +24,9 @@ public class ScanTaskService {
 
    @Autowired
    private ScanTaskExecutor scanTaskExecutor;
+
+   @Autowired
+   private StockAnalysisExecutor stockAnalysisExecutor;
 
    @Autowired
    private ScanTaskRepository scanTaskRepository;
@@ -63,10 +67,21 @@ public class ScanTaskService {
       scanTask.setStartTime(new Date());
       scanTask.setPercentage(0);
       scanTask.setTaskState(TaskState.SCHEDULED);
-      scanTask.setScanType(ScanType.FULL_DAY);
+      scanTask.setScanType(scanTypeConverter.convertTo(request.getScanType()));
 
       scanTask = scanTaskRepository.save(scanTask);
-      taskExecutor.execute(scanTaskExecutor);
+      switch (request.getScanType()) {
+      case FULL_DAY:
+         taskExecutor.execute(scanTaskExecutor);
+         break;
+      case SINGLE_STOCK:
+         stockAnalysisExecutor.setTargetStocks(request.getStockIds());
+         taskExecutor.execute(stockAnalysisExecutor);
+         break;
+      case TRADING_ANALYSIS:
+      case HALF_DAY:
+         break;
+      }
 
       // We will not persist the request for now.
       request.setScanTaskId(scanTask.getId());

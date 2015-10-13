@@ -45,7 +45,8 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
     startFullDayScan: function() {
         var me = this,
             model = Ext.create('jewelry.model.ScanTaskRequestModel', {
-                scanType: jewelry.Constants.scanTypes.FULL_DAY
+                scanType: jewelry.Constants.scanTypes.FULL_DAY,
+                scanTaskId: -1
             });
         model.set('id', -1);
         model.save({

@@ -49,6 +49,10 @@ public class StockService {
    public Stock findById(int id) {
       com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
          = stockRepository.findOne(id);
+      if (stockMO == null) {
+         return null;
+      }
+
       return stockConverter.convertFrom(stockMO);
    }
 
