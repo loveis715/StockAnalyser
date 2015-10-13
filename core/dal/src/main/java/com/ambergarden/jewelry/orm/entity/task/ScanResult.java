@@ -15,7 +15,7 @@ public class ScanResult extends AbstractEntity {
    @JoinColumn(name="STOCK_ID")
    private Stock stock;
 
-   @Column(name="score", columnDefinition="numeric(7, 4)")
+   @Column(name="score", columnDefinition="numeric(5, 2)")
    private double score;
 
    private String tags;
