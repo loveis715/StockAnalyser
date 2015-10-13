@@ -44,12 +44,14 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
 
     startFullDayScan: function() {
         var me = this,
-            model = Ext.create('jewelry.model.ScanTaskModel');
+            model = Ext.create('jewelry.model.ScanTaskRequestModel', {
+                scanType: jewelry.Constants.scanTypes.FULL_DAY
+            });
         model.set('id', -1);
         model.save({
             scope: me,
             success: function(record, operation) {
-                me.populateFullDayScanTaskState(record.get('id'));
+                me.populateFullDayScanTaskState(record.get('scanTaskId'));
             }
         });
     },

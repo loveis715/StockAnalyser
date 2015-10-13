@@ -79,4 +79,12 @@
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
+
+   <xsd:complexType name="scan-task-request">
+      <xsd:sequence>
+         <xsd:element name="scan-type" type="scan-type"/>
+         <xsd:element name="scan-task-id" type="xsd:int"/>
+         <xsd:element name="stock-ids" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
 </xsd:schema>

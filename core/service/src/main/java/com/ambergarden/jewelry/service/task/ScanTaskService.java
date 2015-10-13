@@ -14,6 +14,7 @@ import com.ambergarden.jewelry.orm.entity.task.ScanType;
 import com.ambergarden.jewelry.orm.entity.task.TaskState;
 import com.ambergarden.jewelry.orm.repository.task.ScanTaskRepository;
 import com.ambergarden.jewelry.schema.beans.task.ScanTask;
+import com.ambergarden.jewelry.schema.beans.task.ScanTaskRequest;
 
 @Service
 public class ScanTaskService {
@@ -56,7 +57,7 @@ public class ScanTaskService {
       }
    }
 
-   public ScanTask create() {
+   public ScanTaskRequest create(ScanTaskRequest request) {
       com.ambergarden.jewelry.orm.entity.task.ScanTask scanTask
          = new com.ambergarden.jewelry.orm.entity.task.ScanTask();
       scanTask.setStartTime(new Date());
@@ -67,7 +68,9 @@ public class ScanTaskService {
       scanTask = scanTaskRepository.save(scanTask);
       taskExecutor.execute(scanTaskExecutor);
 
-      return scanTaskConverter.convertFrom(scanTask);
+      // We will not persist the request for now.
+      request.setScanTaskId(scanTask.getId());
+      return request;
    }
 
    public ScanTask update(ScanTask task) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ambergarden.jewelry.schema.beans.task.ScanTask;
+import com.ambergarden.jewelry.schema.beans.task.ScanTaskRequest;
 import com.ambergarden.jewelry.schema.beans.task.ScanType;
 import com.ambergarden.jewelry.service.task.ScanTaskService;
 
@@ -39,8 +40,8 @@ public class ScanTaskController {
 
    @RequestMapping(method = RequestMethod.POST)
    @ResponseBody
-   public ScanTask create() {
-      return scanTaskService.create();
+   public ScanTaskRequest create(ScanTaskRequest request) {
+      return scanTaskService.create(request);
    }
 
    @RequestMapping(value = FIND_LAST_BY_TYPE_URL, method = RequestMethod.GET)

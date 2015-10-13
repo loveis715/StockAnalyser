@@ -4,5 +4,8 @@ Ext.define('jewelry.Constants', {
     stockCategory: {
         SHANGHAI: 'SHANGHAI',
         SHENZHEN: 'SHENZHEN'
+    },
+    scanTypes: {
+        FULL_DAY: 'FULL_DAY'
     }
 });
