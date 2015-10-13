@@ -12,6 +12,10 @@ Ext.define('jewelry.view.charts.ChartBase', {
     },
 
     onMouseMoveInternal: function(e, target) {
+        if (!this.isVisible()) {
+            return;
+        }
+
         var mouseXY = e.getXY(),
             xy = this.getXY(),
             width = this.getWidth(),
