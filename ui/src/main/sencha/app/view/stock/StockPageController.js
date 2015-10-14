@@ -8,6 +8,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
     alias: 'controller.stockPage',
 
     init: function() {
+        var me = this;
         if (jewelry.view.stock.StockTradingCache.tradings == null) {
             jewelry.model.StockTradingsModel.load('sh000001', {
                 scope: this,
@@ -15,22 +16,41 @@ Ext.define('jewelry.view.stock.StockPageController', {
                     if (jewelry.view.stock.StockTradingCache.tradings == null) {
                         jewelry.view.stock.StockTradingCache.tradings = record.data;
 
-                        var tradingInfos = record.get('tradingInfos'),
-                            prevClose, tradingDate;
-                        if (tradingInfos.length >= 2) {
-                            prevClose = tradingInfos[tradingInfos.length - 2].close;
-                        } else if (tradingInfos.length == 1) {
-                            prevClose = tradingInfos[tradingInfos.length - 1].open;
-                        } else {
-                            return;
-                        }
-
                         var view = this.getView(),
+                            prevClose = me.getPrevClose(record.get('tradingInfos'), record.get('minuteDatas')),
                             minuteDataChart = view.lookupReference('minuteDataChart');
                         minuteDataChart.renderMinutePrice(record.get('minuteDatas'), prevClose);
                     }
                 }
             });
+        }
+    },
+
+    getPrevClose: function(tradingInfos, minuteDatas) {
+        if (minuteDatas != null && minuteDatas.length > 0) {
+            // We have trading today
+            var newOpen = minuteDatas[minuteDatas.length - 1].price;
+            if (tradingInfos.length >= 2) {
+                if (tradingInfos[tradingInfos.length - 1].open == newOpen) {
+                    // Has end today's trading
+                    return tradingInfos[tradingInfos.length - 2].close;
+                } else {
+                    // Has not end today's trading
+                    return tradingInfos[tradingInfos.length - 1].close;
+                }
+            } else if (tradingInfos.length == 1) {
+                return tradingInfos[tradingInfos.length - 1].open;
+            } else {
+                return 0;
+            }
+        } else {
+            if (tradingInfos.length >= 2) {
+                return tradingInfos[tradingInfos.length - 2].close;
+            } else if (tradingInfos.length == 1) {
+                return tradingInfos[tradingInfos.length - 1].open;
+            } else {
+                return 0;
+            }
         }
     }
 });
