@@ -2,14 +2,18 @@ Ext.define('jewelry.view.stock.StockPage', {
     extend: 'Ext.panel.Panel',
     requires: [
         'jewelry.view.stock.StockPageController',
+        'jewelry.view.stock.StockPageViewModel',
         'jewelry.view.charts.MinuteDataChart'
     ],
 
     xtype: 'jewelry.stockPage',
     controller: 'stockPage',
+    viewModel: 'stockPage',
 
     layout: 'border',
     padding: '9 9 9 9',
+    minHeight: 800,
+    minWidth: 1200,
 
     tbar: [{
         xtype: 'textfield',
@@ -51,6 +55,59 @@ Ext.define('jewelry.view.stock.StockPage', {
             xtype: 'jewelry.minuteDataChart',
             reference: 'minuteDataChart',
             region: 'north'
+        }]
+    }, {
+        xtype: 'panel',
+        region: 'east',
+        width: 488,
+        height: '100%'
+    }, {
+        xtype: 'panel',
+        region: 'center',
+        height: '100%',
+        layout: 'vbox',
+        items: [{
+            xtype: 'label',
+            height: 50,
+            style: 'font-size: 30px',
+            // label is just a label element in html, which does not take the height style
+            // into layout calculation. So it does not participate in layout calculation
+            // properly, and will always be 12px height. Use this padding to adjust layout
+            padding: '10 0 0 0',
+            bind: {
+                text: '{stockName} ({stockCode})'
+            }
+        }, {
+            xtype: 'panel',
+            layout: {
+                type: 'table',
+                columns: 2
+            },
+            items: [{
+                xtype: 'displayfield',
+                fieldLabel: jewelry.Messages.labels.prevClose,
+                bind: {
+                    value: '{prevClose}'
+                }
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: jewelry.Messages.labels.open,
+                bind: {
+                    value: '{open}'
+                }
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: jewelry.Messages.labels.high,
+                bind: {
+                    value: '{high}'
+                }
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: jewelry.Messages.labels.low,
+                bind: {
+                    value: '{low}'
+                }
+            }]
         }]
     }]
 });

@@ -23,7 +23,11 @@ Ext.define('jewelry.Messages', {
         search: '搜索',
         stockAnalysis: '个股分析',
         addToMyStock: '加入自选',
-        removeFromMyStock: '移出自选'
+        removeFromMyStock: '移出自选',
+        prevClose: '昨收',
+        open: '今开',
+        high: '最高',
+        low: '最低'
     },
     headers: {
         startTime: '开始时间',
