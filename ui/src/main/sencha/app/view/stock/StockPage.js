@@ -17,12 +17,14 @@ Ext.define('jewelry.view.stock.StockPage', {
 
     tbar: [{
         xtype: 'textfield',
+        reference: 'stockNameInput',
         width: 300,
         fieldLabel: jewelry.Messages.labels.stockAnalysis,
         emptyText: jewelry.Messages.messages.inputStockName
     }, {
         xypte: 'button',
-        text: jewelry.Messages.labels.search
+        text: jewelry.Messages.labels.search,
+        handler: 'onSearch'
     }, {
         xtype: 'button',
         width: 82,

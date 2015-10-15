@@ -6,7 +6,6 @@ Ext.define('jewelry.proxy.StockProxy', {
     alias: 'proxy.stockProxy',
 
     model: 'jewelry.model.StockModel',
-    appendId: false,
     format: 'json',
     reader: {
         type: 'json'

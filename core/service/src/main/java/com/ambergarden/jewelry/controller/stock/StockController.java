@@ -1,10 +1,10 @@
 package com.ambergarden.jewelry.controller.stock;
 
+import static com.ambergarden.jewelry.Constants.ALIAS;
 import static com.ambergarden.jewelry.Constants.ALIAS_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.STATISTICS;
 import static com.ambergarden.jewelry.Constants.STOCK_URL;
 import static com.ambergarden.jewelry.Constants.TRADINGS;
-import static com.ambergarden.jewelry.Constants.ALIAS;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,15 +30,15 @@ public class StockController {
       return stockService.getStatistics();
    }
 
-   @RequestMapping(value = TRADINGS, method = RequestMethod.GET)
-   @ResponseBody
-   public StockTradings getTradings(@PathVariable(ALIAS_PATH_VARIABLE) String alias) {
-      return stockService.getTradings(alias);
-   }
-
    @RequestMapping(value = ALIAS, method = RequestMethod.GET)
    @ResponseBody
    public Stock getByAlias(@PathVariable(ALIAS_PATH_VARIABLE) String alias) {
       return stockService.getByAlias(alias);
+   }
+
+   @RequestMapping(value = TRADINGS, method = RequestMethod.GET)
+   @ResponseBody
+   public StockTradings getTradings(@PathVariable(ALIAS_PATH_VARIABLE) String alias) {
+      return stockService.getTradings(alias);
    }
 }
