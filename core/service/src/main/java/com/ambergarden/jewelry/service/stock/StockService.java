@@ -82,16 +82,16 @@ public class StockService {
       return statistics;
    }
 
-   public StockTradings getTradings(String name) {
+   public StockTradings getTradings(String alias) {
       String code = "";
       com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
-         = stockRepository.findByName(name);
+         = stockRepository.findByName(alias);
       if (stockMO != null) {
          String prefix = stockMO.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
          code = prefix + stockMO.getCode();
       } else {
          // TODO: We need to support searching from code
-         code = name;
+         code = alias;
       }
 
       List<TradingInfo> tradingInfos = tradingInfoProvider.getDailyTraidingInfo(code);
@@ -105,5 +105,24 @@ public class StockService {
       stockTradings.getTradingInfos().addAll(tradingInfoConverter.convertListFrom(tradingInfos));
       stockTradings.getMinuteDatas().addAll(minuteDataConverter.convertListFrom(minuteDatas));
       return stockTradings;
+   }
+
+   public Stock getByAlias(String alias) {
+      com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
+         = stockRepository.findByName(alias);
+      if (stockMO == null) {
+         String code = "";
+         if (alias.startsWith(PREFIX_SZ) || alias.startsWith(PREFIX_SH)) {
+            code = alias.substring(2);
+         }
+         code = alias;
+         stockMO = stockRepository.findByCode(code);
+      }
+
+      if (stockMO != null) {
+         return stockConverter.convertFrom(stockMO);
+      } else {
+         return null;
+      }
    }
 }

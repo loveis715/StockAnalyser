@@ -8,14 +8,16 @@ public class Constants {
 
    // URL constants
    public final static String ID_PATH_VARIABLE = "id";
-   public final static String NAME_PATH_VARIABLE = "name";
+   public final static String ALIAS_PATH_VARIABLE = "alias";
    public final static String TYPE_VARIABLE = "type";
    public final static String ID_URL = "/{id}";
    public final static String FIND_BY_ID_URL = ID_URL;
    public final static String FIND_LAST_URL = "/last";
    public final static String FIND_LAST_BY_TYPE_URL = "/last/{" + TYPE_VARIABLE + "}";
    public final static String STATISTICS = "/statistics";
-   public final static String TRADINGS = "/tradings/{name}";
+   // TODO: ExtJS only supports this kind of URL at this time. Need to change to /{alias}/tradings
+   public final static String TRADINGS = "/{alias}/tradings";
+   public final static String ALIAS = "/alias/{alias}";
 
    // Stock code prefix
    public final static String PREFIX_SH = "sh";

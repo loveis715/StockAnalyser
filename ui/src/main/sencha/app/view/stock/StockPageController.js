@@ -1,7 +1,7 @@
 Ext.define('jewelry.view.stock.StockPageController', {
     extend: 'Ext.app.ViewController',
     requires: [
-        'jewelry.model.StockTradingsModel',
+        'jewelry.proxy.StockTradingsProxy',
         'jewelry.view.stock.StockTradingCache'
     ],
 
@@ -10,7 +10,24 @@ Ext.define('jewelry.view.stock.StockPageController', {
     init: function() {
         var me = this;
         if (jewelry.view.stock.StockTradingCache.tradings == null) {
-            jewelry.model.StockTradingsModel.load('sh000001', {
+            var proxy = new jewelry.proxy.StockTradingsProxy({
+                url: 'http://localhost:8080/jewelry-service/api/stocks/sh000001/tradings'
+            });
+            var operation = proxy.createOperation('read', {
+                callback: function(records, operation, success) {
+                    var record = records[0];
+                    if (success && jewelry.view.stock.StockTradingCache.tradings == null) {
+                        jewelry.view.stock.StockTradingCache.tradings = record.data;
+
+                        var view = me.getView(),
+                            prevClose = me.getPrevClose(record.get('tradingInfos'), record.get('minuteDatas')),
+                            minuteDataChart = view.lookupReference('minuteDataChart');
+                        minuteDataChart.renderMinutePrice(record.get('minuteDatas'), prevClose);
+                    }
+                }
+            });
+            proxy.read(operation);
+            /*jewelry.model.StockTradingsModel.load('sh000001', {
                 scope: this,
                 success: function(record, operation) {
                     if (jewelry.view.stock.StockTradingCache.tradings == null) {
@@ -22,7 +39,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
                         minuteDataChart.renderMinutePrice(record.get('minuteDatas'), prevClose);
                     }
                 }
-            });
+            });*/
         }
     },
 

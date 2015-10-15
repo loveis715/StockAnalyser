@@ -1,9 +1,10 @@
 package com.ambergarden.jewelry.controller.stock;
 
-import static com.ambergarden.jewelry.Constants.NAME_PATH_VARIABLE;
+import static com.ambergarden.jewelry.Constants.ALIAS_PATH_VARIABLE;
 import static com.ambergarden.jewelry.Constants.STATISTICS;
 import static com.ambergarden.jewelry.Constants.STOCK_URL;
 import static com.ambergarden.jewelry.Constants.TRADINGS;
+import static com.ambergarden.jewelry.Constants.ALIAS;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.stock.StockStatistics;
 import com.ambergarden.jewelry.schema.beans.stock.StockTradings;
 import com.ambergarden.jewelry.service.stock.StockService;
@@ -30,7 +32,13 @@ public class StockController {
 
    @RequestMapping(value = TRADINGS, method = RequestMethod.GET)
    @ResponseBody
-   public StockTradings getTradings(@PathVariable(NAME_PATH_VARIABLE) String name) {
-      return stockService.getTradings(name);
+   public StockTradings getTradings(@PathVariable(ALIAS_PATH_VARIABLE) String alias) {
+      return stockService.getTradings(alias);
+   }
+
+   @RequestMapping(value = ALIAS, method = RequestMethod.GET)
+   @ResponseBody
+   public Stock getByAlias(@PathVariable(ALIAS_PATH_VARIABLE) String alias) {
+      return stockService.getByAlias(alias);
    }
 }

@@ -11,4 +11,6 @@ public interface StockRepository extends CrudRepository<Stock, Integer> {
    int countByStockCategory(StockCategory stockCategory);
 
    Stock findByName(String name);
+
+   Stock findByCode(String code);
 }

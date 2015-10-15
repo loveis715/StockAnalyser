@@ -1,8 +1,11 @@
 Ext.define('jewelry.proxy.StockTradingsProxy', {
     extend: 'Ext.data.proxy.Rest',
+    requires: [
+        'jewelry.model.StockTradingsModel'
+    ],
     alias: 'proxy.stockTradingsProxy',
 
-    url: 'http://localhost:8080/jewelry-service/api/stocks/tradings',
+    model: 'jewelry.model.StockTradingsModel',
     format: 'json',
     reader: {
         type: 'json'
