@@ -5,7 +5,6 @@ Ext.define('jewelry.view.stock.StockPageViewModel', {
 
     data: {
         stockName: '',
-        stockCode: '',
         open: '',
         high: '',
         low: '',

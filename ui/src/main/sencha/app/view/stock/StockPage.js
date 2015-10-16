@@ -77,7 +77,7 @@ Ext.define('jewelry.view.stock.StockPage', {
             // properly, and will always be 12px height. Use this padding to adjust layout
             padding: '10 0 0 0',
             bind: {
-                text: '{stockName} ({stockCode})'
+                text: '{stockName}'
             }
         }, {
             xtype: 'panel',
@@ -88,24 +88,32 @@ Ext.define('jewelry.view.stock.StockPage', {
             items: [{
                 xtype: 'displayfield',
                 fieldLabel: jewelry.Messages.labels.prevClose,
+                labelWidth: 60,
+                margin: '0 50 0 0',
                 bind: {
                     value: '{prevClose}'
                 }
             }, {
                 xtype: 'displayfield',
                 fieldLabel: jewelry.Messages.labels.open,
+                labelWidth: 60,
+                margin: '0 50 0 0',
                 bind: {
                     value: '{open}'
                 }
             }, {
                 xtype: 'displayfield',
                 fieldLabel: jewelry.Messages.labels.high,
+                labelWidth: 60,
+                margin: '0 50 0 0',
                 bind: {
                     value: '{high}'
                 }
             }, {
                 xtype: 'displayfield',
                 fieldLabel: jewelry.Messages.labels.low,
+                labelWidth: 60,
+                margin: '0 50 0 0',
                 bind: {
                     value: '{low}'
                 }
