@@ -87,8 +87,7 @@ public class StockService {
       com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
          = stockRepository.findByName(alias);
       if (stockMO != null) {
-         String prefix = stockMO.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
-         code = prefix + stockMO.getCode();
+         code = stockMO.getCode();
       } else {
          // TODO: We need to support searching from code
          code = alias;
@@ -111,12 +110,7 @@ public class StockService {
       com.ambergarden.jewelry.orm.entity.stock.Stock stockMO
          = stockRepository.findByName(alias);
       if (stockMO == null) {
-         String code = "";
-         if (alias.startsWith(PREFIX_SZ) || alias.startsWith(PREFIX_SH)) {
-            code = alias.substring(2);
-         }
-         code = alias;
-         stockMO = stockRepository.findByCode(code);
+         stockMO = stockRepository.findByCode(alias);
       }
 
       if (stockMO != null) {

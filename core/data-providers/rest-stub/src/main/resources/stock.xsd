@@ -16,7 +16,7 @@
       <xsd:complexContent>
          <xsd:extension base="base:named-entity">
             <xsd:sequence>
-               <xsd:element name="code" type="xsd:string"/>
+               <xsd:element name="symbol" type="xsd:string"/>
                <xsd:element name="volume" type="xsd:long"/>
                <xsd:element name="turnoverratio" type="xsd:double"/>
             </xsd:sequence>

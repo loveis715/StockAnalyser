@@ -30,24 +30,12 @@ public class StockAnalyser {
    private MinuteTradingAnalyser minuteTradingAnalyser;
 
    public List<Tag> analysis(Stock stock, MarketTradingData marketTradingData) {
-      List<TradingInfo> tradingInfoList = retrieveTradingInfo(stock);
-      List<MinuteData> minuteDataList = retrieveMinuteDataList(stock);
+      List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfo(stock.getCode());
+      List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo(stock.getCode());
 
       List<Tag> result = volumeAnalyser.analyse(stock, tradingInfoList, marketTradingData.getTradingInfo());
       result.addAll(priceAnalyser.analyse(tradingInfoList, marketTradingData.getTradingInfo()));
       result.addAll(minuteTradingAnalyser.analyse(minuteDataList, marketTradingData.getMinuteData()));
       return result;
-   }
-
-   private List<TradingInfo> retrieveTradingInfo(Stock stock) {
-      String prefix = stock.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
-      String code = prefix + stock.getCode();
-      return tradingInfoProvider.getDailyTraidingInfo(code);
-   }
-
-   private List<MinuteData> retrieveMinuteDataList(Stock stock) {
-      String prefix = stock.getStockCategory() == StockCategory.SHANGHAI ? PREFIX_SH : PREFIX_SZ;
-      String code = prefix + stock.getCode();
-      return tradingInfoProvider.getPerMinuteTradingInfo(code);
    }
 }

@@ -134,7 +134,7 @@ public class StockSyncingTaskExecutor implements Runnable {
       com.ambergarden.jewelry.schema.beans.stock.Stock stockBean
          = new com.ambergarden.jewelry.schema.beans.stock.Stock();
       stockBean.setId(-1);
-      stockBean.setCode(providerStock.getCode());
+      stockBean.setCode(providerStock.getSymbol());
       stockBean.setName(providerStock.getName());
       stockBean.setStockCategory(category);
       long totalVolume = (long)(providerStock.getVolume() / providerStock.getTurnoverratio() * 100);
