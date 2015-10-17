@@ -1,8 +1,5 @@
 package com.ambergarden.jewelry.service.stock;
 
-import static com.ambergarden.jewelry.Constants.PREFIX_SH;
-import static com.ambergarden.jewelry.Constants.PREFIX_SZ;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +88,7 @@ public class StockService {
       } else {
          // TODO: We need to support searching from code
          code = alias;
+         stockMO = stockRepository.findByCode(code);
       }
 
       List<TradingInfo> tradingInfos = tradingInfoProvider.getDailyTraidingInfo(code);
