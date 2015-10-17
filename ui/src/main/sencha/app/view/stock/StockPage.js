@@ -117,6 +117,14 @@ Ext.define('jewelry.view.stock.StockPage', {
                 bind: {
                     value: '{low}'
                 }
+            }, {
+                xtype: 'displayfield',
+                fieldLabel: jewelry.Messages.labels.tags,
+                labelWidth: 60,
+                margin: '0 50 0 0',
+                bind: {
+                    value: '{tags}'
+                }
             }]
         }]
     }]

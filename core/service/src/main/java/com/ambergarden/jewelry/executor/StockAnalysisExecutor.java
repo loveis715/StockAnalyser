@@ -10,13 +10,13 @@ import com.ambergarden.jewelry.schema.beans.task.ScanType;
 
 @Component
 public class StockAnalysisExecutor extends AbstractStockTaskExecutor {
-   private List<Integer> targetStocks;
+   private List<String> targetStocks;
 
-   public List<Integer> getTargetStocks() {
+   public List<String> getTargetStocks() {
       return targetStocks;
    }
 
-   public void setTargetStocks(List<Integer> targetStocks) {
+   public void setTargetStocks(List<String> targetStocks) {
       this.targetStocks = targetStocks;
    }
 
@@ -33,8 +33,8 @@ public class StockAnalysisExecutor extends AbstractStockTaskExecutor {
    @Override
    protected final List<Stock> getStocksForScan() {
       List<Stock> pendingStocks = new ArrayList<Stock>();
-      for (Integer stockId : targetStocks) {
-         Stock stock = stockService.findById(stockId);
+      for (String stockCode : targetStocks) {
+         Stock stock = stockService.getByAlias(stockCode);
          if (stock != null) {
             pendingStocks.add(stock);
          }

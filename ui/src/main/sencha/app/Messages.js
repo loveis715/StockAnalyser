@@ -27,7 +27,8 @@ Ext.define('jewelry.Messages', {
         prevClose: '昨收',
         open: '今开',
         high: '最高',
-        low: '最低'
+        low: '最低',
+        tags: '标记'
     },
     headers: {
         startTime: '开始时间',

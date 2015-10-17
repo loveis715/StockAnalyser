@@ -1,6 +1,8 @@
 Ext.define('jewelry.view.stock.StockPageController', {
     extend: 'Ext.app.ViewController',
     requires: [
+        'jewelry.proxy.ScanTaskRequestProxy',
+        'jewelry.model.ScanTaskRequestModel',
         'jewelry.proxy.StockProxy',
         'jewelry.proxy.StockTradingsProxy',
         'jewelry.view.stock.StockTradingCache'
@@ -28,13 +30,57 @@ Ext.define('jewelry.view.stock.StockPageController', {
                     if (records != null && records.length > 0) {
                         var record = records[0],
                             viewModel = me.getViewModel(),
-                            stockCode = record.get('stockCategory') == jewelry.Constants.stockCategory.SHANGHAI ? 'sh' + record.get('code') : 'sz' + record.get('code');
+                            stockCode = record.get('code');
+                        me.analysisStock(stockCode);
                         me.retrieveTradings(stockCode);
                     }
                 }
             });
             proxy.read(operation);
         }
+    },
+
+    analysisStock: function(stockCode) {
+        var me = this,
+            proxy = new jewelry.proxy.ScanTaskRequestProxy(),
+            request = Ext.create('jewelry.model.ScanTaskRequestModel', {
+                scanType: jewelry.Constants.scanTypes.SINGLE_STOCK,
+                scanTaskId: -1,
+                stockCodes: [stockCode]
+            }),
+            operation = proxy.createOperation('create', {
+                records: [request],
+                scope: me,
+                callback: function(records, operation, success) {
+                    var record = records[0];
+                    me.populateStockAnalysisState(record.get('scanTaskId'));
+                }
+            });
+        proxy.read(operation);
+    },
+
+    populateStockAnalysisState: function(taskId) {
+        var me = this;
+        jewelry.model.ScanTaskModel.load(taskId, {
+            scope: me,
+            success: function(record, operation) {
+                var taskState = record.get('taskState');
+                if (taskState == 'SCHEDULED' || taskState == 'IN_PROGRESS') {
+                    var runner = new Ext.util.TaskRunner();
+                    runner.start({
+                        run: me.populateStockAnalysisState,
+                        scope: me,
+                        args: [taskId],
+                        interval: '1000',
+                        repeat: false
+                    });
+                } else if (taskState == 'SUCCESS') {
+                    var results = record.get('results'),
+                        viewModel = me.getViewModel();
+                    viewModel.set('tags', results[0].tags);
+                }
+            }
+        });
     },
     
     retrieveTradings: function(stockCode) {

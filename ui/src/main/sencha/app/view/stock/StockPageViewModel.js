@@ -9,6 +9,6 @@ Ext.define('jewelry.view.stock.StockPageViewModel', {
         high: '',
         low: '',
         prevClose: '',
-        tags: []
+        tags: ''
     }
 });
