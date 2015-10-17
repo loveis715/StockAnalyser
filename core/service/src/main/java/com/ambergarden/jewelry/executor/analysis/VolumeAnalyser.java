@@ -88,6 +88,22 @@ public class VolumeAnalyser {
                continousStreak++;
                break;
             }
+            if (Tags.VolumeIncrementWithHighPrice.instanceOf(tag)) {
+               // Add 2.5, which is the value of VolumeIncrementWithHighPrice tag, as
+               // the value of volume incremental
+               continousValue += ((Tags.VolumeIncrementWithHighPrice)tag).getValue();
+               found = true;
+               continousStreak++;
+               break;
+            }
+            if (Tags.VolumeIncrementWithLowPrice.instanceOf(tag)) {
+               // Add 2.5, which is the value of VolumeIncrementWithLowPrice tag, as
+               // the value of volume incremental
+               continousValue += ((Tags.VolumeIncrementWithLowPrice)tag).getValue();
+               found = true;
+               continousStreak++;
+               break;
+            }
          }
 
          if (!found) {
