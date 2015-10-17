@@ -122,6 +122,7 @@ Ext.define('jewelry.view.stock.StockPage', {
                 fieldLabel: jewelry.Messages.labels.tags,
                 labelWidth: 60,
                 margin: '0 50 0 0',
+                colspan: 2,
                 bind: {
                     value: '{tags}'
                 }
