@@ -13,6 +13,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.schema.beans.provider.stock.BillInfo;
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.RealtimeTrading;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
@@ -33,6 +34,27 @@ public class StockTradingInfoProvider {
       }
 
       return RealtimeTradingAnalyser.parse(data);
+   }
+
+   public List<BillInfo> getBillingInfo(String code, long volume, int year, int month, int day) {
+      List<BillInfo> result = new ArrayList<BillInfo>();
+      String dateString = String.format(Constants.DATE_STRING_FORMAT, year, month, day);
+
+      int pageNum = 1;
+      boolean complete = false;
+      while (!complete) {
+         String url = String.format(Constants.BILLING_INFO_URL_FORMAT,
+               code, pageNum, volume, dateString);
+         String billingString = retrieveData(url);
+         List<BillInfo> billList = parseBillString(billingString);
+         if (billList != null && billList.size() > 0) {
+            result.addAll(billList);
+         } else {
+            complete = true;
+         }
+         pageNum++;
+      }
+      return result;
    }
 
    public List<MinuteData> getPerMinuteTradingInfo(String code) {
@@ -60,6 +82,21 @@ public class StockTradingInfoProvider {
          mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
          mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
          result = mapper.readValue(data, arrayType);
+      } catch (Exception ex) {
+         // TODO: Throw an exception to indicate that we've failed to read the content
+      }
+      return result;
+   }
+
+   private List<BillInfo> parseBillString(String billingString) {
+      List<BillInfo> result = new ArrayList<BillInfo>();
+      try {
+         ObjectMapper mapper = new ObjectMapper();
+         CollectionType arrayType = mapper.getTypeFactory().constructCollectionType(
+               List.class, BillInfo.class);
+         mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+         result = mapper.readValue(billingString, arrayType);
       } catch (Exception ex) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }

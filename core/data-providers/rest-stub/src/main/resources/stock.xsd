@@ -57,4 +57,22 @@
          <xsd:element name="volume" type="xsd:long"/>
       </xsd:sequence>
    </xsd:complexType>
+
+   <xsd:simpleType name="bill-kind">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="U"/>
+         <xsd:enumeration value="D"/>
+         <xsd:enumeration value="E"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="bill-info">
+      <xsd:sequence>
+         <xsd:element name="symbol" type="xsd:string"/>
+         <xsd:element name="ticktime" type="xsd:string"/>
+         <xsd:element name="price" type="xsd:double"/>
+         <xsd:element name="volume" type="xsd:long"/>
+         <xsd:element name="kind" type="bill-kind"/>
+      </xsd:sequence>
+   </xsd:complexType>
 </xsd:schema>

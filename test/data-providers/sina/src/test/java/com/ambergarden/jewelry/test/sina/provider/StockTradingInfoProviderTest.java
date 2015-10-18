@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ambergarden.jewelry.schema.beans.provider.stock.BillInfo;
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.RealtimeTrading;
 import com.ambergarden.jewelry.sina.provider.StockTradingInfoProvider;
@@ -29,6 +30,12 @@ public class StockTradingInfoProviderTest {
    public void testRetrieveMinuteData() {
       List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo("sz300104");
       Assert.assertEquals(240, minuteDataList.size());
+   }
+
+   @Test
+   public void testRetrieveBillingInfo() {
+      List<BillInfo> billList = tradingInfoProvider.getBillingInfo("sz000751", 500000, 2015, 10, 8);
+      Assert.assertTrue(billList.size() > 0);
    }
 
    @Test
