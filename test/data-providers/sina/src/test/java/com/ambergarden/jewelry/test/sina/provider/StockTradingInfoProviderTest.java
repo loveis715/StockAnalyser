@@ -34,7 +34,7 @@ public class StockTradingInfoProviderTest {
 
    @Test
    public void testRetrieveBillingInfo() {
-      List<BillInfo> billList = tradingInfoProvider.getBillingInfo("sz000751", 500000, 2015, 10, 8);
+      List<BillInfo> billList = tradingInfoProvider.getBillingInfo("sz000751", 500000, "2015-10-08");
       Assert.assertTrue(billList.size() > 0);
    }
 

@@ -36,10 +36,8 @@ public class StockTradingInfoProvider {
       return RealtimeTradingAnalyser.parse(data);
    }
 
-   public List<BillInfo> getBillingInfo(String code, long volume, int year, int month, int day) {
+   public List<BillInfo> getBillingInfo(String code, long volume, String dateString) {
       List<BillInfo> result = new ArrayList<BillInfo>();
-      String dateString = String.format(Constants.DATE_STRING_FORMAT, year, month, day);
-
       int pageNum = 1;
       boolean complete = false;
       while (!complete) {

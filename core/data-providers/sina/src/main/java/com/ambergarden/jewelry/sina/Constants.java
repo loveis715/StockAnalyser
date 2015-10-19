@@ -11,7 +11,6 @@ public class Constants {
       = "http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?asc=j&symbol=%s&num=250";
    public static final String REALTIME_TRADING_URL_FORMAT
       = "http://hq.sinajs.cn/?list=%s";
-   public static final String DATE_STRING_FORMAT = "%d-%02d-%02d";
    public static final String BILLING_INFO_URL_FORMAT
       = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_Bill.GetBillList?symbol=%s&num=400&page=%d&sort=ticktime&asc=0&amount=%d&type=0&day=%s";
 }

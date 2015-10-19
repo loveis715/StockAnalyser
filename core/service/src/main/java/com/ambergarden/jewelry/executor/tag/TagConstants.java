@@ -22,4 +22,6 @@ public class TagConstants {
    public static final String TAG_NAME_MASS_NEG_TRADING = "MASS_NEG_TRAD";
    public static final String TAG_NAME_TRADING_RATIO_LOW = "TRAD_RATIO_LOW";
    public static final double TAG_VALUE_TRADING_RATIO_LOW = 0.5;
+   public static final String TAG_NAME_LARGE_BUY_BILL = "LARGE_BUY_BILL";
+   public static final String TAG_NAME_LARGE_SELL_BILL = "LARGE_SELL_BILL";
 }

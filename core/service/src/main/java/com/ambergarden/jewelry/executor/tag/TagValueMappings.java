@@ -6,4 +6,7 @@ public class TagValueMappings {
    public static final int VOLUME_TAG_MAX_SCORE = 20;
 
    public static final int[] MASS_VOLUME_LEVELS = new int[] {15, 20, 25, 30, 35, 40, 45, 50, 60, 70};
+
+   public static final double[] TOTAL_VALUE_LEVELS = new double[] {1e9, 3e9, 1e10, 5e10, 1e11, 3e11, 1e12};
+   public static final long[] LARGE_BILL_BASE = new long[] {300000, 500000, 750000, 1000000, 2000000, 3000000, 5000000, 10000000};
 }

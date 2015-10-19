@@ -71,7 +71,9 @@ Ext.define('jewelry.Messages', {
         PRI_HIGH: '价格高位',
         MASS_POS_TRAD: '堆量',
         MASS_NEG_TRAD: '杀跌',
-        TRAD_RATIO_LOW: '换手率低'
+        TRAD_RATIO_LOW: '换手率低',
+        LARGE_BUY_BILL: '密集买单',
+        LARGE_SELL_BILL: '密集卖单'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'

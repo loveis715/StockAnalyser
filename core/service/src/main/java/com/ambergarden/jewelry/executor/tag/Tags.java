@@ -2,6 +2,8 @@ package com.ambergarden.jewelry.executor.tag;
 
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONTINUOUS_VOLUME_INCREMENT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_HIGH_PRICE;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LARGE_BUY_BILL;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LARGE_SELL_BILL;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_NEG_TRADING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_POS_TRADING;
@@ -158,6 +160,32 @@ public class Tags {
 
       public TradingRatioLowTag() {
          super(TAG_NAME_TRADING_RATIO_LOW, TagCategory.NEGATIVE, TAG_VALUE_TRADING_RATIO_LOW);
+      }
+   }
+
+   /**
+    * Tag for frequent large buy in
+    */
+   public static class LargeBuyBillTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_LARGE_BUY_BILL) == 0;
+      }
+
+      public LargeBuyBillTag(double value) {
+         super(TAG_NAME_LARGE_BUY_BILL, TagCategory.POSITIVE, value);
+      }
+   }
+
+   /**
+    * Tag for frequent large sell out
+    */
+   public static class LargeSellBillTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_LARGE_SELL_BILL) == 0;
+      }
+
+      public LargeSellBillTag(double value) {
+         super(TAG_NAME_LARGE_SELL_BILL, TagCategory.NEGATIVE, value);
       }
    }
 }
