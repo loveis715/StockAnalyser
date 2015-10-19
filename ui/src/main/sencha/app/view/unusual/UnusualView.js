@@ -169,7 +169,7 @@ Ext.define('jewelry.view.unusual.UnusualView', {
             var stockName = result.stockName;
             text += stockName + jewelry.Messages.formatters.separator;
 
-            var stockCode = (result.stockCategory == 'SHANGHAI' ? 'sh' : 'sz') + result.stockCode;
+            var stockCode = result.stockCode;
             text += stockCode + jewelry.Messages.formatters.separator;
 
             var score = result.score;
