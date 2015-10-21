@@ -113,11 +113,15 @@ public abstract class AbstractStockTaskExecutor implements Runnable {
    }
 
    protected MarketTradingInfoHolder prepareScanInfoHolder() {
-      List<TradingInfo> tradingInfoSH = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SH);
+      List<TradingInfo> tradingInfoSH = getScanType() != ScanType.HALF_DAY
+            ? tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SH)
+            : tradingInfoProvider.getHalfDayTradingInfo(Constants.CODE_SH);
       List<MinuteData> minuteDataSH = tradingInfoProvider.getPerMinuteTradingInfo(Constants.CODE_SH);
       MarketTradingData tradingDataSH = new MarketTradingData(tradingInfoSH, minuteDataSH);
 
-      List<TradingInfo> tradingInfoSZ = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SZ);
+      List<TradingInfo> tradingInfoSZ = getScanType() != ScanType.HALF_DAY
+            ? tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SZ)
+            : tradingInfoProvider.getHalfDayTradingInfo(Constants.CODE_SZ);
       List<MinuteData> minuteDataSZ = tradingInfoProvider.getPerMinuteTradingInfo(Constants.CODE_SZ);
       MarketTradingData tradingDataSZ = new MarketTradingData(tradingInfoSZ, minuteDataSZ);
 

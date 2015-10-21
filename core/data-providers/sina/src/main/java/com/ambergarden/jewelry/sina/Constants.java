@@ -7,6 +7,8 @@ public class Constants {
       = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=%d&num=500&node=sz_a";
    public static final String DAILY_TRADING_INFO_URL_FORMAT
       = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=%s&scale=240&ma=no&datalen=20";
+   public static final String PER_HOUR_TRADING_INFO_URL_FORMAT
+      = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=%s&scale=60&ma=no&datalen=80";
    public static final String PER_MINUTE_TRADING_INFO_URL_FORMAT
       = "http://vip.stock.finance.sina.com.cn/quotes_service/view/vML_DataList.php?asc=j&symbol=%s&num=250";
    public static final String REALTIME_TRADING_URL_FORMAT

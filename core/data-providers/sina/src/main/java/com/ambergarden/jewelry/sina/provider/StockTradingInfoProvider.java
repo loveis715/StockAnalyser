@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -63,6 +65,56 @@ public class StockTradingInfoProvider {
       }
 
       return PerMinuteTradingAnalyser.listMinuteData(data);
+   }
+
+   public List<TradingInfo> getHalfDayTradingInfo(String code) {
+      String url = String.format(Constants.DAILY_TRADING_INFO_URL_FORMAT, code);
+      String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<TradingInfo>();
+      }
+
+      List<TradingInfo> tradingInfos = new ArrayList<TradingInfo>();
+      try {
+         ObjectMapper mapper = new ObjectMapper();
+         CollectionType arrayType = mapper.getTypeFactory().constructCollectionType(
+               List.class, TradingInfo.class);
+         mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+         tradingInfos = mapper.readValue(data, arrayType);
+      } catch (Exception ex) {
+         // TODO: Throw an exception to indicate that we've failed to read the content
+      }
+
+      List<TradingInfo> result = new ArrayList<TradingInfo>();
+      Map<String, TradingInfo> tradingInfoMap = new HashMap<String, TradingInfo>();
+      for (TradingInfo tradingInfo : tradingInfos) {
+         String dayString = tradingInfo.getDay();
+         String[] timeStrings = dayString.split(" ");
+         if (timeStrings[1].compareTo("11:30:00") > 0) {
+            continue;
+         }
+
+         if (tradingInfoMap.containsKey(timeStrings[0])) {
+            TradingInfo mappedInfo = tradingInfoMap.get(timeStrings[0]);
+            mappedInfo.setDay(timeStrings[0]);
+            mappedInfo.setHigh(tradingInfo.getHigh() > mappedInfo.getHigh()
+                  ? tradingInfo.getHigh() : mappedInfo.getHigh());
+            mappedInfo.setHigh(tradingInfo.getLow() > mappedInfo.getLow()
+                  ? mappedInfo.getLow() : tradingInfo.getLow());
+            if (tradingInfo.getDay().compareTo(mappedInfo.getDay()) > 0) {
+               mappedInfo.setClose(tradingInfo.getClose());
+            } else {
+               mappedInfo.setOpen(tradingInfo.getOpen());
+            }
+            mappedInfo.setVolume(tradingInfo.getVolume() + mappedInfo.getVolume());
+
+            result.add(mappedInfo);
+         } else {
+            tradingInfoMap.put(timeStrings[0], tradingInfo);
+         }
+      }
+      return result;
    }
 
    public List<TradingInfo> getDailyTraidingInfo(String code) {
