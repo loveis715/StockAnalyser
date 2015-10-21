@@ -75,9 +75,6 @@ public class ScanTaskService {
          taskExecutor.execute(scanTaskExecutor);
          break;
       case SINGLE_STOCK:
-         stockAnalysisExecutor.setTargetStocks(request.getStockCodes());
-         taskExecutor.execute(stockAnalysisExecutor);
-         break;
       case TRADING_ANALYSIS:
       case HALF_DAY:
          break;

@@ -14,6 +14,7 @@ import com.ambergarden.jewelry.executor.StockAnalysisExecutor;
 import com.ambergarden.jewelry.orm.entity.task.TaskState;
 import com.ambergarden.jewelry.orm.repository.task.StockAnalyseTaskRepository;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
+import com.ambergarden.jewelry.schema.beans.task.ScanTask;
 import com.ambergarden.jewelry.schema.beans.task.StockAnalyseTask;
 import com.ambergarden.jewelry.schema.beans.task.StockAnalyseTaskRequest;
 import com.ambergarden.jewelry.service.stock.StockService;
@@ -38,6 +39,13 @@ public class StockAnalyseTaskService {
    @Autowired
    private StockAnalyseTaskConverter stockAnalyseTaskConverter;
 
+   public StockAnalyseTask findLast() {
+      com.ambergarden.jewelry.orm.entity.task.StockAnalyseTask stockAnalyseTask
+         = stockAnalyseTaskRepository.findFirstByOrderByStartTimeDesc();
+      // TODO: Check with NULL
+      return stockAnalyseTaskConverter.convertFrom(stockAnalyseTask);
+   }
+
    public StockAnalyseTask findById(int id) {
       com.ambergarden.jewelry.orm.entity.task.StockAnalyseTask stockAnalyseTask
          = stockAnalyseTaskRepository.findOne(id);
@@ -58,13 +66,18 @@ public class StockAnalyseTaskService {
 
       stockAnalyseTask = stockAnalyseTaskRepository.save(stockAnalyseTask);
 
-      List<String> stockCodes = new ArrayList<String>();
-      stockCodes.add(request.getStockCode());
-      stockAnalysisExecutor.setTargetStocks(stockCodes);
+      stockAnalysisExecutor.setStockCode(request.getStockCode());
       taskExecutor.execute(stockAnalysisExecutor);
 
       // We will not persist the request for now.
       request.setAnalyseTaskId(stockAnalyseTask.getId());
       return request;
+   }
+
+   public StockAnalyseTask update(StockAnalyseTask task) {
+      com.ambergarden.jewelry.orm.entity.task.StockAnalyseTask stockAnalyseTask
+         = stockAnalyseTaskConverter.convertTo(task);
+      stockAnalyseTask = stockAnalyseTaskRepository.save(stockAnalyseTask);
+      return stockAnalyseTaskConverter.convertFrom(stockAnalyseTask);
    }
 }
