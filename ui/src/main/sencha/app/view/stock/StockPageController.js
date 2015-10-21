@@ -5,6 +5,10 @@ Ext.define('jewelry.view.stock.StockPageController', {
         'jewelry.model.ScanTaskRequestModel',
         'jewelry.proxy.StockProxy',
         'jewelry.proxy.StockTradingsProxy',
+        'jewelry.model.StockAnalyseTaskModel',
+        'jewelry.proxy.StockAnalyseTaskProxy',
+        'jewelry.model.StockAnalyseTaskRequestModel',
+        'jewelry.proxy.StockAnalyseTaskRequestProxy',
         'jewelry.view.stock.StockTradingCache'
     ],
 
@@ -42,18 +46,17 @@ Ext.define('jewelry.view.stock.StockPageController', {
 
     analysisStock: function(stockCode) {
         var me = this,
-            proxy = new jewelry.proxy.ScanTaskRequestProxy(),
-            request = Ext.create('jewelry.model.ScanTaskRequestModel', {
-                scanType: jewelry.Constants.scanTypes.SINGLE_STOCK,
-                scanTaskId: -1,
-                stockCodes: [stockCode]
+            proxy = new jewelry.proxy.StockAnalyseTaskRequestProxy(),
+            request = Ext.create('jewelry.model.StockAnalyseTaskRequestModel', {
+                analyseTaskId: -1,
+                stockCode: stockCode
             }),
             operation = proxy.createOperation('create', {
                 records: [request],
                 scope: me,
                 callback: function(records, operation, success) {
                     var record = records[0];
-                    me.populateStockAnalysisState(record.get('scanTaskId'));
+                    me.populateStockAnalysisState(record.get('analyseTaskId'));
                 }
             });
         proxy.read(operation);
@@ -61,7 +64,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
 
     populateStockAnalysisState: function(taskId) {
         var me = this;
-        jewelry.model.ScanTaskModel.load(taskId, {
+        jewelry.model.StockAnalyseTaskModel.load(taskId, {
             scope: me,
             success: function(record, operation) {
                 var taskState = record.get('taskState');
@@ -75,9 +78,9 @@ Ext.define('jewelry.view.stock.StockPageController', {
                         repeat: false
                     });
                 } else if (taskState == 'SUCCESS') {
-                    var results = record.get('results'),
+                    var tags = record.get('resultTags'),
                         viewModel = me.getViewModel();
-                    viewModel.set('tags', results[0].tags);
+                    viewModel.set('tags', tags);
                 }
             }
         });
