@@ -6,6 +6,7 @@ public class Constants {
    public final static String STOCK_SYNCING_TASKS_URL = "/api/stock_syncing_tasks";
    public final static String SCAN_TASKS_URL = "/api/scan_tasks";
    public final static String STOCK_ANALYSE_TASKS_URL = "/api/analyse_tasks";
+   public final static String MY_STOCK_URL = "/api/my_stocks";
 
    // URL constants
    public final static String ID_PATH_VARIABLE = "id";
