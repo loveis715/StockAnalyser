@@ -1,7 +1,7 @@
-Ext.define('jewelry.view.unusual.UnusualPageController', {
+Ext.define('jewelry.view.mystock.MyStockPageController', {
     extend: 'Ext.app.ViewController',
 
-    alias: 'controller.unusualPage',
+    alias: 'controller.myStockPage',
 
     init: function() {
         var view = this.getView();

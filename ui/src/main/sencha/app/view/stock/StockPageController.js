@@ -5,8 +5,8 @@ Ext.define('jewelry.view.stock.StockPageController', {
         'jewelry.model.ScanTaskRequestModel',
         'jewelry.proxy.StockProxy',
         'jewelry.proxy.StockTradingsProxy',
-        'jewelry.model.StockAnalyseTaskModel',
         'jewelry.proxy.StockAnalyseTaskProxy',
+        'jewelry.model.StockAnalyseTaskModel',
         'jewelry.model.StockAnalyseTaskRequestModel',
         'jewelry.proxy.StockAnalyseTaskRequestProxy',
         'jewelry.view.stock.StockTradingCache'

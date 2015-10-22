@@ -34,6 +34,7 @@ Ext.define('jewelry.Messages', {
     headers: {
         startTime: '开始时间',
         endTime: '结束时间',
+        addTime: '添加时间',
         scanType: '任务类型',
         taskStatus: '任务状态',
         unusualCount: '异常数量',
@@ -41,7 +42,8 @@ Ext.define('jewelry.Messages', {
         stockCode: '股票代码',
         stockCategory: '交易所',
         score: '评分',
-        unusualCases: '异常'
+        unusualCases: '异常',
+        noteCount: '记录条数'
     },
     formatters: {
         separator: '\t\t',
