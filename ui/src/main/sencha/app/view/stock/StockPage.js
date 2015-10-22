@@ -27,15 +27,18 @@ Ext.define('jewelry.view.stock.StockPage', {
         handler: 'onSearch'
     }, {
         xtype: 'button',
+        reference: 'addButton',
         width: 82,
         icon: '../../../resources/icon/add.png',
         text: jewelry.Messages.labels.addToMyStock,
         border: false,
         style: {
             backgroundColor: 'white'
-        }
+        },
+        handler: 'onAddToMyStock'
     }, {
         xtype: 'button',
+        reference: 'removeButton',
         width: 82,
         margin: '0 90 0 -90',
         icon: '../../../resources/icon/remove.png',
@@ -44,7 +47,8 @@ Ext.define('jewelry.view.stock.StockPage', {
         text: jewelry.Messages.labels.removeFromMyStock,
         style: {
             backgroundColor: 'white'
-        }
+        },
+        handler: 'onRemoveFromMyStock'
     }],
 
     items: [{

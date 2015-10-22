@@ -9,6 +9,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
         'jewelry.model.StockAnalyseTaskModel',
         'jewelry.model.StockAnalyseTaskRequestModel',
         'jewelry.proxy.StockAnalyseTaskRequestProxy',
+        'jewelry.store.MyStockStore',
         'jewelry.view.stock.StockTradingCache'
     ],
 
@@ -18,11 +19,17 @@ Ext.define('jewelry.view.stock.StockPageController', {
         if (jewelry.view.stock.StockTradingCache.tradings == null) {
             this.retrieveTradings('sh000001');
         }
+        if (jewelry.view.stock.StockTradingCache.myStocks == null) {
+            var myStockStore = Ext.create('jewelry.store.MyStockStore');
+            myStockStore.load();
+            jewelry.view.stock.StockTradingCache.myStocks = myStockStore;
+        }
     },
 
     onSearch: function() {
         var me = this,
             view = this.getView(),
+            viewModel = this.getViewModel(),
             stockNameInput = view.lookupReference('stockNameInput'),
             stockName = stockNameInput.getValue();
         if (stockName.length > 0) {
@@ -35,8 +42,10 @@ Ext.define('jewelry.view.stock.StockPageController', {
                         var record = records[0],
                             viewModel = me.getViewModel(),
                             stockCode = record.get('code');
+                        viewModel.set('stock', record.data);
                         me.analysisStock(stockCode);
                         me.retrieveTradings(stockCode);
+                        me.updateMyStockButton(stockCode);
                     }
                 }
             });
@@ -166,6 +175,58 @@ Ext.define('jewelry.view.stock.StockPageController', {
             } else {
                 return 0;
             }
+        }
+    },
+
+    updateMyStockButton: function(stockCode) {
+        var exists = false;
+        jewelry.view.stock.StockTradingCache.myStocks.each(function(record) {
+            if (record.get('code') == stockCode) {
+                exists = true;
+                return false;
+            }
+        });
+
+        var view = this.getView(),
+            addButton = view.lookupReference('addButton'),
+            removeButton = view.lookupReference('removeButton');
+        if (exists) {
+            addButton.hide();
+            removeButton.show();
+        } else {
+            removeButton.hide();
+            addButton.show();
+        }
+    },
+
+    onAddToMyStock: function() {
+        var viewModel = this.getViewModel(),
+            myStockStore = jewelry.view.stock.StockTradingCache.myStocks,
+            myStock = Ext.create('jewelry.model.MyStockModel', {
+                id: -1,
+                addTime: new Date(),
+                stock: viewModel.get('stock')
+            });
+        myStockStore.add(myStock);
+        myStockStore.sync();
+        this.updateMyStockButton(viewModel.get('stock').code);
+    },
+
+    onRemoveFromMyStock: function() {
+        var viewModel = this.getViewModel(),
+            myStockStore = jewelry.view.stock.StockTradingCache.myStocks,
+            stock = viewModel.get('stock'),
+            index = myStockStore.findBy(function(record) {
+                if (record.get('stock').code == stock.code) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        if (index != -1) {
+            myStockStore.removeAt(index);
+            myStockStore.sync();
+            this.updateMyStockButton(stock.code);
         }
     }
 });
