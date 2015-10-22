@@ -40,7 +40,6 @@ Ext.define('jewelry.view.stock.StockPage', {
         xtype: 'button',
         reference: 'removeButton',
         width: 82,
-        margin: '0 90 0 -90',
         icon: '../../../resources/icon/remove.png',
         hidden: true,
         border: false,

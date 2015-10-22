@@ -13,8 +13,7 @@ Ext.define('jewelry.model.MyStockModel', {
         name: 'lockVersion',
         type: 'number'
     }, {
-        name: 'addTime',
-        type: 'number'
+        name: 'addTime'
     }, {
         name: 'stock'
     }, {

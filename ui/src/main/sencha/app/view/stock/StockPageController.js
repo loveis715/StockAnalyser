@@ -177,7 +177,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
     updateMyStockButton: function(stockCode) {
         var exists = false;
         jewelry.view.stock.StockTradingCache.myStocks.each(function(record) {
-            if (record.get('code') == stockCode) {
+            if (record.get('stockCode') == stockCode) {
                 exists = true;
                 return false;
             }
@@ -199,10 +199,10 @@ Ext.define('jewelry.view.stock.StockPageController', {
         var viewModel = this.getViewModel(),
             myStockStore = jewelry.view.stock.StockTradingCache.myStocks,
             myStock = Ext.create('jewelry.model.MyStockModel', {
-                id: -1,
                 addTime: new Date(),
                 stock: viewModel.get('stock')
             });
+        myStock.set('id', -1);
         myStockStore.add(myStock);
         myStockStore.sync();
         this.updateMyStockButton(viewModel.get('stock').code);

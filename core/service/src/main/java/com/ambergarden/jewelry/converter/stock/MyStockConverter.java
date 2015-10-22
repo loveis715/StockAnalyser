@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.converter.base.AbstractEntityListConverter;
 import com.ambergarden.jewelry.orm.entity.stock.MyStock;
-import com.ambergarden.jewelry.schema.beans.stock.MinuteData;
 
 @Component
 public class MyStockConverter
@@ -24,7 +23,9 @@ public class MyStockConverter
       myStock.setAddTime(mo.getAddTime());
       myStock.setLockVersion(mo.getLockVersion());
       myStock.setStock(stockConverter.convertFrom(mo.getStock()));
-      myStock.getStockNotes().addAll(stockNotesConverter.convertListFrom(mo.getStockNotes()));
+      if (mo.getStockNotes() != null) {
+         myStock.getStockNotes().addAll(stockNotesConverter.convertListFrom(mo.getStockNotes()));
+      }
       return myStock;
    }
 
@@ -35,7 +36,9 @@ public class MyStockConverter
       myStock.setAddTime(dto.getAddTime());
       myStock.setLockVersion(dto.getLockVersion());
       myStock.setStock(stockConverter.convertTo(dto.getStock()));
-      myStock.getStockNotes().addAll(stockNotesConverter.convertListTo(dto.getStockNotes()));
+      if (dto.getStockNotes() != null) {
+         myStock.setStockNotes(stockNotesConverter.convertListTo(dto.getStockNotes()));
+      }
       return myStock;
    }
 }
