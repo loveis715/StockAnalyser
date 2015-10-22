@@ -2,9 +2,12 @@ package com.ambergarden.jewelry.executor;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.task.ScanType;
 
+@Component
 public class HalfDayScanTaskExecutor extends AbstractStockTaskExecutor {
    public static final double FILTER_SCORE = 3;
 

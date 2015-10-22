@@ -56,12 +56,12 @@ public abstract class AbstractStockTaskExecutor implements Runnable {
 
    @Override
    public void run() {
-      if (!changeToWorkingState()) {
+      ScanTask scanTask = scanTaskService.findLast(getScanType());
+      if (scanTask == null) {
          return;
       }
 
-      ScanTask scanTask = scanTaskService.findLast(getScanType());
-      if (scanTask == null) {
+      if (!changeToWorkingState()) {
          return;
       }
 
@@ -94,7 +94,7 @@ public abstract class AbstractStockTaskExecutor implements Runnable {
          Collections.sort(results, new Comparator<ScanResult>() {
             @Override
             public int compare(ScanResult result1, ScanResult result2) {
-               return result1.getScore() > result2.getScore() ? -1 : 1;
+               return result1.getScore() > result2.getScore() ? -1 : result1.getScore() == result2.getScore() ? 0 : 1;
             }
          });
          scanTask.setTaskState(TaskState.SUCCESS);

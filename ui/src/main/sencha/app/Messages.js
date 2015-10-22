@@ -15,6 +15,7 @@ Ext.define('jewelry.Messages', {
         lastSyncTime: '上次同步时间',
         startSync: '开始同步',
         fullDayScan: '整日交易扫描',
+        halfDayScan: '半日交易扫描',
         lastScanTime: '上次扫描时间',
         startScan: '开始扫描',
         selectDate: '选择日期',

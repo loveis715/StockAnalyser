@@ -2,7 +2,8 @@ Ext.define('jewelry.view.management.ManagementPage', {
     extend: 'Ext.panel.Panel',
     requires: [
         'jewelry.view.management.StockSyncingPanel',
-        'jewelry.view.management.FullDayScanPanel'
+        'jewelry.view.management.FullDayScanPanel',
+        'jewelry.view.management.HalfDayScanPanel'
     ],
 
     xtype: 'jewelry.managementPage',
@@ -37,7 +38,7 @@ Ext.define('jewelry.view.management.ManagementPage', {
         bodyStyle: 'background-color: transparent',
         items: [{
             // Panel for watching the volume of stocks in noon
-            xtype: 'panel',
+            xtype: 'jewelry.halfDayScanPanel',
             region: 'west',
             width: '50%',
             margin: '3 3 3 3',

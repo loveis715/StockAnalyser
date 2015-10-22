@@ -68,7 +68,7 @@ public class StockTradingInfoProvider {
    }
 
    public List<TradingInfo> getHalfDayTradingInfo(String code) {
-      String url = String.format(Constants.DAILY_TRADING_INFO_URL_FORMAT, code);
+      String url = String.format(Constants.PER_HOUR_TRADING_INFO_URL_FORMAT, code);
       String data = retrieveData(url);
       if (data == null || data.length() == 0) {
          return new ArrayList<TradingInfo>();
@@ -100,7 +100,7 @@ public class StockTradingInfoProvider {
             mappedInfo.setDay(timeStrings[0]);
             mappedInfo.setHigh(tradingInfo.getHigh() > mappedInfo.getHigh()
                   ? tradingInfo.getHigh() : mappedInfo.getHigh());
-            mappedInfo.setHigh(tradingInfo.getLow() > mappedInfo.getLow()
+            mappedInfo.setLow(tradingInfo.getLow() > mappedInfo.getLow()
                   ? mappedInfo.getLow() : tradingInfo.getLow());
             if (tradingInfo.getDay().compareTo(mappedInfo.getDay()) > 0) {
                mappedInfo.setClose(tradingInfo.getClose());
