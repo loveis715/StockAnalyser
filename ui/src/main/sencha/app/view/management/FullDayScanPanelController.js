@@ -20,14 +20,10 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
                 if (taskState == 'SCHEDULED' || taskState == 'IN_PROGRESS') {
                     viewModel.set('isSyncing', true);
 
-                    var runner = new Ext.util.TaskRunner();
-                    runner.start({
-                        run: me.populateFullDayScanTaskState,
-                        scope: me,
-                        args: [record.get('id')],
-                        interval: 5000,
-                        repeat: false
+                    var task = new Ext.util.DelayedTask(function() {
+                        me.populateFullDayScanTaskState(record.get('id'));
                     });
+                    task.delay(1000);
                 } else {
                     viewModel.set('isScaning', false);
                     viewModel.set('unusualCount', 0);
@@ -70,14 +66,10 @@ Ext.define('jewelry.view.management.FullDayScanPanelController', {
 
                 var taskState = record.get('taskState');
                 if (taskState == 'SCHEDULED' || taskState == 'IN_PROGRESS') {
-                    var runner = new Ext.util.TaskRunner();
-                    runner.start({
-                        run: me.populateFullDayScanTaskState,
-                        scope: me,
-                        args: [taskId],
-                        interval: 5000,
-                        repeat: false
+                    var task = new Ext.util.DelayedTask(function() {
+                        me.populateFullDayScanTaskState(taskId);
                     });
+                    task.delay(1000);
                 }
             }
         });

@@ -78,14 +78,10 @@ Ext.define('jewelry.view.stock.StockPageController', {
             success: function(record, operation) {
                 var taskState = record.get('taskState');
                 if (taskState == 'SCHEDULED' || taskState == 'IN_PROGRESS') {
-                    var runner = new Ext.util.TaskRunner();
-                    runner.start({
-                        run: me.populateStockAnalysisState,
-                        scope: me,
-                        args: [taskId],
-                        interval: 5000,
-                        repeat: false
+                    var task = new Ext.util.DelayedTask(function() {
+                        me.populateStockAnalysisState(taskId);
                     });
+                    task.delay(1000);
                 } else if (taskState == 'SUCCESS') {
                     var tags = record.get('resultTags'),
                         viewModel = me.getViewModel();

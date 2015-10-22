@@ -27,14 +27,10 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
                     var viewModel = this.getView().getViewModel();
                     viewModel.set('isSyncing', true);
 
-                    var runner = new Ext.util.TaskRunner();
-                    runner.start({
-                        run: me.populateSyncingTaskState,
-                        scope: me,
-                        args: [record.get('id')],
-                        interval: 5000,
-                        repeat: false
+                    var task = new Ext.util.DelayedTask(function() {
+                        me.populateSyncingTaskState(record.get('id'));
                     });
+                    task.delay(1000);
                 }
             }
         });
@@ -73,14 +69,10 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
 
                 var taskState = record.get('taskState');
                 if (taskState == 'SCHEDULED' || taskState == 'IN_PROGRESS') {
-                    var runner = new Ext.util.TaskRunner();
-                    runner.start({
-                        run: me.populateSyncingTaskState,
-                        scope: me,
-                        args: [taskId],
-                        interval: 5000,
-                        repeat: false
+                    var task = new Ext.util.DelayedTask(function() {
+                        me.populateSyncingTaskState(taskId);
                     });
+                    task.delay(1000);
                 }
             }
         });
