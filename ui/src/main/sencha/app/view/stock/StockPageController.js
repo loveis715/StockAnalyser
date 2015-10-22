@@ -74,7 +74,7 @@ Ext.define('jewelry.view.stock.StockPageController', {
                         run: me.populateStockAnalysisState,
                         scope: me,
                         args: [taskId],
-                        interval: '1000',
+                        interval: 5000,
                         repeat: false
                     });
                 } else if (taskState == 'SUCCESS') {

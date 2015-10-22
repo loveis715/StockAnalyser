@@ -25,7 +25,7 @@ Ext.define('jewelry.view.management.HalfDayScanPanelController', {
                         run: me.populateHalfDayScanTaskState,
                         scope: me,
                         args: [record.get('id')],
-                        interval: '1000',
+                        interval: 5000,
                         repeat: false
                     });
                 } else {
@@ -75,7 +75,7 @@ Ext.define('jewelry.view.management.HalfDayScanPanelController', {
                         run: me.populateHalfDayScanTaskState,
                         scope: me,
                         args: [taskId],
-                        interval: '1000',
+                        interval: 5000,
                         repeat: false
                     });
                 }

@@ -32,7 +32,7 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
                         run: me.populateSyncingTaskState,
                         scope: me,
                         args: [record.get('id')],
-                        interval: '1000',
+                        interval: 5000,
                         repeat: false
                     });
                 }
@@ -78,7 +78,7 @@ Ext.define('jewelry.view.management.StockSyncingPanelController', {
                         run: me.populateSyncingTaskState,
                         scope: me,
                         args: [taskId],
-                        interval: '1000',
+                        interval: 5000,
                         repeat: false
                     });
                 }
