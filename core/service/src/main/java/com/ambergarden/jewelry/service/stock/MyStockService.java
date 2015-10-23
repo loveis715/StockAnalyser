@@ -23,6 +23,11 @@ public class MyStockService {
       return myStockConverter.convertListFrom(myStocks);
    }
 
+   public MyStock findById(int id) {
+      com.ambergarden.jewelry.orm.entity.stock.MyStock myStock = myStockRepository.findOne(id);
+      return myStockConverter.convertFrom(myStock);
+   }
+
    public MyStock create(MyStock myStock) {
       com.ambergarden.jewelry.orm.entity.stock.MyStock myStockMO
          = myStockConverter.convertTo(myStock);

@@ -29,7 +29,10 @@ Ext.define('jewelry.Messages', {
         open: '今开',
         high: '最高',
         low: '最低',
-        tags: '标记'
+        tags: '标记',
+        add: '添加',
+        edit: '修改',
+        delete: '删除'
     },
     headers: {
         startTime: '开始时间',
@@ -43,7 +46,9 @@ Ext.define('jewelry.Messages', {
         stockCategory: '交易所',
         score: '评分',
         unusualCases: '异常',
-        noteCount: '记录条数'
+        noteCount: '记录条数',
+        title: '标题',
+        noteCategory: '记录类型'
     },
     formatters: {
         separator: '\t\t',

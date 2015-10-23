@@ -23,6 +23,7 @@ Ext.define('jewelry.view.mystock.MyStockList', {
                 tooltip: jewelry.Messages.messages.view,
                 icon: '../../../resources/icon/view.png',
                 handler: function(view, rowIndex, colIndex, item, e, record) {
+                    me.fireEvent('editRecord', record.get('id'));
                 }
             }]
         }, {

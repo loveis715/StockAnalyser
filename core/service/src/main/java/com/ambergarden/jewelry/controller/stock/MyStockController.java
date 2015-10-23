@@ -29,6 +29,12 @@ public class MyStockController {
       return myStockService.findAll();
    }
 
+   @RequestMapping(value = ID_URL, method = RequestMethod.GET)
+   @ResponseBody
+   public MyStock findById(@PathVariable(ID_PATH_VARIABLE) int id) {
+      return myStockService.findById(id);
+   }
+
    @RequestMapping(method = RequestMethod.POST)
    @ResponseBody
    public MyStock create(@RequestBody MyStock myStock) {

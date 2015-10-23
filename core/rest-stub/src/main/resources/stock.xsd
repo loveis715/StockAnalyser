@@ -59,11 +59,21 @@
       </xsd:sequence>
    </xsd:complexType>
 
+   <xsd:simpleType name="note-category">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="POSITIVE"/>
+         <xsd:enumeration value="NEUTRUAL"/>
+         <xsd:enumeration value="NEGATIVE"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
    <xsd:complexType name="stock-note">
       <xsd:complexContent>
          <xsd:extension base="base:abstract-entity">
             <xsd:sequence>
                <xsd:element name="add-time" type="xsd:date"/>
+               <xsd:element name="title" type="xsd:string"/>
+               <xsd:element name="note-category" type="note-category"/>
                <xsd:element name="content" type="xsd:string"/>
             </xsd:sequence>
          </xsd:extension>
