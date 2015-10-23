@@ -20,6 +20,7 @@ Ext.define('jewelry.Messages', {
         startScan: '开始扫描',
         selectDate: '选择日期',
         ok: '完成',
+        cancel: '取消',
         showAsText: '文本表示',
         search: '搜索',
         stockAnalysis: '个股分析',
@@ -32,7 +33,9 @@ Ext.define('jewelry.Messages', {
         tags: '标记',
         add: '添加',
         edit: '修改',
-        delete: '删除'
+        delete: '删除',
+        addNote: '添加记录',
+        editNote: '编辑记录'
     },
     headers: {
         startTime: '开始时间',

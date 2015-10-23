@@ -17,6 +17,10 @@ Ext.define('jewelry.view.mystock.MyStockView', {
         recordId: null
     },
 
+    listeners: {
+        onSave: 'onSave'
+    },
+
     initComponent: function() {
         var me = this;
 
@@ -24,13 +28,13 @@ Ext.define('jewelry.view.mystock.MyStockView', {
             xtype: 'button',
             text: jewelry.Messages.labels.ok,
             handler: function() {
-                me.fireEvent('viewComplete');
+                me.fireEvent('onSave');
             }
         }, {
             xtype: 'button',
             text: jewelry.Messages.labels.cancel,
             handler: function() {
-                me.fireEvent('viewComplete');
+                me.fireEvent('editComplete');
             }
         }];
 
@@ -38,7 +42,7 @@ Ext.define('jewelry.view.mystock.MyStockView', {
             xtype: 'label',
             region: 'north',
             reference: 'stockNameLabel',
-            height: 60,
+            height: 50,
             style: 'font-size: 30px',
             // label is just a label element in html, which does not take the height style
             // into layout calculation. So it does not participate in layout calculation
@@ -79,7 +83,7 @@ Ext.define('jewelry.view.mystock.MyStockView', {
             }],
             plugins: [{
                 ptype: 'rowexpander',
-                rowBodyTpl : new Ext.XTemplate('<p>{content}</p>')
+                rowBodyTpl: new Ext.XTemplate('<p>{content}</p>')
             }],
             store: Ext.create('Ext.data.Store', {
                 model: 'jewelry.model.StockNoteModel',
@@ -91,6 +95,8 @@ Ext.define('jewelry.view.mystock.MyStockView', {
     },
 
     editRecord: function(record) {
+        this.editingRecord = record;
+
         var stock = record.get('stock'),
             stockNameLabel = this.lookupReference('stockNameLabel'),
             stockName = stock != null ? stock.name : '';
@@ -103,5 +109,77 @@ Ext.define('jewelry.view.mystock.MyStockView', {
         Ext.Array.forEach(stockNotes, function(record) {
             noteStore.add(record);
         });
+    },
+
+    getEditedRecord: function() {
+        var record = this.editingRecord,
+            noteList = this.lookupReference('noteList'),
+            noteStore = noteList.getStore(),
+            stockNotes = [];
+        noteStore.each(function(note) {
+            stockNotes.push(note.data);
+        });
+        record.set('stockNotes', stockNotes);
+        return record;
+    },
+
+    showNoteEditor: function(record) {
+        var title = record != null ? record.title : '',
+            content = record != null ? record.content : '',
+            noteList = this.lookupReference('noteList'),
+            noteStore = noteList.getStore(),
+            dialog = Ext.create('Ext.window.Window', {
+                referenceHolder: true,
+                title: record != null ? jewelry.Messages.labels.addNote : jewelry.Messages.labels.editNote,
+                width: 800,
+                height: 500,
+                padding: '9 9 9 9',
+                modal: true,
+                layout: 'border',
+                bodyStyle: 'background-color: transparent',
+                bbar: ['->', {
+                    xtype: 'button',
+                    text: jewelry.Messages.labels.ok,
+                    handler: function() {
+                        var titleField = dialog.lookupReference('titleField'),
+                            contentField = dialog.lookupReference('contentField');
+                        if (record != null) {
+                            record.title = titleField.getValue();
+                            record.content = contentField.getValue();
+                        } else {
+                            var record = noteStore.add({
+                                title: titleField.getValue(),
+                                content: contentField.getValue(),
+                                noteCategory: 'POSITIVE',
+                                addTime: new Date()
+                            })[0];
+                            record.set('id', -1);
+                        }
+                        dialog.hide();
+                    }
+                }, {
+                    xtype: 'button',
+                    text: jewelry.Messages.labels.cancel,
+                    handler: function() {
+                        dialog.hide();
+                    }
+                }],
+                items: [{
+                    xtype: 'textfield',
+                    reference: 'titleField',
+                    margin: '3 3 3 3',
+                    value: title,
+                    hideLabel: true,
+                    region: 'north'
+                }, {
+                    xtype: 'textarea',
+                    reference: 'contentField',
+                    margin: '3 3 3 3',
+                    value: content,
+                    hideLabel: true,
+                    region: 'center'
+                }]
+            });
+        dialog.show();
     }
 });

@@ -36,7 +36,7 @@ Ext.define('jewelry.view.mystock.MyStockPage', {
             margin: '3 3 3 3',
             recordId: recordId,
             listeners: {
-                viewComplete: 'onViewComplete'
+                editComplete: 'onEditComplete'
             }
         });
         this.add(viewer);

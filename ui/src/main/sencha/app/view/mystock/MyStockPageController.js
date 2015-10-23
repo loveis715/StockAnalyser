@@ -13,7 +13,7 @@ Ext.define('jewelry.view.mystock.MyStockPageController', {
         view.switchToViewer(recordId);
     },
 
-    onViewComplete: function() {
+    onEditComplete: function() {
         var view = this.getView();
         view.switchToList();
     }
