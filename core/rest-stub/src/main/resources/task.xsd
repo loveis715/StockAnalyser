@@ -23,6 +23,7 @@
          <xsd:enumeration value="HALF_DAY"/>
          <xsd:enumeration value="SINGLE_STOCK"/>
          <xsd:enumeration value="TRADING_ANALYSIS"/>
+         <xsd:enumeration value="MORPHOLOGY"/>
       </xsd:restriction>
    </xsd:simpleType>
 

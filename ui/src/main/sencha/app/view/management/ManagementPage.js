@@ -3,7 +3,8 @@ Ext.define('jewelry.view.management.ManagementPage', {
     requires: [
         'jewelry.view.management.StockSyncingPanel',
         'jewelry.view.management.FullDayScanPanel',
-        'jewelry.view.management.HalfDayScanPanel'
+        'jewelry.view.management.HalfDayScanPanel',
+        'jewelry.view.management.MorphologyScanPanel'
     ],
 
     xtype: 'jewelry.managementPage',
@@ -44,8 +45,8 @@ Ext.define('jewelry.view.management.ManagementPage', {
             margin: '3 3 3 3',
             border: true
         }, {
-            // Panel for watching the trading info of stocks
-            xtype: 'panel',
+            // Panel for analysing morphology
+            xtype: 'jewelry.morphologyScanPanel',
             region: 'center',
             margin: '3 3 3 3',
             border: true

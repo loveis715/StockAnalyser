@@ -138,6 +138,27 @@ public class StockTradingInfoProvider {
       return result;
    }
 
+   public List<TradingInfo> getDailyTraidingInfoFor300Days(String code) {
+      String url = String.format(Constants.DAILY_TRADING_INFO_300_URL_FORMAT, code);
+      String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<TradingInfo>();
+      }
+
+      List<TradingInfo> result = new ArrayList<TradingInfo>();
+      try {
+         ObjectMapper mapper = new ObjectMapper();
+         CollectionType arrayType = mapper.getTypeFactory().constructCollectionType(
+               List.class, TradingInfo.class);
+         mapper.getFactory().configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+         result = mapper.readValue(data, arrayType);
+      } catch (Exception ex) {
+         // TODO: Throw an exception to indicate that we've failed to read the content
+      }
+      return result;
+   }
+
    private List<BillInfo> parseBillString(String billingString) {
       List<BillInfo> result = new ArrayList<BillInfo>();
       try {

@@ -16,6 +16,7 @@ Ext.define('jewelry.Messages', {
         startSync: '开始同步',
         fullDayScan: '整日交易扫描',
         halfDayScan: '半日交易扫描',
+        morphologyScan: '形态学扫描',
         lastScanTime: '上次扫描时间',
         startScan: '开始扫描',
         selectDate: '选择日期',
@@ -84,7 +85,9 @@ Ext.define('jewelry.Messages', {
         MASS_NEG_TRAD: '杀跌',
         TRAD_RATIO_LOW: '换手率低',
         LARGE_BUY_BILL: '密集买单',
-        LARGE_SELL_BILL: '密集卖单'
+        LARGE_SELL_BILL: '密集卖单',
+        RECENT_TOP_PRI: '箱体顶部',
+        RECENT_BOTTOM_PRI: '箱体底部'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'

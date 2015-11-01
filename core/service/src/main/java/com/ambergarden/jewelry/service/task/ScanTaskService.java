@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ambergarden.jewelry.converter.task.ScanTaskConverter;
 import com.ambergarden.jewelry.converter.task.ScanTypeConverter;
 import com.ambergarden.jewelry.executor.HalfDayScanTaskExecutor;
+import com.ambergarden.jewelry.executor.MorphologyScanExecutor;
 import com.ambergarden.jewelry.executor.ScanTaskExecutor;
 import com.ambergarden.jewelry.executor.StockAnalysisExecutor;
 import com.ambergarden.jewelry.orm.entity.task.ScanType;
@@ -28,6 +29,9 @@ public class ScanTaskService {
 
    @Autowired
    private HalfDayScanTaskExecutor halfDayScanTaskExecutor;
+
+   @Autowired
+   private MorphologyScanExecutor morphologyScanExecutor;
 
    @Autowired
    private StockAnalysisExecutor stockAnalysisExecutor;
@@ -80,6 +84,9 @@ public class ScanTaskService {
          break;
       case HALF_DAY:
          taskExecutor.execute(halfDayScanTaskExecutor);
+         break;
+      case MORPHOLOGY:
+         taskExecutor.execute(morphologyScanExecutor);
          break;
       case SINGLE_STOCK:
       case TRADING_ANALYSIS:
