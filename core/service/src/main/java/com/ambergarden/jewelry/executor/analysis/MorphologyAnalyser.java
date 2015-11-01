@@ -108,7 +108,7 @@ public class MorphologyAnalyser {
       double highMax = 0;
       double highMin = Double.MAX_VALUE;
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
-      for (int index = tradingInfoList.size() - 2; index >= 0; index--) {
+      for (int index = tradingInfoList.size() - 2; counter < 40 && index >= 0; index--) {
          TradingInfo tradingInfo = tradingInfoList.get(index);
          double highPrice = tradingInfo.getClose() > tradingInfo.getOpen()
                ? tradingInfo.getClose() : tradingInfo.getOpen();
