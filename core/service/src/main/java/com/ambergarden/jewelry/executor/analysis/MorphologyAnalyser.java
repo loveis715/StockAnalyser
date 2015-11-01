@@ -81,7 +81,7 @@ public class MorphologyAnalyser {
          if (lowPrice * 1.01 < lastTrading.getClose()) {
             break;
          } else if (isRecentLowest(index, tradingInfoList)
-               && lowMin * 0.95 < lastTrading.getClose()
+               && lowMin * 0.98 < lastTrading.getClose()
                && lowMin * 1.05 >= lastTrading.getClose()) {
             nearBottom = true;
             if (bottomCounter == 0) {
@@ -123,7 +123,7 @@ public class MorphologyAnalyser {
             break;
          } else if (isRecentHighest(index, tradingInfoList)
                && highMax * 0.95 <= lastTrading.getClose()
-               && highMax * 1.05 > lastTrading.getClose()) {
+               && highMax * 1.02 > lastTrading.getClose()) {
             nearTop = true;
             if (topCounter == 0) {
                topCounter = counter;
