@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
 import com.ambergarden.jewelry.executor.analysis.MorphologyAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
@@ -63,9 +64,17 @@ public class MorphologyScanExecutor implements Runnable {
       }
 
       try {
+         List<TradingInfo> marketTradings = tradingInfoProvider.getDailyTraidingInfo(Constants.CODE_SH);
+         TradingInfo lastMarketTrading = marketTradings.get(marketTradings.size() - 1);
+
          List<Stock> stocks = stockService.findAll();
          for (Stock pendingStock : stocks) {
             List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfoFor300Days(pendingStock.getCode());
+            TradingInfo lastStockTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+            if (lastMarketTrading.getDay().compareTo(lastStockTrading.getDay()) != 0) {
+               continue;
+            }
+
             List<Tag> tags = morphologyAnalyser.analyse(pendingStock, tradingInfoList);
             if (tags.size() != 0) {
                double score = calculateStockScore(tags);
