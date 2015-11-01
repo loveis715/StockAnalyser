@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.executor.analysis.bean.VolumeMAs;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.Tags;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
@@ -28,12 +29,49 @@ public class MorphologyAnalyser {
       }
 
       List<Tag> result = new ArrayList<Tag>();
+      result.addAll(analyseVolumn(stock, tradingInfoList));
       if (lastTrading.getOpen() > lastTrading.getClose()) {
          result.addAll(analysePriceDown(tradingInfoList));
       } else {
          result.addAll(analysePriceUp(tradingInfoList));
       }
       return result;
+   }
+
+   private List<Tag> analyseVolumn(Stock stock, List<TradingInfo> tradingInfoList) {
+      List<Tag> result = new ArrayList<Tag>();
+      VolumeMAs volumeMA = calculateVolumeMA(tradingInfoList);
+      if (volumeMA.getMA10() > 0 && volumeMA.getMA5() > volumeMA.getMA10() * 1.5
+            || volumeMA.getMA20() > 0 && volumeMA.getMA10() > volumeMA.getMA20() * 1.5
+            || volumeMA.getMA30() > 0 && volumeMA.getMA20() > volumeMA.getMA30() * 1.3) {
+         result.add(new Tags.VolumeIncrementTag(1));
+      }
+      if (volumeMA.getMA5() < stock.getTotalVolume() * 0.05) {
+         result.add(new Tags.TradingRatioLowTag());
+      }
+      return result;
+   }
+
+   private VolumeMAs calculateVolumeMA(List<TradingInfo> tradingInfoList) {
+      int counter = 0;
+      long totalVolume = 0;
+      VolumeMAs volumeMAs = new VolumeMAs();
+      for (int index = tradingInfoList.size() - 1; counter < 30 && index >= 0; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         totalVolume += tradingInfo.getVolume();
+         counter++;
+
+         if (counter == 5) {
+            volumeMAs.setMA5(totalVolume / 5);
+         } else if (counter == 10) {
+            volumeMAs.setMA10(totalVolume / 10);
+         } else if (counter == 20) {
+            volumeMAs.setMA20(totalVolume / 20);
+         } else if (counter == 30) {
+            volumeMAs.setMA30(totalVolume / 30);
+         }
+      }
+      return volumeMAs;
    }
 
    private List<Tag> analysePriceUp(List<TradingInfo> tradingInfoList) {

@@ -78,12 +78,14 @@ public class MorphologyScanExecutor implements Runnable {
             List<Tag> tags = morphologyAnalyser.analyse(pendingStock, tradingInfoList);
             if (tags.size() != 0) {
                double score = calculateStockScore(tags);
-               ScanResult result = new ScanResult();
-               result.setId(-1);
-               result.setStock(pendingStock);
-               result.setTags(tagConverter.convertFrom(tags));
-               result.setScore(score);
-               scanTask.getResults().add(result);
+               if (score >= 1) {
+                  ScanResult result = new ScanResult();
+                  result.setId(-1);
+                  result.setStock(pendingStock);
+                  result.setTags(tagConverter.convertFrom(tags));
+                  result.setScore(score);
+                  scanTask.getResults().add(result);
+               }
             }
          }
 
