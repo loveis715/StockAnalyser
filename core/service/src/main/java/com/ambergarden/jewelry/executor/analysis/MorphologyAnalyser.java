@@ -135,29 +135,33 @@ public class MorphologyAnalyser {
    }
 
    private boolean isRecentHighest(int index, List<TradingInfo> tradingInfoList) {
-      if (index > tradingInfoList.size() - 3 || index < 2) {
+      if (index > tradingInfoList.size() - 7 || index < 3) {
          return false;
       }
 
       TradingInfo tradingInfo = tradingInfoList.get(index);
       double highPrice = getHighValue(tradingInfo);
-      return highPrice > getHighValue(tradingInfoList.get(index - 2))
+      return highPrice > getHighValue(tradingInfoList.get(index - 3))
+            && highPrice > getHighValue(tradingInfoList.get(index - 2))
             && highPrice > getHighValue(tradingInfoList.get(index - 1))
             && highPrice > getHighValue(tradingInfoList.get(index + 1))
-            && highPrice > getHighValue(tradingInfoList.get(index + 2));
+            && highPrice > getHighValue(tradingInfoList.get(index + 2))
+            && highPrice > getHighValue(tradingInfoList.get(index + 3));
    }
 
    private boolean isRecentLowest(int index, List<TradingInfo> tradingInfoList) {
-      if (index > tradingInfoList.size() - 3 || index < 2) {
+      if (index > tradingInfoList.size() - 7 || index < 3) {
          return false;
       }
 
       TradingInfo tradingInfo = tradingInfoList.get(index);
       double lowPrice = getLowValue(tradingInfo);
-      return lowPrice > getLowValue(tradingInfoList.get(index - 2))
+      return lowPrice > getLowValue(tradingInfoList.get(index - 3))
+            && lowPrice > getLowValue(tradingInfoList.get(index - 2))
             && lowPrice > getLowValue(tradingInfoList.get(index - 1))
             && lowPrice > getLowValue(tradingInfoList.get(index + 1))
-            && lowPrice > getLowValue(tradingInfoList.get(index + 2));
+            && lowPrice > getLowValue(tradingInfoList.get(index + 2))
+            && lowPrice > getLowValue(tradingInfoList.get(index + 3));
    }
 
    private double getHighValue(TradingInfo tradingInfo) {
