@@ -7,6 +7,7 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LARGE_S
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_NEG_TRADING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_POS_TRADING;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_OVER_UPPER_BOUND;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_RECENT_BOTTOM_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_RECENT_TOP_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_TRADING_RATIO_LOW;
@@ -201,6 +202,16 @@ public class Tags {
 
       public RecentTopPriceTag() {
          super(TAG_NAME_RECENT_TOP_PRICE, TagCategory.POSITIVE, 2.0);
+      }
+   }
+
+   public static class PriceOverUpperBoundaryTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_OVER_UPPER_BOUND) == 0;
+      }
+
+      public PriceOverUpperBoundaryTag() {
+         super(TAG_NAME_OVER_UPPER_BOUND, TagCategory.POSITIVE, 3.0);
       }
    }
 

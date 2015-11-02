@@ -76,8 +76,9 @@ public class MorphologyAnalyser {
 
    private List<Tag> analysePriceUp(List<TradingInfo> tradingInfoList) {
       List<Tag> result = new ArrayList<Tag>();
-      if (isNearRecentHighestPrice(tradingInfoList)) {
-         result.add(new Tags.RecentTopPriceTag());
+      Tag tag = analyseByUpperBoundary(tradingInfoList);
+      if (tag != null) {
+         result.add(tag);
       }
       return result;
    }
@@ -139,10 +140,11 @@ public class MorphologyAnalyser {
    // 2. The stock's price has run under the highest price for at least 10 days.
    // 3. The price should have volatility, for at least 10%
    // 4. The highest price should in the middle of those days
-   private boolean isNearRecentHighestPrice(List<TradingInfo> tradingInfoList) {
+   private Tag analyseByUpperBoundary(List<TradingInfo> tradingInfoList) {
       int counter = 0;
       int topCounter = 0;
       boolean nearTop = false;
+      double ratio = 0;
       double highMax = 0;
       double highMin = Double.MAX_VALUE;
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
@@ -161,15 +163,28 @@ public class MorphologyAnalyser {
             break;
          } else if (isRecentHighest(index, tradingInfoList)
                && highMax * 0.95 <= lastTrading.getClose()
-               && highMax * 1.02 > lastTrading.getClose()) {
+               && highMax * 1.05 > lastTrading.getClose()) {
             nearTop = true;
             if (topCounter == 0) {
                topCounter = counter;
+               ratio = lastTrading.getClose() / highMax;
+            }
+            if (counter < 30) {
+               ratio = lastTrading.getClose() / highMax;
             }
          }
          counter++;
       }
-      return counter > 15 && nearTop && topCounter + 2 < counter && highMax > highMin * 1.1;
+
+      Tag tag = null;
+      if (counter > 15 && nearTop && topCounter + 2 < counter && highMax > highMin * 1.1) {
+         if (ratio > 1.02) {
+            tag = new Tags.PriceOverUpperBoundaryTag();
+         } else {
+            tag = new Tags.RecentTopPriceTag();
+         }
+      }
+      return tag;
    }
 
    private boolean isRecentHighest(int index, List<TradingInfo> tradingInfoList) {

@@ -26,4 +26,5 @@ public class TagConstants {
    public static final String TAG_NAME_LARGE_SELL_BILL = "LARGE_SELL_BILL";
    public static final String TAG_NAME_RECENT_TOP_PRICE = "RECENT_TOP_PRI";
    public static final String TAG_NAME_RECENT_BOTTOM_PRICE = "RECENT_BOTTOM_PRI";
+   public static final String TAG_NAME_OVER_UPPER_BOUND = "OVER_UPPER_BOUND";
 }

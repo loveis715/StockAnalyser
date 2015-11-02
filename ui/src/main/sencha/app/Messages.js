@@ -87,7 +87,8 @@ Ext.define('jewelry.Messages', {
         LARGE_BUY_BILL: '密集买单',
         LARGE_SELL_BILL: '密集卖单',
         RECENT_TOP_PRI: '箱体顶部',
-        RECENT_BOTTOM_PRI: '箱体底部'
+        RECENT_BOTTOM_PRI: '箱体底部',
+        OVER_UPPER_BOUND: '突破箱体'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'
