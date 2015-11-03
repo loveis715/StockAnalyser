@@ -40,16 +40,68 @@ public class MorphologyAnalyser {
 
    private List<Tag> analyseVolumn(Stock stock, List<TradingInfo> tradingInfoList) {
       List<Tag> result = new ArrayList<Tag>();
-      VolumeMAs volumeMA = calculateVolumeMA(tradingInfoList);
-      if (volumeMA.getMA10() > 0 && volumeMA.getMA5() > volumeMA.getMA10() * 1.5
-            || volumeMA.getMA20() > 0 && volumeMA.getMA10() > volumeMA.getMA20() * 1.5
-            || volumeMA.getMA30() > 0 && volumeMA.getMA20() > volumeMA.getMA30() * 1.3) {
+      if (isVolumeIncrement(stock, tradingInfoList)) {
          result.add(new Tags.VolumeIncrementTag(1));
       }
+      VolumeMAs volumeMA = calculateVolumeMA(tradingInfoList);
       if (volumeMA.getMA5() < stock.getTotalVolume() * 0.05) {
          result.add(new Tags.TradingRatioLowTag());
       }
       return result;
+   }
+
+   private boolean isVolumeIncrement(Stock stock, List<TradingInfo> tradingInfoList) {
+      int counter = 0;
+      long totalTrading = 0;
+      List<TradingInfo> subInfoList = new ArrayList<TradingInfo>();
+      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < 60; index--) {
+         counter++;
+
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         if (tradingInfo.getVolume() < stock.getTotalVolume() * 0.02) {
+            continue;
+         }
+
+         subInfoList.add(tradingInfo);
+         totalTrading += tradingInfo.getVolume();
+      }
+
+      if (subInfoList.size() < 5) {
+         return false;
+      }
+
+      counter = 0;
+      int listSize = subInfoList.size();
+      long subTotal = 0;
+      for (int index = 0; index < listSize; index++) {
+         TradingInfo tradingInfo = subInfoList.get(index);
+         subTotal += tradingInfo.getVolume();
+         counter++;
+
+         if (counter > 5 && listSize - counter > 5) {
+            long leftVolume = totalTrading - subTotal;
+            if (subTotal / counter > leftVolume / (listSize - counter) * 1.5
+                  && isInNormalPrice(index, subInfoList)) {
+               return true;
+            }
+         }
+      }
+      return false;
+   }
+
+   private boolean isInNormalPrice(int startIndex, List<TradingInfo> tradingInfoList) {
+      double priceTotal = 0;
+      for (int index = 0; index < startIndex; index++) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         priceTotal += tradingInfo.getClose();
+      }
+      double basePrice = priceTotal / startIndex;
+
+      int listSize = tradingInfoList.size();
+      for (int index = startIndex; index < listSize; index++) {
+         priceTotal += tradingInfoList.get(index).getClose();
+      }
+      return basePrice < priceTotal / (listSize - startIndex) * 1.5;
    }
 
    private VolumeMAs calculateVolumeMA(List<TradingInfo> tradingInfoList) {
