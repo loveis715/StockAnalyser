@@ -84,11 +84,19 @@ Ext.define('jewelry.view.unusual.UnusualView', {
             columns: [{
                 text: jewelry.Messages.headers.stockName,
                 dataIndex: 'stockName',
-                flex: 1
+                flex: 1,
+                renderer: function(value, metadata, record) {
+                    var url = 'http://finance.sina.com.cn/realstock/company/' + record.get('stockCode') + '/nc.shtml';
+                    return '<a href="' + url + '" target="_blank">' + value + '</a>';
+                }
             }, {
                 text: jewelry.Messages.headers.stockCode,
                 dataIndex: 'stockCode',
-                flex: 1
+                flex: 1,
+                renderer: function(value) {
+                    var url = 'http://finance.sina.com.cn/realstock/company/' + value + '/nc.shtml';
+                    return '<a href="' + url + '" target="_blank">' + value + '</a>';
+                }
             }, {
                 text: jewelry.Messages.headers.stockCategory,
                 dataIndex: 'stockCategory',
