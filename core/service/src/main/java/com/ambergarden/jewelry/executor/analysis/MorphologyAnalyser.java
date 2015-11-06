@@ -41,7 +41,7 @@ public class MorphologyAnalyser {
    private List<Tag> analyseVolumn(Stock stock, List<TradingInfo> tradingInfoList) {
       List<Tag> result = new ArrayList<Tag>();
       if (isVolumeIncrement(stock, tradingInfoList)) {
-         result.add(new Tags.VolumeIncrementTag(1));
+         result.add(new Tags.VolumeIncrementTag(3));
       }
       VolumeMAs volumeMA = calculateVolumeMA(tradingInfoList);
       if (volumeMA.getMA5() < stock.getTotalVolume() * 0.05) {
