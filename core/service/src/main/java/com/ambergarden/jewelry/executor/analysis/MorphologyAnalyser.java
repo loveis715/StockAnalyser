@@ -2,9 +2,11 @@ package com.ambergarden.jewelry.executor.analysis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.executor.analysis.bean.PriceMAs;
 import com.ambergarden.jewelry.executor.analysis.bean.VolumeMAs;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.Tags;
@@ -13,17 +15,21 @@ import com.ambergarden.jewelry.schema.beans.stock.Stock;
 
 @Component
 public class MorphologyAnalyser {
+   public static final int MIN_TRADING_DATE = 90;
+   public static final double MIN_TRADING_RATIO = 0.02;
+   public static final long MAX_VOLUME = 30000000000L;
+
    public List<Tag> analyse(Stock stock, List<TradingInfo> tradingInfoList) {
-      if (tradingInfoList.size() <= 1) {
+      if (tradingInfoList.size() <= MIN_TRADING_DATE) {
          return new ArrayList<Tag>();
       }
 
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
-      if (lastTrading.getVolume() < stock.getTotalVolume() * 0.03) {
+      if (lastTrading.getVolume() < stock.getTotalVolume() * MIN_TRADING_RATIO) {
          // No trade. No value to play with
          return new ArrayList<Tag>();
       }
-      if (lastTrading.getClose() * stock.getTotalVolume() > 30000000000L) {
+      if (lastTrading.getClose() * stock.getTotalVolume() > MAX_VOLUME) {
          // Large stock. No value to play with
          return new ArrayList<Tag>();
       }
@@ -34,6 +40,39 @@ public class MorphologyAnalyser {
          result.addAll(analysePriceDown(tradingInfoList));
       } else {
          result.addAll(analysePriceUp(tradingInfoList));
+      }
+      result.addAll(analyseByModel(tradingInfoList));
+      return result;
+   }
+
+   private List<Tag> analyseByModel(List<TradingInfo> tradingInfoList) {
+      List<Tag> result = new ArrayList<Tag>();
+      result.addAll(analysePriceByMAs(tradingInfoList));
+      return result;
+   }
+
+   private List<Tag> analysePriceByMAs(List<TradingInfo> tradingInfoList) {
+      List<Tag> result = new ArrayList<Tag>();
+      Map<String, PriceMAs> priceMAMap = AnalyserUtils.calculatePriceMAs(tradingInfoList);
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 2);
+      boolean isPriceDown = lastTrading.getClose() - prevTrading.getClose() < prevTrading.getClose() * -0.01;
+      PriceMAs priceMAs = priceMAMap.get(lastTrading.getDay());
+      if (isPriceDown && priceMAs != null) {
+         double lastPrice = lastTrading.getClose();
+         double targetPrice = lastPrice * 0.97;
+         if (priceMAs.getMA5() > targetPrice && priceMAs.getMA5() < lastPrice) {
+            result.add(new Tags.FindMA5SupportTag());
+         }
+         if (priceMAs.getMA10() > targetPrice && priceMAs.getMA10() < lastPrice) {
+            result.add(new Tags.FindMA10SupportTag());
+         }
+         if (priceMAs.getMA20() > targetPrice && priceMAs.getMA20() < lastPrice) {
+            result.add(new Tags.FindMA20SupportTag());
+         }
+         if (priceMAs.getMA30() > targetPrice && priceMAs.getMA30() < lastPrice) {
+            result.add(new Tags.FindMA30SupportTag());
+         }
       }
       return result;
    }

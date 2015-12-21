@@ -21,6 +21,10 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_WITH_PRICE_DOWN;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA5_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA10_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA20_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA30_SUPPORT;
 
 public class Tags {
    /**
@@ -225,6 +229,58 @@ public class Tags {
 
       public RecentBottomPriceTag() {
          super(TAG_NAME_RECENT_BOTTOM_PRICE, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Find MA5's support
+    */
+   public static class FindMA5SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_FIND_MA5_SUPPORT) == 0;
+      }
+
+      public FindMA5SupportTag() {
+         super(TAG_NAME_FIND_MA5_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Find MA10's support
+    */
+   public static class FindMA10SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_FIND_MA10_SUPPORT) == 0;
+      }
+
+      public FindMA10SupportTag() {
+         super(TAG_NAME_FIND_MA10_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Find MA20's support
+    */
+   public static class FindMA20SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_FIND_MA20_SUPPORT) == 0;
+      }
+
+      public FindMA20SupportTag() {
+         super(TAG_NAME_FIND_MA20_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Find MA30's support
+    */
+   public static class FindMA30SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_FIND_MA30_SUPPORT) == 0;
+      }
+
+      public FindMA30SupportTag() {
+         super(TAG_NAME_FIND_MA30_SUPPORT, TagCategory.POSITIVE, 1.0);
       }
    }
 }

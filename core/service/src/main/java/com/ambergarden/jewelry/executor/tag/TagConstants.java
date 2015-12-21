@@ -27,4 +27,8 @@ public class TagConstants {
    public static final String TAG_NAME_RECENT_TOP_PRICE = "RECENT_TOP_PRI";
    public static final String TAG_NAME_RECENT_BOTTOM_PRICE = "RECENT_BOTTOM_PRI";
    public static final String TAG_NAME_OVER_UPPER_BOUND = "OVER_UPPER_BOUND";
+   public static final String TAG_NAME_FIND_MA5_SUPPORT = "FIND_MA5_SUPPORT";
+   public static final String TAG_NAME_FIND_MA10_SUPPORT = "FIND_MA10_SUPPORT";
+   public static final String TAG_NAME_FIND_MA20_SUPPORT = "FIND_MA20_SUPPORT";
+   public static final String TAG_NAME_FIND_MA30_SUPPORT = "FIND_MA30_SUPPORT";
 }
