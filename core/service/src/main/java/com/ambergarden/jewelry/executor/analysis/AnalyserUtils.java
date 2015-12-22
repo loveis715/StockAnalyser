@@ -118,8 +118,9 @@ public class AnalyserUtils {
       return priceMAMap;
    }
 
-   private static double getTotal(List<TradingInfo> tradingInfoList, int startIndex, int counter) {
+   private static double getTotal(List<TradingInfo> tradingInfoList, int startIndex, int endIndex) {
       double total = 0;
+      int counter = endIndex - startIndex;
       for (int index = tradingInfoList.size() - startIndex - 1; index > 0 && counter > 0; index--) {
          TradingInfo tradingInfo = tradingInfoList.get(index);
          total += tradingInfo.getClose();

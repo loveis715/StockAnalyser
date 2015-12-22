@@ -88,7 +88,14 @@ Ext.define('jewelry.Messages', {
         LARGE_SELL_BILL: '密集卖单',
         RECENT_TOP_PRI: '箱体顶部',
         RECENT_BOTTOM_PRI: '箱体底部',
-        OVER_UPPER_BOUND: '突破箱体'
+        OVER_UPPER_BOUND: '突破箱体',
+        FIND_MA5_SUPPORT: '寻求MA5支撑',
+        FIND_MA10_SUPPORT: '寻求MA10支撑',
+        FIND_MA20_SUPPORT: '寻求MA20支撑',
+        FIND_MA30_SUPPORT: '寻求MA30支撑',
+        CONFIRM_MA120_SUPPORT: '寻求半年线支撑',
+        CONFIRM_MA250_SUPPORT: '寻求年线支撑',
+        BREAK_BOUNDARY: '前期高点突破'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'

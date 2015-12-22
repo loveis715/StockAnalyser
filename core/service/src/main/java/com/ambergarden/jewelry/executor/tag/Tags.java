@@ -1,6 +1,13 @@
 package com.ambergarden.jewelry.executor.tag;
 
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONTINUOUS_VOLUME_INCREMENT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA10_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA20_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA30_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA5_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_HIGH_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LARGE_BUY_BILL;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LARGE_SELL_BILL;
@@ -21,14 +28,6 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_HIGH_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_LOW_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_VALUE_VOLUME_INCREMENT_WITH_PRICE_DOWN;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA5_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA10_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA20_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA30_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_NECK_OF_W;
-import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
 
 public class Tags {
    /**

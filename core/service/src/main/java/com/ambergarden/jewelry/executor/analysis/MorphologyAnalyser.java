@@ -169,6 +169,7 @@ public class MorphologyAnalyser {
                && tradingInfo.getClose() < lastTradingInfo.getClose() * 1.05) {
                if (lowest * 1.15 < tradingInfo.getClose()) {
                   result.add(new Tags.BreakBoundary());
+                  break;
                }
             }
          }
