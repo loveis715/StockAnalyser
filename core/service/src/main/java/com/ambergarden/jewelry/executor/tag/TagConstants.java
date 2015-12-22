@@ -33,4 +33,5 @@ public class TagConstants {
    public static final String TAG_NAME_FIND_MA30_SUPPORT = "FIND_MA30_SUPPORT";
    public static final String TAG_NAME_CONFIRM_MA120_SUPPORT = "CONFIRM_MA120_SUPPORT";
    public static final String TAG_NAME_CONFIRM_MA250_SUPPORT = "CONFIRM_MA250_SUPPORT";
+   public static final String TAG_NAME_BREAK_BOUNDARY = "BREAK_BOUNDARY";
 }

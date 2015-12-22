@@ -27,6 +27,8 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA30_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_NECK_OF_W;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
 
 public class Tags {
    /**
@@ -309,6 +311,19 @@ public class Tags {
 
       public ConfirmMA250SupportTag() {
          super(TAG_NAME_CONFIRM_MA250_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Trend to break through the upper boundary
+    */
+   public static class BreakBoundary extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_BREAK_BOUNDARY) == 0;
+      }
+
+      public BreakBoundary() {
+         super(TAG_NAME_BREAK_BOUNDARY, TagCategory.POSITIVE, 1.5);
       }
    }
 }

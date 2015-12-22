@@ -61,6 +61,8 @@ public class MorphologyAnalyser {
       if (isPriceDown && priceMAs != null) {
          result.addAll(analysePriceDownByShortTermMAs(lastTrading, priceMAs));
          result.addAll(analysePriceDownByLongTermMAs(tradingInfoList, priceMAMap));
+      } else {
+         result.addAll(analysePriceUpByRecentTopPrice(tradingInfoList, priceMAMap));
       }
       return result;
    }
@@ -126,7 +128,7 @@ public class MorphologyAnalyser {
    private boolean isRecentlyBreakThroughMA250(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
       int tradingListSize = tradingInfoList.size();
       int failCounter = Integer.MAX_VALUE;
-      for (int index = tradingListSize - 1; index > tradingListSize - 11; index--) {
+      for (int index = tradingListSize - 1; index > tradingListSize - 11 && index > 0; index--) {
          TradingInfo tradingInfo = tradingInfoList.get(index);
          PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
          if (tradingInfo.getClose() < priceMAs.getMA250()) {
@@ -140,6 +142,57 @@ public class MorphologyAnalyser {
          }
       }
       return failCounter != Integer.MAX_VALUE;
+   }
+
+   private List<Tag> analysePriceUpByRecentTopPrice(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      double lowest = Double.MAX_VALUE;
+      int tradingListSize = tradingInfoList.size();
+      boolean needContinue = true;
+      TradingInfo lastTradingInfo = tradingInfoList.get(tradingListSize - 1);
+      List<Tag> result = new ArrayList<Tag>();
+      for (int index = tradingListSize - 1; index > tradingListSize - 6 && index > 0; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         double closePrice = tradingInfo.getClose();
+         if (closePrice > lastTradingInfo.getClose()) {
+            needContinue = false;
+         }
+         if (lowest > tradingInfo.getClose()) {
+            lowest = tradingInfo.getClose();
+         }
+      }
+
+      if (needContinue) {
+         for (int index = tradingListSize - 7; index > tradingListSize - 61 && index > 0; index--) {
+            TradingInfo tradingInfo = tradingInfoList.get(index);
+            if (isRegionalTopPrice(tradingInfoList, index)
+               && tradingInfo.getClose() > lastTradingInfo.getClose()
+               && tradingInfo.getClose() < lastTradingInfo.getClose() * 1.05) {
+               if (lowest * 1.15 < tradingInfo.getClose()) {
+                  result.add(new Tags.BreakBoundary());
+               }
+            }
+         }
+      }
+      return result;
+   }
+
+   private boolean isRegionalTopPrice(List<TradingInfo> tradingInfoList, int infoIndex) {
+      int tradingInfoSize = tradingInfoList.size();
+      TradingInfo tradingInfo = tradingInfoList.get(infoIndex);
+      for (int index = infoIndex + 1; index < tradingInfoSize && index < infoIndex + 6; index++) {
+         TradingInfo prevInfo = tradingInfoList.get(index);
+         if (prevInfo.getClose() > tradingInfo.getClose()) {
+            return false;
+         }
+      }
+
+      for (int index = infoIndex - 1; index > 0 && index > infoIndex - 6; index--) {
+         TradingInfo futureInfo = tradingInfoList.get(index);
+         if (futureInfo.getClose() > tradingInfo.getClose()) {
+            return false;
+         }
+      }
+      return true;
    }
 
    private List<Tag> analyseVolumn(Stock stock, List<TradingInfo> tradingInfoList) {
