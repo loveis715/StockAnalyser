@@ -25,6 +25,8 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA10_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA20_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_FIND_MA30_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
 
 public class Tags {
    /**
@@ -281,6 +283,32 @@ public class Tags {
 
       public FindMA30SupportTag() {
          super(TAG_NAME_FIND_MA30_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Confirm MA120's support
+    */
+   public static class ConfirmMA120SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_CONFIRM_MA120_SUPPORT) == 0;
+      }
+
+      public ConfirmMA120SupportTag() {
+         super(TAG_NAME_CONFIRM_MA120_SUPPORT, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Confirm MA250's support
+    */
+   public static class ConfirmMA250SupportTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_CONFIRM_MA250_SUPPORT) == 0;
+      }
+
+      public ConfirmMA250SupportTag() {
+         super(TAG_NAME_CONFIRM_MA250_SUPPORT, TagCategory.POSITIVE, 1.0);
       }
    }
 }

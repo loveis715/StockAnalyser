@@ -59,22 +59,87 @@ public class MorphologyAnalyser {
       boolean isPriceDown = lastTrading.getClose() - prevTrading.getClose() < prevTrading.getClose() * -0.01;
       PriceMAs priceMAs = priceMAMap.get(lastTrading.getDay());
       if (isPriceDown && priceMAs != null) {
-         double lastPrice = lastTrading.getClose();
-         double targetPrice = lastPrice * 0.97;
-         if (priceMAs.getMA5() > targetPrice && priceMAs.getMA5() < lastPrice) {
-            result.add(new Tags.FindMA5SupportTag());
-         }
-         if (priceMAs.getMA10() > targetPrice && priceMAs.getMA10() < lastPrice) {
-            result.add(new Tags.FindMA10SupportTag());
-         }
-         if (priceMAs.getMA20() > targetPrice && priceMAs.getMA20() < lastPrice) {
-            result.add(new Tags.FindMA20SupportTag());
-         }
-         if (priceMAs.getMA30() > targetPrice && priceMAs.getMA30() < lastPrice) {
-            result.add(new Tags.FindMA30SupportTag());
-         }
+         result.addAll(analysePriceDownByShortTermMAs(lastTrading, priceMAs));
+         result.addAll(analysePriceDownByLongTermMAs(tradingInfoList, priceMAMap));
       }
       return result;
+   }
+
+   private List<Tag> analysePriceDownByShortTermMAs(TradingInfo lastTrading, PriceMAs priceMAs) {
+      List<Tag> result = new ArrayList<Tag>();
+      double lastPrice = lastTrading.getClose();
+      double targetPrice = lastPrice * 0.97;
+      if (priceMAs.getMA5() > targetPrice && priceMAs.getMA5() < lastPrice) {
+         result.add(new Tags.FindMA5SupportTag());
+      }
+      if (priceMAs.getMA10() > targetPrice && priceMAs.getMA10() < lastPrice) {
+         result.add(new Tags.FindMA10SupportTag());
+      }
+      if (priceMAs.getMA20() > targetPrice && priceMAs.getMA20() < lastPrice) {
+         result.add(new Tags.FindMA20SupportTag());
+      }
+      if (priceMAs.getMA30() > targetPrice && priceMAs.getMA30() < lastPrice) {
+         result.add(new Tags.FindMA30SupportTag());
+      }
+      return result;
+   }
+
+   private List<Tag> analysePriceDownByLongTermMAs(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      List<Tag> result = new ArrayList<Tag>();
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      double lastPrice = lastTrading.getClose();
+      double targetPrice = lastPrice * 0.97;
+      PriceMAs priceMAs = priceMAMap.get(lastTrading.getDay());
+      if (priceMAs == null) {
+         return result;
+      }
+
+      if (priceMAs.getMA120() > targetPrice && priceMAs.getMA120() < lastPrice
+         && isRecentlyBreakThroughMA120(tradingInfoList, priceMAMap)) {
+         result.add(new Tags.ConfirmMA120SupportTag());
+      } else if (priceMAs.getMA250() > targetPrice && priceMAs.getMA250() < lastPrice
+         && isRecentlyBreakThroughMA250(tradingInfoList, priceMAMap)) {
+         result.add(new Tags.ConfirmMA250SupportTag());
+      }
+      return result;
+   }
+
+   private boolean isRecentlyBreakThroughMA120(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      int tradingListSize = tradingInfoList.size();
+      int failCounter = Integer.MAX_VALUE;
+      for (int index = tradingListSize - 1; index > tradingListSize - 11; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (tradingInfo.getClose() < priceMAs.getMA120()) {
+            failCounter = 1;
+         } else {
+            failCounter--;
+         }
+
+         if (failCounter <= 0) {
+            return false;
+         }
+      }
+      return failCounter != Integer.MAX_VALUE;
+   }
+
+   private boolean isRecentlyBreakThroughMA250(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      int tradingListSize = tradingInfoList.size();
+      int failCounter = Integer.MAX_VALUE;
+      for (int index = tradingListSize - 1; index > tradingListSize - 11; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (tradingInfo.getClose() < priceMAs.getMA250()) {
+            failCounter = 1;
+         } else {
+            failCounter--;
+         }
+
+         if (failCounter <= 0) {
+            return false;
+         }
+      }
+      return failCounter != Integer.MAX_VALUE;
    }
 
    private List<Tag> analyseVolumn(Stock stock, List<TradingInfo> tradingInfoList) {
