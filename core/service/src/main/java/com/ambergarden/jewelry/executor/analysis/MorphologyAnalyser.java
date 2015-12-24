@@ -57,9 +57,8 @@ public class MorphologyAnalyser {
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 2);
       boolean isPriceDown = lastTrading.getClose() - prevTrading.getClose() < prevTrading.getClose() * -0.01;
-      PriceMAs priceMAs = priceMAMap.get(lastTrading.getDay());
-      if (isPriceDown && priceMAs != null) {
-         result.addAll(analysePriceDownByShortTermMAs(lastTrading, priceMAs));
+      if (isPriceDown) {
+         result.addAll(analysePriceDownByShortTermMAs(tradingInfoList, priceMAMap));
          result.addAll(analysePriceDownByLongTermMAs(tradingInfoList, priceMAMap));
       } else {
          result.addAll(analysePriceUpByRecentTopPrice(tradingInfoList, priceMAMap));
@@ -67,20 +66,30 @@ public class MorphologyAnalyser {
       return result;
    }
 
-   private List<Tag> analysePriceDownByShortTermMAs(TradingInfo lastTrading, PriceMAs priceMAs) {
+   private List<Tag> analysePriceDownByShortTermMAs(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       List<Tag> result = new ArrayList<Tag>();
+      PriceMAs priceMAs = priceMAMap.get(lastTrading.getDay());
+      if (priceMAs == null) {
+         return result;
+      }
+
       double lastPrice = lastTrading.getClose();
       double targetPrice = lastPrice * 0.97;
-      if (priceMAs.getMA5() > targetPrice && priceMAs.getMA5() < lastPrice) {
+      if (priceMAs.getMA5() > targetPrice && priceMAs.getMA5() < lastPrice
+         && isMA5InUpTrend(tradingInfoList, priceMAMap)) {
          result.add(new Tags.FindMA5SupportTag());
       }
-      if (priceMAs.getMA10() > targetPrice && priceMAs.getMA10() < lastPrice) {
+      if (priceMAs.getMA10() > targetPrice && priceMAs.getMA10() < lastPrice
+         && isMA10InUpTrend(tradingInfoList, priceMAMap)) {
          result.add(new Tags.FindMA10SupportTag());
       }
-      if (priceMAs.getMA20() > targetPrice && priceMAs.getMA20() < lastPrice) {
+      if (priceMAs.getMA20() > targetPrice && priceMAs.getMA20() < lastPrice
+         && isMA20InUpTrend(tradingInfoList, priceMAMap)) {
          result.add(new Tags.FindMA20SupportTag());
       }
-      if (priceMAs.getMA30() > targetPrice && priceMAs.getMA30() < lastPrice) {
+      if (priceMAs.getMA30() > targetPrice && priceMAs.getMA30() < lastPrice
+         && isMA30InUpTrend(tradingInfoList, priceMAMap)) {
          result.add(new Tags.FindMA30SupportTag());
       }
       return result;
@@ -104,6 +113,54 @@ public class MorphologyAnalyser {
          result.add(new Tags.ConfirmMA250SupportTag());
       }
       return result;
+   }
+
+   private boolean isMA5InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      if (tradingInfoList.size() - 6 < 0) {
+         return false;
+      }
+
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 6);
+      PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
+      return currentMAs != null && prevMAs != null && currentMAs.getMA5() > prevMAs.getMA5() * 1.03;
+   }
+
+   private boolean isMA10InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      if (tradingInfoList.size() - 11 < 0) {
+         return false;
+      }
+
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 11);
+      PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
+      return currentMAs != null && prevMAs != null && currentMAs.getMA10() > prevMAs.getMA10() * 1.04;
+   }
+
+   private boolean isMA20InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      if (tradingInfoList.size() - 21 < 0) {
+         return false;
+      }
+
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 21);
+      PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
+      return currentMAs != null && prevMAs != null && currentMAs.getMA20() > prevMAs.getMA20() * 1.05;
+   }
+
+   private boolean isMA30InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
+      if (tradingInfoList.size() - 31 < 0) {
+         return false;
+      }
+
+      TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
+      PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 31);
+      PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
+      return currentMAs != null && prevMAs != null && currentMAs.getMA30() > prevMAs.getMA30() * 1.06;
    }
 
    private boolean isRecentlyBreakThroughMA120(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
