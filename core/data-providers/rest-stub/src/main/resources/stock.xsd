@@ -35,6 +35,13 @@
       </xsd:sequence>
    </xsd:complexType>
 
+   <xsd:complexType name="weight-info">
+      <xsd:sequence>
+         <xsd:element name="day" type="xsd:string"/>
+         <xsd:element name="weight" type="xsd:double"/>
+      </xsd:sequence>
+   </xsd:complexType>
+
    <xsd:complexType name="minute-data">
       <xsd:sequence>
          <xsd:element name="time" type="xsd:string"/>

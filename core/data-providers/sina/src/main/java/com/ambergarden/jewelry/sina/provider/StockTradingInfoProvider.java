@@ -19,6 +19,7 @@ import com.ambergarden.jewelry.schema.beans.provider.stock.BillInfo;
 import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.RealtimeTrading;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
+import com.ambergarden.jewelry.schema.beans.provider.stock.WeightInfo;
 import com.ambergarden.jewelry.sina.Constants;
 import com.ambergarden.jewelry.sina.Utils;
 import com.fasterxml.jackson.core.JsonParser.Feature;
@@ -135,6 +136,9 @@ public class StockTradingInfoProvider {
       } catch (Exception ex) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }
+
+      List<WeightInfo> weightInfos = retrieveWeightInfo(code);
+      adjustTradingInfoWithWeights(result, weightInfos);
       return result;
    }
 
@@ -156,7 +160,64 @@ public class StockTradingInfoProvider {
       } catch (Exception ex) {
          // TODO: Throw an exception to indicate that we've failed to read the content
       }
+
+      List<WeightInfo> weightInfos = retrieveWeightInfo(code);
+      adjustTradingInfoWithWeights(result, weightInfos);
       return result;
+   }
+
+   private void adjustTradingInfoWithWeights(List<TradingInfo> tradingInfos, List<WeightInfo> weightInfos) {
+      Map<String, WeightInfo> weightMaps = new HashMap<String, WeightInfo>();
+      for (WeightInfo weightInfo : weightInfos) {
+         weightMaps.put(weightInfo.getDay(), weightInfo);
+      }
+
+      double basePrice = Double.MAX_VALUE;
+      for (int index = tradingInfos.size() - 1; index > 0; index--) {
+         TradingInfo tradingInfo = tradingInfos.get(index);
+         String dayString = tradingInfo.getDay();
+         if (weightMaps.containsKey(dayString)) {
+            WeightInfo weight = weightMaps.get(dayString);
+
+            double closePrice = tradingInfo.getClose();
+            basePrice = closePrice / weight.getWeight();
+            break;
+         }
+      }
+
+      if (basePrice == Double.MAX_VALUE) {
+         return;
+      }
+
+      for (int index = tradingInfos.size() - 1; index > 0; index--) {
+         TradingInfo tradingInfo = tradingInfos.get(index);
+         String dayString = tradingInfo.getDay();
+         if (weightMaps.containsKey(dayString)) {
+            WeightInfo weight = weightMaps.get(dayString);
+            double calculatedPrice = weight.getWeight() * basePrice;
+            if (calculatedPrice * 0.99 < tradingInfo.getClose()
+               && calculatedPrice * 1.01 > tradingInfo.getClose()) {
+               continue;
+            }
+
+            double ratio = calculatedPrice / tradingInfo.getClose();
+            tradingInfo.setClose(calculatedPrice);
+            tradingInfo.setHigh(tradingInfo.getHigh() * ratio);
+            tradingInfo.setLow(tradingInfo.getLow() * ratio);
+            tradingInfo.setOpen(tradingInfo.getOpen() * ratio);
+            tradingInfo.setVolume((long)(tradingInfo.getVolume() / ratio));
+         }
+      }
+   }
+
+   private List<WeightInfo> retrieveWeightInfo(String code) {
+      String url = String.format(Constants.WEIGHT_INFO_URL_FORMAT, code);
+      String data = retrieveData(url);
+      if (data == null || data.length() == 0) {
+         return new ArrayList<WeightInfo>();
+      }
+
+      return WeightInfoAnalyser.parse(data);
    }
 
    private List<BillInfo> parseBillString(String billingString) {

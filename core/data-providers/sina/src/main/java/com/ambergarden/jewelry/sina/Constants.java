@@ -9,6 +9,8 @@ public class Constants {
       = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=%s&scale=240&ma=no&datalen=20";
    public static final String DAILY_TRADING_INFO_300_URL_FORMAT
       = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=%s&scale=240&ma=no&datalen=300";
+   public static final String WEIGHT_INFO_URL_FORMAT
+      = "http://finance.sina.com.cn/realstock/company/%s/qianfuquan.js";
    public static final String PER_HOUR_TRADING_INFO_URL_FORMAT
       = "http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=%s&scale=60&ma=no&datalen=80";
    public static final String PER_MINUTE_TRADING_INFO_URL_FORMAT
