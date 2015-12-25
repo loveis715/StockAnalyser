@@ -116,49 +116,81 @@ public class MorphologyAnalyser {
    }
 
    private boolean isMA5InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
-      if (tradingInfoList.size() - 6 < 0) {
+      if (tradingInfoList.size() - 5 < 0) {
          return false;
+      }
+
+      for (int index = tradingInfoList.size() - 1; index > tradingInfoList.size() - 5; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (priceMAs.getMA5() * 0.99 > tradingInfo.getClose()) {
+            return false;
+         }
       }
 
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
-      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 6);
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 5);
       PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
       return currentMAs != null && prevMAs != null && currentMAs.getMA5() > prevMAs.getMA5() * 1.03;
    }
 
    private boolean isMA10InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
-      if (tradingInfoList.size() - 11 < 0) {
+      if (tradingInfoList.size() - 8 < 0) {
          return false;
+      }
+
+      for (int index = tradingInfoList.size() - 1; index > tradingInfoList.size() - 8; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (priceMAs.getMA10() * 0.99 > tradingInfo.getClose()) {
+            return false;
+         }
       }
 
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
-      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 11);
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 8);
       PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
       return currentMAs != null && prevMAs != null && currentMAs.getMA10() > prevMAs.getMA10() * 1.04;
    }
 
    private boolean isMA20InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
-      if (tradingInfoList.size() - 21 < 0) {
+      if (tradingInfoList.size() - 13 < 0) {
          return false;
+      }
+
+      for (int index = tradingInfoList.size() - 1; index > tradingInfoList.size() - 13; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (priceMAs.getMA20() * 0.98 > tradingInfo.getClose()) {
+            return false;
+         }
       }
 
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
-      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 21);
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 13);
       PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
       return currentMAs != null && prevMAs != null && currentMAs.getMA20() > prevMAs.getMA20() * 1.05;
    }
 
    private boolean isMA30InUpTrend(List<TradingInfo> tradingInfoList, Map<String, PriceMAs> priceMAMap) {
-      if (tradingInfoList.size() - 31 < 0) {
+      if (tradingInfoList.size() - 18 < 0) {
          return false;
+      }
+
+      for (int index = tradingInfoList.size() - 1; index > tradingInfoList.size() - 18; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         PriceMAs priceMAs = priceMAMap.get(tradingInfo.getDay());
+         if (priceMAs.getMA30() * 0.98 > tradingInfo.getClose()) {
+            return false;
+         }
       }
 
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
       PriceMAs currentMAs = priceMAMap.get(lastTrading.getDay());
-      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 31);
+      TradingInfo prevTrading = tradingInfoList.get(tradingInfoList.size() - 18);
       PriceMAs prevMAs = priceMAMap.get(prevTrading.getDay());
       return currentMAs != null && prevMAs != null && currentMAs.getMA30() > prevMAs.getMA30() * 1.06;
    }
