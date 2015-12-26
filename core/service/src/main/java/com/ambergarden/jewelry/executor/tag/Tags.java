@@ -15,6 +15,7 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_LOW_PRI
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_NEG_TRADING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_MASS_POS_TRADING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_OVER_UPPER_BOUND;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_PRICE_UP_DOWN;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_RECENT_BOTTOM_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_RECENT_TOP_PRICE;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_TRADING_RATIO_LOW;
@@ -316,13 +317,26 @@ public class Tags {
    /**
     * Trend to break through the upper boundary
     */
-   public static class BreakBoundary extends Tag {
+   public static class BreakBoundaryTag extends Tag {
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_NAME_BREAK_BOUNDARY) == 0;
       }
 
-      public BreakBoundary() {
+      public BreakBoundaryTag() {
          super(TAG_NAME_BREAK_BOUNDARY, TagCategory.POSITIVE, 1.5);
+      }
+   }
+
+   /**
+    * Price goes up and down
+    */
+   public static class PriceUpDownTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_NAME_PRICE_UP_DOWN) == 0;
+      }
+
+      public PriceUpDownTag() {
+         super(TAG_NAME_PRICE_UP_DOWN, TagCategory.POSITIVE, 1.0);
       }
    }
 }

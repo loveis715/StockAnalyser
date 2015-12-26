@@ -47,11 +47,54 @@ public class MorphologyAnalyser {
 
    private List<Tag> analyseByModel(List<TradingInfo> tradingInfoList) {
       List<Tag> result = new ArrayList<Tag>();
-      result.addAll(analysePriceByMAs(tradingInfoList));
+      result.addAll(analyseByPriceChanges(tradingInfoList));
+      result.addAll(analyseByPriceMAs(tradingInfoList));
       return result;
    }
 
-   private List<Tag> analysePriceByMAs(List<TradingInfo> tradingInfoList) {
+   private List<Tag> analyseByPriceChanges(List<TradingInfo> tradingInfoList) {
+      int tradingInfoSize = tradingInfoList.size();
+      List<Tag> result = new ArrayList<Tag>();
+      if (tradingInfoSize < 66) {
+         return result;
+      }
+
+      double total5 = 0;
+      for (int index = tradingInfoSize - 1; index > tradingInfoSize - 6; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         total5 += tradingInfo.getClose();
+      }
+
+      int counter = 0;
+      for (int index = tradingInfoSize - 1; index > 0 && index > tradingInfoSize - 61; index--) {
+         TradingInfo currentTrading = tradingInfoList.get(index);
+         double MA5 = total5 / 5;
+         if (currentTrading.getClose() > MA5 * 1.15 || currentTrading.getClose() < MA5 * 0.85) {
+            counter = 0;
+            break;
+         }
+
+         TradingInfo prevTrading = tradingInfoList.get(index - 1);
+         if (currentTrading.getClose() > prevTrading.getClose() * 1.05
+            || currentTrading.getClose() < prevTrading.getClose() * 0.95) {
+            counter += 2;
+         } else if (currentTrading.getClose() > prevTrading.getClose() * 1.03
+            || currentTrading.getClose() < prevTrading.getClose() * 0.97) {
+            counter++;
+         }
+
+         prevTrading = tradingInfoList.get(index - 6);
+         total5 -= currentTrading.getClose();
+         total5 += prevTrading.getClose();
+      }
+
+      if (counter >= 20) {
+         result.add(new Tags.PriceUpDownTag());
+      }
+      return result;
+   }
+
+   private List<Tag> analyseByPriceMAs(List<TradingInfo> tradingInfoList) {
       List<Tag> result = new ArrayList<Tag>();
       Map<String, PriceMAs> priceMAMap = AnalyserUtils.calculatePriceMAs(tradingInfoList);
       TradingInfo lastTrading = tradingInfoList.get(tradingInfoList.size() - 1);
@@ -257,7 +300,7 @@ public class MorphologyAnalyser {
                && tradingInfo.getClose() > lastTradingInfo.getClose()
                && tradingInfo.getClose() < lastTradingInfo.getClose() * 1.05) {
                if (lowest * 1.15 < tradingInfo.getClose()) {
-                  result.add(new Tags.BreakBoundary());
+                  result.add(new Tags.BreakBoundaryTag());
                   break;
                }
             }

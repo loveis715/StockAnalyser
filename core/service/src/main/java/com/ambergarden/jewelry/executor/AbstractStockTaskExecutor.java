@@ -94,7 +94,8 @@ public abstract class AbstractStockTaskExecutor implements Runnable {
          Collections.sort(results, new Comparator<ScanResult>() {
             @Override
             public int compare(ScanResult result1, ScanResult result2) {
-               return result1.getScore() > result2.getScore() ? -1 : result1.getScore() == result2.getScore() ? 0 : 1;
+               int codeCompareResult = result1.getStock().getCode().compareTo(result2.getStock().getCode());
+               return result1.getScore() > result2.getScore() ? -1 : result1.getScore() == result2.getScore() ? codeCompareResult : 1;
             }
          });
          scanTask.setTaskState(TaskState.SUCCESS);
