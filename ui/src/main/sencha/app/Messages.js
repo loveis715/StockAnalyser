@@ -96,7 +96,9 @@ Ext.define('jewelry.Messages', {
         CONFIRM_MA120_SUPPORT: '寻求半年线支撑',
         CONFIRM_MA250_SUPPORT: '寻求年线支撑',
         BREAK_BOUNDARY: '前期高点突破',
-        PRICE_UP_DOWN: '股性好'
+        PRICE_UP_DOWN: '股性好',
+
+        MODEL_BREAK_BOUNDARY: '模型：前期高点突破'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'

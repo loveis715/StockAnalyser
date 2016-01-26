@@ -1,5 +1,6 @@
 package com.ambergarden.jewelry.executor.tag;
 
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_BREAK_BOUNDARY;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
@@ -337,6 +338,19 @@ public class Tags {
 
       public PriceUpDownTag() {
          super(TAG_NAME_PRICE_UP_DOWN, TagCategory.POSITIVE, 1.0);
+      }
+   }
+
+   /**
+    * Tag for stock which suites for breaking out of box
+    */
+   public static class ModelBreakBoundaryTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_MODEL_BREAK_BOUNDARY) == 0;
+      }
+
+      public ModelBreakBoundaryTag() {
+         super(TAG_MODEL_BREAK_BOUNDARY, TagCategory.POSITIVE, 100.0);
       }
    }
 }
