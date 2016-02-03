@@ -1,6 +1,9 @@
 package com.ambergarden.jewelry.executor.tag;
 
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_BREAK_BOUNDARY;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_BREAK_PREV_HIGH;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_RATIO_HIGH;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_START_AT_BOTTOM;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
@@ -345,12 +348,56 @@ public class Tags {
     * Tag for stock which suites for breaking out of box
     */
    public static class ModelBreakBoundaryTag extends Tag {
+      public static enum Type {
+         HIGH_RATIO,
+         LOW_RATIO
+      }
+
       public static boolean instanceOf(Tag tag) {
          return tag.getTagName().compareTo(TAG_MODEL_BREAK_BOUNDARY) == 0;
       }
 
-      public ModelBreakBoundaryTag() {
-         super(TAG_MODEL_BREAK_BOUNDARY, TagCategory.POSITIVE, 100.0);
+      public ModelBreakBoundaryTag(Type breakType) {
+         super(TAG_MODEL_BREAK_BOUNDARY, TagCategory.POSITIVE, breakType == Type.HIGH_RATIO ? 100.0 : 50);
+      }
+   }
+
+   /**
+    * Tag for stock which breaks previous highest
+    */
+   public static class ModelBreakPreviousHighestTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_MODEL_BREAK_PREV_HIGH) == 0;
+      }
+
+      public ModelBreakPreviousHighestTag() {
+         super(TAG_MODEL_BREAK_PREV_HIGH, TagCategory.POSITIVE, 75.0);
+      }
+   }
+
+   /**
+    * Tag for trading ratio is high which suites for breaking out of box
+    */
+   public static class ModelTradingRatioHighTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_MODEL_RATIO_HIGH) == 0;
+      }
+
+      public ModelTradingRatioHighTag() {
+         super(TAG_MODEL_RATIO_HIGH, TagCategory.POSITIVE, 25.0);
+      }
+   }
+
+   /**
+    * Tag for trading ratio is high at the bottom of bounding box
+    */
+   public static class ModelStartAtBottomTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_MODEL_START_AT_BOTTOM) == 0;
+      }
+
+      public ModelStartAtBottomTag() {
+         super(TAG_MODEL_START_AT_BOTTOM, TagCategory.POSITIVE, 150.0);
       }
    }
 }

@@ -170,6 +170,7 @@ public class StockTradingInfoProvider {
          daySegments = trading.getDay().split(" ");
          if (daySegments[0].compareTo(dayString) != 0) {
             startIndex = index + 1;
+            break;
          }
       }
       return result.subList(startIndex, result.size());

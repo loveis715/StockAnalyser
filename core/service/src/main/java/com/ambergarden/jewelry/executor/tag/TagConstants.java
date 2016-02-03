@@ -37,4 +37,7 @@ public class TagConstants {
    public static final String TAG_NAME_PRICE_UP_DOWN = "PRICE_UP_DOWN";
 
    public static final String TAG_MODEL_BREAK_BOUNDARY = "MODEL_BREAK_BOUNDARY";
+   public static final String TAG_MODEL_BREAK_PREV_HIGH = "MODEL_BREAK_PREV_HIGH";
+   public static final String TAG_MODEL_RATIO_HIGH = "MODEL_RATIO_HIGH";
+   public static final String TAG_MODEL_START_AT_BOTTOM = "MODEL_START_AT_BOTTOM";
 }

@@ -18,6 +18,54 @@ public class AnalyserUtils {
    public static final int DAY_120 = 120;
    public static final int DAY_250 = 250;
 
+   public static long getAverageVolume(List<TradingInfo> tradingInfoList, int dayCount) {
+      int counter = 0;
+      long totalVolume = 0;
+      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < dayCount; index--) {
+         counter++;
+
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         totalVolume += tradingInfo.getVolume();
+      }
+      return totalVolume / dayCount;
+   }
+
+   public static double getHighest(List<TradingInfo> tradingInfoList, int dayCount) {
+      int counter = 0;
+      double highest = 0;
+      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < dayCount; index--) {
+         counter++;
+
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         if (highest < tradingInfo.getOpen()) {
+            highest = tradingInfo.getOpen();
+         }
+
+         if (highest < tradingInfo.getClose()) {
+            highest = tradingInfo.getClose();
+         }
+      }
+      return highest;
+   }
+
+   public static double getLowest(List<TradingInfo> tradingInfoList, int dayCount) {
+      int counter = 0;
+      double lowest = Double.MAX_VALUE;
+      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < dayCount; index--) {
+         counter++;
+
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         if (lowest > tradingInfo.getOpen()) {
+            lowest = tradingInfo.getOpen();
+         }
+
+         if (lowest > tradingInfo.getClose()) {
+            lowest = tradingInfo.getClose();
+         }
+      }
+      return lowest;
+   }
+
    public static Map<String, PriceMAs> calculatePriceMAs(List<TradingInfo> tradingInfoList) {
       double total5 = getTotal(tradingInfoList, DAY_0, DAY_5);
       double total10 = total5 + getTotal(tradingInfoList, DAY_5, DAY_10);

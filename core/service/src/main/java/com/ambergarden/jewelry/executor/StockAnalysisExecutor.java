@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
 import com.ambergarden.jewelry.executor.analysis.MarketTradingData;
+import com.ambergarden.jewelry.executor.analysis.ModelAnalyser;
 import com.ambergarden.jewelry.executor.analysis.MorphologyAnalyser;
 import com.ambergarden.jewelry.executor.analysis.StockAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
@@ -42,6 +43,9 @@ public class StockAnalysisExecutor implements Runnable {
 
    @Autowired
    protected MorphologyAnalyser morphologyAnalyser;
+
+   @Autowired
+   protected ModelAnalyser modelAnalyser;
 
    private State state;
 
@@ -89,8 +93,10 @@ public class StockAnalysisExecutor implements Runnable {
          }
 
          List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfoFor300Days(stock.getCode());
+         List<TradingInfo> halfHourTradingList = tradingInfoProvider.getHalfHourTradingInfoForToday(stock.getCode());
          List<Tag> tags = stockAnalyser.analysis(stock, tradingData);
          tags.addAll(morphologyAnalyser.analyse(stock, tradingInfoList));
+         tags.addAll(modelAnalyser.analyseHalfDay(stock, tradingInfoList.subList(0, tradingInfoList.size() - 1), halfHourTradingList));
          stockAnalyseTask.setResultTags(tagConverter.convertFrom(tags));
          stockAnalyseTask.setTaskState(TaskState.SUCCESS);
          stockAnalyseTask.setEndTime(new Date());

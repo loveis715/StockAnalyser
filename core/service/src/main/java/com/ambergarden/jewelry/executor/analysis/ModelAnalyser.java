@@ -13,42 +13,49 @@ import com.ambergarden.jewelry.schema.beans.stock.Stock;
 @Component
 public class ModelAnalyser {
    public List<Tag> analyseHalfDay(Stock stock, List<TradingInfo> tradingInfoList, List<TradingInfo> halfHourTradingList) {
-      int counter = 0;
-      long totalVolume = 0;
-      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < 5; index--) {
-         counter++;
-
-         TradingInfo tradingInfo = tradingInfoList.get(index);
-         totalVolume += tradingInfo.getVolume();
-      }
-
-      counter = 0;
-      double preHighest = 0;
-      double lowest = Double.MAX_VALUE;
-      for (int index = tradingInfoList.size() - 1; index >= 0 && counter < 15; index--) {
-         TradingInfo tradingInfo = tradingInfoList.get(index);
-         if (tradingInfo.getOpen() > preHighest) {
-            preHighest = tradingInfo.getOpen();
-         }
-         if (tradingInfo.getClose() > preHighest) {
-            preHighest = tradingInfo.getClose();
-         }
-         if (tradingInfo.getOpen() < lowest) {
-            lowest = tradingInfo.getOpen();
-         }
-         if (tradingInfo.getClose() < lowest) {
-            lowest = tradingInfo.getClose();
-         }
-      }
-
       List<Tag> result = new ArrayList<Tag>();
-      long averageVolume = totalVolume / 40;
+      if (tradingInfoList.size() < 5) {
+         return result;
+      }
+
+      TradingInfo lastDay = tradingInfoList.get(tradingInfoList.size() - 1);
+      TradingInfo prevDay = tradingInfoList.get(tradingInfoList.size() - 2);
+      if (lastDay.getClose() > prevDay.getClose() * 1.09) {
+         return result;
+      }
+
+      long volumeMA5 = AnalyserUtils.getAverageVolume(tradingInfoList, 5);
+      long averageVolume = volumeMA5 / 8;
+      double preHighest = AnalyserUtils.getHighest(tradingInfoList, 10);
+      double lowest = AnalyserUtils.getLowest(tradingInfoList, 10);
+
       TradingInfo firstHalfHour = halfHourTradingList.get(0);
-      if (firstHalfHour.getHigh() > preHighest * 0.97
-         && firstHalfHour.getHigh() < preHighest * 1.03
-         && firstHalfHour.getVolume() > averageVolume * 3
-         && preHighest * 0.7 < lowest) {
-         result.add(new Tags.ModelBreakBoundaryTag());
+      if (firstHalfHour.getClose() - firstHalfHour.getOpen() < (firstHalfHour.getHigh() - firstHalfHour.getOpen()) * 3 / 4
+            || lastDay.getClose() * 1.06 < firstHalfHour.getClose()
+            || lastDay.getClose() * 0.97 > firstHalfHour.getLow()) {
+         return result;
+      }
+
+      boolean breakOut = firstHalfHour.getHigh() > preHighest * 0.97
+            && firstHalfHour.getHigh() < preHighest * 1.03;
+      if (firstHalfHour.getVolume() > averageVolume * 3) {
+         if (breakOut) {
+            if (preHighest * 0.7 < lowest) {
+               result.add(new Tags.ModelBreakBoundaryTag(Tags.ModelBreakBoundaryTag.Type.HIGH_RATIO));
+            } else {
+               result.add(new Tags.ModelBreakPreviousHighestTag());
+            }
+         } else {
+            if (firstHalfHour.getClose() < lowest * 1.15) {
+               result.add(new Tags.ModelStartAtBottomTag());
+            } else {
+               result.add(new Tags.ModelTradingRatioHighTag());
+            }
+         }
+      } else if (firstHalfHour.getVolume() > averageVolume * 2) {
+         if (breakOut && preHighest * 0.7 < lowest) {
+            result.add(new Tags.ModelBreakBoundaryTag(Tags.ModelBreakBoundaryTag.Type.LOW_RATIO));
+         }
       }
       return result;
    }
