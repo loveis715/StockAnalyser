@@ -14,6 +14,7 @@ import com.ambergarden.jewelry.executor.analysis.ModelAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.TagCategory;
 import com.ambergarden.jewelry.executor.tag.TagConverter;
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 import com.ambergarden.jewelry.schema.beans.task.ScanResult;
@@ -75,8 +76,8 @@ public class HalfDayScanTaskExecutor implements Runnable {
                continue;
             }
 
-            List<TradingInfo> halfHourTradingList = tradingInfoProvider.getHalfHourTradingInfoForToday(pendingStock.getCode());
-            List<Tag> tags = modelAnalyser.analyseHalfDay(pendingStock, tradingInfoList, halfHourTradingList);
+            List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo(pendingStock.getCode());
+            List<Tag> tags = modelAnalyser.analyseHalfDay(pendingStock, tradingInfoList, minuteDataList);
             double score = calculateStockScore(tags);
             if (score >= 1) {
                ScanResult result = new ScanResult();

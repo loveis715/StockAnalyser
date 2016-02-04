@@ -93,10 +93,10 @@ public class StockAnalysisExecutor implements Runnable {
          }
 
          List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfoFor300Days(stock.getCode());
-         List<TradingInfo> halfHourTradingList = tradingInfoProvider.getHalfHourTradingInfoForToday(stock.getCode());
+         List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo(stock.getCode());
          List<Tag> tags = stockAnalyser.analysis(stock, tradingData);
          tags.addAll(morphologyAnalyser.analyse(stock, tradingInfoList));
-         tags.addAll(modelAnalyser.analyseHalfDay(stock, tradingInfoList.subList(0, tradingInfoList.size() - 1), halfHourTradingList));
+         tags.addAll(modelAnalyser.analyseHalfDay(stock, tradingInfoList.subList(0, tradingInfoList.size() - 1), minuteDataList));
          stockAnalyseTask.setResultTags(tagConverter.convertFrom(tags));
          stockAnalyseTask.setTaskState(TaskState.SUCCESS);
          stockAnalyseTask.setEndTime(new Date());

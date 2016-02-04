@@ -7,14 +7,15 @@ import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.Tags;
+import com.ambergarden.jewelry.schema.beans.provider.stock.MinuteData;
 import com.ambergarden.jewelry.schema.beans.provider.stock.TradingInfo;
 import com.ambergarden.jewelry.schema.beans.stock.Stock;
 
 @Component
 public class ModelAnalyser {
-   public List<Tag> analyseHalfDay(Stock stock, List<TradingInfo> tradingInfoList, List<TradingInfo> halfHourTradingList) {
+   public List<Tag> analyseHalfDay(Stock stock, List<TradingInfo> tradingInfoList, List<MinuteData> minuteDataList) {
       List<Tag> result = new ArrayList<Tag>();
-      if (tradingInfoList.size() < 5) {
+      if (tradingInfoList.size() < 5 || minuteDataList.size() < 32) {
          return result;
       }
 
@@ -25,20 +26,51 @@ public class ModelAnalyser {
       }
 
       long volumeMA5 = AnalyserUtils.getAverageVolume(tradingInfoList, 5);
-      long averageVolume = volumeMA5 / 8;
+      long averageVolume = volumeMA5 / 240;
       double preHighest = AnalyserUtils.getHighest(tradingInfoList, 10);
       double lowest = AnalyserUtils.getLowest(tradingInfoList, 10);
 
-      TradingInfo firstHalfHour = halfHourTradingList.get(0);
-      if (firstHalfHour.getClose() - firstHalfHour.getOpen() < (firstHalfHour.getHigh() - firstHalfHour.getOpen()) * 3 / 4
-            || lastDay.getClose() * 1.06 < firstHalfHour.getClose()
-            || lastDay.getClose() * 0.97 > firstHalfHour.getLow()) {
+      MinuteData firstMinute = minuteDataList.get(minuteDataList.size() - 3);
+      MinuteData lastMinute = minuteDataList.get(minuteDataList.size() - 32);
+      double open = firstMinute.getPrice();
+      double close = lastMinute.getPrice();
+
+      double high = 0;
+      long totalVolume = 0;
+      long maxAverageVolume = 0;
+      int maxAverageVolumeIndex = 0;
+      int counter = 1;
+      for (int index = minuteDataList.size() - 1; index >= minuteDataList.size() - 32; index--) {
+         MinuteData minuteData = minuteDataList.get(index);
+         if (minuteData.getTime().compareTo("09:30:00") < 0) {
+            continue;
+         }
+
+         totalVolume += minuteData.getVolume();
+         if (high < minuteData.getPrice()) {
+            high = minuteData.getPrice();
+         }
+
+         if (totalVolume / counter > maxAverageVolume) {
+            maxAverageVolume = totalVolume / counter;
+            maxAverageVolumeIndex = index;
+         }
+         counter++;
+      }
+
+      long averageVolume30 = totalVolume / counter;
+      if (close - open < (high - open) * 3 / 4
+            || lastDay.getClose() * 1.06 < close
+            || lastDay.getClose() * 0.97 > open
+            || lastDay.getClose() * 1.02 > high
+            || averageVolume30 < averageVolume * 2
+            || maxAverageVolumeIndex >= minuteDataList.size() - 10) {
          return result;
       }
 
-      boolean breakOut = firstHalfHour.getHigh() > preHighest * 0.97
-            && firstHalfHour.getHigh() < preHighest * 1.03;
-      if (firstHalfHour.getVolume() > averageVolume * 3) {
+      boolean breakOut = high > preHighest * 0.97
+            && high < preHighest * 1.03;
+      if (averageVolume30 > averageVolume * 3) {
          if (breakOut) {
             if (preHighest * 0.7 < lowest) {
                result.add(new Tags.ModelBreakBoundaryTag(Tags.ModelBreakBoundaryTag.Type.HIGH_RATIO));
@@ -46,13 +78,13 @@ public class ModelAnalyser {
                result.add(new Tags.ModelBreakPreviousHighestTag());
             }
          } else {
-            if (firstHalfHour.getClose() < lowest * 1.15) {
+            if (close < lowest * 1.15) {
                result.add(new Tags.ModelStartAtBottomTag());
             } else {
                result.add(new Tags.ModelTradingRatioHighTag());
             }
          }
-      } else if (firstHalfHour.getVolume() > averageVolume * 2) {
+      } else if (averageVolume30 > averageVolume * 2) {
          if (breakOut && preHighest * 0.7 < lowest) {
             result.add(new Tags.ModelBreakBoundaryTag(Tags.ModelBreakBoundaryTag.Type.LOW_RATIO));
          }
