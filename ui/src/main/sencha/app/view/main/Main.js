@@ -6,7 +6,8 @@ Ext.define('jewelry.view.main.Main', {
         'jewelry.view.management.ManagementPage',
         'jewelry.view.mystock.MyStockPage',
         'jewelry.view.stock.StockPage',
-        'jewelry.view.unusual.UnusualPage'
+        'jewelry.view.unusual.UnusualPage',
+        'jewelry.view.test.TestScanPage'
     ],
 
     xtype: 'app-main',
@@ -22,7 +23,8 @@ Ext.define('jewelry.view.main.Main', {
         2: 'jewelry.view.mystock.MyStockPage',
         3: 'jewelry.view.stock.StockPage',
         4: 'jewelry.view.management.ManagementPage',
-        5: 'jewelry.view.knowledge.KnowledgePage'
+        5: 'jewelry.view.knowledge.KnowledgePage',
+        6: 'jewelry.view.test.TestScanPage'
     },
 
     initComponent: function() {
@@ -92,6 +94,16 @@ Ext.define('jewelry.view.main.Main', {
                 margin: '0 0 0 0',
                 padding: '0 13 0 11',
                 cardIndex: '5',
+                scope: me,
+                handler: me.switchToCard
+            }, {
+                text: jewelry.Messages.labels.test,
+                cls: 'jewelry-header-button',
+                border: false,
+                height: 50,
+                margin: '0 0 0 0',
+                padding: '0 13 0 11',
+                cardIndex: '6',
                 scope: me,
                 handler: me.switchToCard
             }]

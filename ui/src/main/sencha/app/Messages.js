@@ -16,6 +16,7 @@ Ext.define('jewelry.Messages', {
         startSync: '开始同步',
         fullDayScan: '整日交易扫描',
         halfDayScan: '半日交易扫描',
+        testScan: '扫描测试',
         morphologyScan: '形态学扫描',
         lastScanTime: '上次扫描时间',
         startScan: '开始扫描',
@@ -36,7 +37,8 @@ Ext.define('jewelry.Messages', {
         edit: '修改',
         delete: '删除',
         addNote: '添加记录',
-        editNote: '编辑记录'
+        editNote: '编辑记录',
+        test: '测试'
     },
     headers: {
         startTime: '开始时间',
@@ -49,10 +51,13 @@ Ext.define('jewelry.Messages', {
         stockCode: '股票代码',
         stockCategory: '交易所',
         score: '评分',
+        priceChange: '价格变动',
         unusualCases: '异常',
         noteCount: '记录条数',
         title: '标题',
-        noteCategory: '记录类型'
+        tag: '标记',
+        noteCategory: '记录类型',
+        day: '日期'
     },
     formatters: {
         separator: '\t\t',
