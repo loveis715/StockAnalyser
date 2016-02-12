@@ -89,6 +89,35 @@
       </xsd:sequence>
    </xsd:complexType>
 
+   <xsd:complexType name="test-scan-result">
+      <xsd:complexContent>
+         <xsd:extension base="base:abstract-entity">
+            <xsd:sequence>
+               <xsd:element name="stock" type="stock:stock"/>
+               <xsd:element name="tag" type="xsd:string"/>
+               <xsd:element name="day" type="xsd:string"/>
+               <xsd:element name="priceChange" type="xsd:double"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="test-scan-task">
+      <xsd:complexContent>
+         <xsd:extension base="abstract-task">
+            <xsd:sequence>
+               <xsd:element name="results" type="test-scan-result" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="test-scan-task-request">
+      <xsd:sequence>
+         <xsd:element name="test-scan-task-id" type="xsd:int"/>
+      </xsd:sequence>
+   </xsd:complexType>
+
    <xsd:complexType name="stock-analyse-task">
       <xsd:complexContent>
          <xsd:extension base="abstract-task">
