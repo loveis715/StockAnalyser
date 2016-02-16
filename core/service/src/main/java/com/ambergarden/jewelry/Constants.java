@@ -29,4 +29,5 @@ public class Constants {
    // Special stock codes
    public final static String CODE_SH = "sh000001";
    public final static String CODE_SZ = "sz399001";
+   public final static String CODE_SZ300 = "sz300";
 }

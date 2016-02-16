@@ -70,6 +70,13 @@ public class HalfDayScanTaskExecutor implements Runnable {
 
          List<Stock> stocks = stockService.findAll();
          for (Stock pendingStock : stocks) {
+            if (pendingStock.getCode().startsWith(Constants.CODE_SZ300)) {
+               continue;
+            }
+            if (pendingStock.getTotalVolume() > 1000000000L) {
+               continue;
+            }
+
             List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfo(pendingStock.getCode());
             TradingInfo lastStockTrading = tradingInfoList.get(tradingInfoList.size() - 1);
             if (lastMarketTrading.getDay().compareTo(lastStockTrading.getDay()) != 0) {
@@ -77,7 +84,7 @@ public class HalfDayScanTaskExecutor implements Runnable {
             }
 
             List<MinuteData> minuteDataList = tradingInfoProvider.getPerMinuteTradingInfo(pendingStock.getCode());
-            List<Tag> tags = modelAnalyser.analyseHalfDay(pendingStock, tradingInfoList, minuteDataList);
+            List<Tag> tags = modelAnalyser.analyseHalfDay(pendingStock, tradingInfoList.subList(0, tradingInfoList.size() - 1), minuteDataList);
             double score = calculateStockScore(tags);
             if (score >= 1) {
                ScanResult result = new ScanResult();

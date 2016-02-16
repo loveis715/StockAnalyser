@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
 import com.ambergarden.jewelry.executor.analysis.ModelAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
@@ -61,6 +62,13 @@ public class TestScanTaskExecutor implements Runnable {
       try {
          List<Stock> stocks = stockService.findAll();
          for (Stock pendingStock : stocks) {
+            if (pendingStock.getCode().startsWith(Constants.CODE_SZ300)) {
+               continue;
+            }
+            if (pendingStock.getTotalVolume() > 1000000000L) {
+               continue;
+            }
+
             List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfoFor300Days(pendingStock.getCode());
             for (int endIndex = tradingInfoList.size() - 4; endIndex > 31; endIndex--) {
                // For each day, find the highest price.
@@ -76,6 +84,12 @@ public class TestScanTaskExecutor implements Runnable {
 
                List<TradingInfo> tradingInfoListForTest = tradingInfoList.subList(0, endIndex);
                TradingInfo lastTradingForTest = tradingInfoListForTest.get(tradingInfoListForTest.size() - 1);
+               String dayString = lastTradingForTest.getDay();
+               if (dayString.compareTo("2016-01-03") > 0 && dayString.compareTo("2016-01-28") < 0
+                     || dayString.compareTo("2015-08-17") > 0 && dayString.compareTo("2015-08-25") < 0
+                     || dayString.compareTo("2015-06-15") > 0 && dayString.compareTo("2015-07-09") < 0) {
+                  continue;
+               }
                List<Tag> tags = modelAnalyser.analyseFullDay(pendingStock, tradingInfoListForTest);
                for (Tag tag : tags) {
                   TestScanResult result = new TestScanResult();
@@ -89,7 +103,7 @@ public class TestScanTaskExecutor implements Runnable {
             }
 
             // Temporary short circuit for debugging
-            if (testScanTask.getResults().size() > 100) {
+            if (testScanTask.getResults().size() > 200) {
                break;
             }
          }

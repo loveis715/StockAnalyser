@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.ambergarden.jewelry.Constants;
 import com.ambergarden.jewelry.executor.StockSyncingTaskExecutor.State;
+import com.ambergarden.jewelry.executor.analysis.ModelAnalyser;
 import com.ambergarden.jewelry.executor.analysis.MorphologyAnalyser;
 import com.ambergarden.jewelry.executor.tag.Tag;
 import com.ambergarden.jewelry.executor.tag.TagCategory;
@@ -43,6 +44,9 @@ public class MorphologyScanExecutor implements Runnable {
    @Autowired
    protected MorphologyAnalyser morphologyAnalyser;
 
+   @Autowired
+   private ModelAnalyser modelAnalyser;
+
    protected synchronized boolean changeToWorkingState() {
       if (state == State.WORKING) {
          return false;
@@ -69,6 +73,13 @@ public class MorphologyScanExecutor implements Runnable {
 
          List<Stock> stocks = stockService.findAll();
          for (Stock pendingStock : stocks) {
+            if (pendingStock.getCode().startsWith(Constants.CODE_SZ300)) {
+               continue;
+            }
+            if (pendingStock.getTotalVolume() > 1000000000L) {
+               continue;
+            }
+
             List<TradingInfo> tradingInfoList = tradingInfoProvider.getDailyTraidingInfoFor300Days(pendingStock.getCode());
             TradingInfo lastStockTrading = tradingInfoList.get(tradingInfoList.size() - 1);
             if (lastMarketTrading.getDay().compareTo(lastStockTrading.getDay()) != 0) {
@@ -76,6 +87,7 @@ public class MorphologyScanExecutor implements Runnable {
             }
 
             List<Tag> tags = morphologyAnalyser.analyse(pendingStock, tradingInfoList);
+            tags.addAll(modelAnalyser.analyseFullDay(pendingStock, tradingInfoList));
             if (tags.size() != 0) {
                double score = calculateStockScore(tags);
                if (score >= 1) {
@@ -88,7 +100,6 @@ public class MorphologyScanExecutor implements Runnable {
                }
             }
          }
-
 
          List<ScanResult> results = scanTask.getResults();
          Collections.sort(results, new Comparator<ScanResult>() {

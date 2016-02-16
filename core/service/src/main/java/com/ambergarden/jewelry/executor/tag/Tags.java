@@ -4,6 +4,7 @@ import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_BREAK_
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_BREAK_PREV_HIGH;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_RATIO_HIGH;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_START_AT_BOTTOM;
+import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_MODEL_WASHING;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_BREAK_BOUNDARY;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA120_SUPPORT;
 import static com.ambergarden.jewelry.executor.tag.TagConstants.TAG_NAME_CONFIRM_MA250_SUPPORT;
@@ -359,6 +360,19 @@ public class Tags {
 
       public ModelBreakBoundaryTag(Type breakType) {
          super(TAG_MODEL_BREAK_BOUNDARY, TagCategory.POSITIVE, breakType == Type.HIGH_RATIO ? 100.0 : 50);
+      }
+   }
+
+   /**
+    * Tag for stock which suites for breaking out of box
+    */
+   public static class ModelWashingTag extends Tag {
+      public static boolean instanceOf(Tag tag) {
+         return tag.getTagName().compareTo(TAG_MODEL_WASHING) == 0;
+      }
+
+      public ModelWashingTag() {
+         super(TAG_MODEL_WASHING, TagCategory.POSITIVE, 50);
       }
    }
 

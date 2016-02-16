@@ -66,6 +66,19 @@ public class AnalyserUtils {
       return lowest;
    }
 
+   public static double getPriceMA(List<TradingInfo> tradingInfoList, int dayCount) {
+      if (tradingInfoList.size() < dayCount) {
+         return -1;
+      }
+
+      double total = 0;
+      for (int index = tradingInfoList.size() - 1; index > tradingInfoList.size() - dayCount - 1; index--) {
+         TradingInfo tradingInfo = tradingInfoList.get(index);
+         total += tradingInfo.getClose();
+      }
+      return total / dayCount;
+   }
+
    public static Map<String, PriceMAs> calculatePriceMAs(List<TradingInfo> tradingInfoList) {
       double total5 = getTotal(tradingInfoList, DAY_0, DAY_5);
       double total10 = total5 + getTotal(tradingInfoList, DAY_5, DAY_10);

@@ -106,7 +106,8 @@ Ext.define('jewelry.Messages', {
         MODEL_BREAK_BOUNDARY: '模型：箱体突破',
         MODEL_BREAK_PREV_HIGH: '模型：前期高点突破',
         MODEL_RATIO_HIGH: '模型：量比高',
-        MODEL_START_AT_BOTTOM: '模型：底部启动'
+        MODEL_START_AT_BOTTOM: '模型：底部启动',
+        MODEL_WASHING: '模型：均线洗盘'
     },
     scanTypes: {
         FULL_SCAN: '全盘扫描'
